@@ -1,0 +1,27 @@
+{
+   "name": "think-ts",
+   "version": "1.0.0",
+   "description": "TypeORM+KOA",
+   "devDependencies": {
+      "@types/koa": "^2.11.3",
+      "@types/node": "^14.0.27",
+      "nodemon": "^2.0.4",
+      "ts-node": "8.10.2",
+      "typescript": "3.9.7"
+   },
+   "dependencies": {
+      "reflect-metadata": "^0.1.13",
+      "ejs": "^3.1.3",
+      "koa": "^2.13.0",
+      "koa-bodyparser": "^4.3.0",
+      "koa-router": "^9.1.0",
+      "koa-views": "^6.3.0",
+      "mysql": "^2.18.1",
+      "typeorm": "^0.2.25"
+   },
+   "scripts": {
+      "dev": "nodemon",
+      "start": "ts-node index.ts",
+      "pm2": "pm2 start .json"
+   }
+}

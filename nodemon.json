@@ -1,0 +1,22 @@
+{
+  "restartable": "rs",
+  "ignore": [".git", "node_modules/**", "dist"],
+  "verbose": true,
+  "execMap": {
+    "": "node",
+    "js": "node --harmony"
+  },
+  "events": {
+    "start": "",
+    "crash": "",
+    "exit": "",
+    "restart": ""
+  },
+  "ext": "js json ts tsx",
+  "watch": ["src"],
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": "3002"
+  },
+  "legacy-watch": false
+}
