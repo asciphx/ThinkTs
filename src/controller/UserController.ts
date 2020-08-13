@@ -7,12 +7,13 @@ import {Context} from "koa"
 export class UserController{
   @Service(UserService) userSvc:UserService
 
-  @Roles([W.Qx])
+  @Roles(W.Login)
+  @Roles(W.Qx)
   @Get()
   async all(ctx:Context) {
     ctx.body=await this.userSvc.all();
   }
-  @Roles([W.Qx])
+  @Roles(W.Qx,W.Login)
   @Get("/:id")
   async one(ctx:Context) {
     let v=await this.userSvc.one(ctx.params.id);
@@ -23,12 +24,12 @@ export class UserController{
   async save(ctx:Context) {//@ts-ignore
     ctx.body=await this.userSvc.save(ctx.request.body);
   }
-  @Roles([W.Qx,W.Login])
+  @Roles(W.Qx)
   @Put("/:id")
   async update(ctx:Context) {//@ts-ignore
     ctx.body=await this.userSvc.update(ctx.params.id,ctx.request.body);
   }
-  @Roles([W.Qx])
+  @Roles(W.Qx)
   @Del("/:id")
   async remove(ctx:Context) {
     ctx.body=await this.userSvc.remove(ctx.params.id);

@@ -15,13 +15,11 @@ createConnection().then(async connection => {require(__dirname+"/src/controller.
   }))
   const router = new Router()
   Routes.forEach(r => {
-    r.w ? router[r.m](r.r,...r.w,async (ctx:Koa.Context,next) =>{
+    router[r.m](...r.w?[r.r,...r.w]:[r.r],async (ctx:Koa.Context,next) =>{
       await (new (r.c))[r.a](ctx,next)
-    }) : router[r.m](r.r,async (ctx:Koa.Context,next) =>{
-      await (new (r.c))[r.a](ctx,next)/*Test ctx:Context below this line,be prompted with code(because performance)*/
-      
     })
   })
+  console.log(Routes)
   app.use(router.routes()).use(router.allowedMethods()).listen(Config.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Config.port} to see`))
 }).catch(error => console.log(error));
