@@ -10,7 +10,8 @@ import { Config } from './config';
 
 createConnection().then(async connection => {require(__dirname+"/src/controller.ts")//Import to use decorator preprocessing
   await fs.readdirSync(__dirname+"/src/controller").forEach((i)=>{require(__dirname+"/src/controller/"+i)})
-  const app = new Koa().use(bodyParser()).use(views(require('path').join(__dirname,'./views'),{
+  const app = new Koa().use(bodyParser({jsonLimit:Config.jsonLimit,formLimit:"10mb",textLimit:"3mb"}))
+  .use(views(require('path').join(__dirname,'./views'),{
     extension: 'html',map: { html: "ejs" }
   }))
   const router = new Router()
