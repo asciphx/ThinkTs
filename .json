@@ -3,7 +3,7 @@
   {
     "name": "ThinkTs",
     "cwd": "./",
-    "script": "..ts",
+    "script": "index.ts",
     "exec_interpreter": "C:/nodejs/ts-node",
     "instances": "max",
     "min_uptime": "60s",
