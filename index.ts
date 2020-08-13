@@ -19,7 +19,6 @@ createConnection().then(async connection => {require(__dirname+"/src/controller.
       await (new (r.c))[r.a](ctx,next)
     })
   })
-  console.log(Routes)
   app.use(router.routes()).use(router.allowedMethods()).listen(Config.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Config.port} to see`))
 }).catch(error => console.log(error));
