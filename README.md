@@ -4,7 +4,6 @@
 - Modular development makes the application easier to layer and provides an easy-to-use modular management mechanism
 - AOP code is written in a low-key way, but it is easy to realize log, interceptor, filter and other functions
 - MVC, API, websocket, microservice and other systems are constructed fastest, good and most fiercely
-- ......
 
 ## Features
 - [x] The default value of class class decorator is`/`+ entity class name, which can also be customized
@@ -28,5 +27,5 @@
 8. routes: ` output the route file to view. Each controller will create one`
 
 ## Other
-> Built by the world's first great God, Asciphx  
+> Built by the world's first great teaser, Asciphx  
 > Please wait this project will generate a blog project
