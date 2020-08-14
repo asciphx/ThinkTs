@@ -5,7 +5,74 @@
 - 最低调编写 AOP 代码，面向切面编程，却轻松实现日志、拦截器、过滤器等功能
 - 最快，最迅速，最猛烈构建 MVC、API、websocket、微服务等系统
 - ......
+## 使用**ThinkTs**让你的controller看起来像是:
 
+```typescript
+@Class()//The default value for the @Class decorator is the lowercase name of the controller entity
+export class UserController{
+  @Service(UserService) readonly userSvc:UserService
+
+  @Post("/login")
+  async login(ctx:Context) {
+    ctx.body=await this.userSvc.login(ctx.request.body);
+  }
+  @Roles(W.Qx,W.Login)
+  @Get()
+  async all(ctx:Context) {
+    ctx.body=await this.userSvc.all();
+  }
+  @Roles(W.Login)
+  @Get("/:id")
+  async one(ctx:Context) {
+    let v=await this.userSvc.one(ctx.params.id);
+    if (!v) {ctx.status = 404;return;}
+    ctx.body=v;
+  }
+}
+/** Here's how to show EJS template rendering */
+export class Controller{
+  @Get()
+  @Get("index.html")
+  async index(ctx:Context){
+    await html(ctx,{test:"test",author:"asciphx"})
+  }
+  @Get("login.html")
+  async login(ctx:Context){
+    await html(ctx,{test:"test",author:"Login"})
+  }
+}
+```
+### 让你的service看起来像是:
+```typescript
+export class UserService implements UserFace{
+  constructor(private user=getRepository(User)){}
+  async login(user: User) {
+    throw new Error("Method not implemented.");
+  }
+  async all(){
+    return this.user.find()
+  }
+  async one(id:number){
+    return this.user.findOne(id);
+  }
+  async save(obj:User) {
+    return this.user.save(obj);
+  }
+}
+```
+### 让你的interface看起来像是:
+```typescript
+export interface UserFace{
+  /** register one*/register(entity)
+  /** login one*/login(entity)
+  /** search all*/all()
+  /** search one*/one(id:number)
+  /** save one*/save(entity)
+  /** update one*/update(id:number,entity)
+  /** remove one*/remove(id:number)
+}
+```
+### 让你的entity看起来像是[TypeORM](https://github.com/typeorm/typeorm)中的写法
 ## 特征
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
 - [x] 自动扫描controller目录，并且配置Routes路由
