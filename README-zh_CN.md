@@ -18,10 +18,11 @@
 1. src:`后端文件入口`
 2. src/controller:`控制层`
 3. src/entity:`实体层`
-4. src/service:`服务层`
-5. src/utils:`工具层`
-6. views:`后台ejs模板渲染文件夹`
-7. routes:`输出查看的路由文件，每个controller会创建一个`
+4. src/interface:`接口层`
+5. src/service:`服务层`
+6. src/utils:`工具层`
+7. views:`后台ejs模板渲染文件夹`
+8. routes:`输出查看的路由文件，每个controller会创建一个`
 
 ## **请赞助本项目**
 如你觉有收获，请给我打赏

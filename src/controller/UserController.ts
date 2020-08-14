@@ -5,15 +5,22 @@ import {Context} from "koa"
 
 @Class()//The default is the lowercase name of the entity of the controller
 export class UserController{
-  @Service(UserService) userSvc:UserService
+  @Service(UserService) readonly userSvc:UserService
 
-  @Roles(W.Login)
+  @Post("/register")
+  async register(ctx:Context) {
+    ctx.body=await this.userSvc.register(ctx.request.body);
+  }
+  @Post("/login")
+  async login(ctx:Context) {
+    ctx.body=await this.userSvc.login(ctx.request.body);
+  }
   @Roles(W.Qx)
   @Get()
   async all(ctx:Context) {
     ctx.body=await this.userSvc.all();
   }
-  @Roles(W.Qx,W.Login)
+  @Roles(W.Qx)
   @Get("/:id")
   async one(ctx:Context) {
     let v=await this.userSvc.one(ctx.params.id);
@@ -21,12 +28,12 @@ export class UserController{
     ctx.body=v;
   }
   @Post()
-  async save(ctx:Context) {//@ts-ignore
+  async save(ctx:Context) {
     ctx.body=await this.userSvc.save(ctx.request.body);
   }
   @Roles(W.Qx)
   @Put("/:id")
-  async update(ctx:Context) {//@ts-ignore
+  async update(ctx:Context) {
     ctx.body=await this.userSvc.update(ctx.params.id,ctx.request.body);
   }
   @Roles(W.Qx)

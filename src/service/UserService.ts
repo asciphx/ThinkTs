@@ -1,35 +1,31 @@
 import {getRepository} from "typeorm"
 import {User} from "../entity/User"
+import {UserFace} from "../interface/UserFace"
 
-export class UserService{
-  user=getRepository(User)
+export class UserService implements UserFace{
+  constructor(private user=getRepository(User)){}
+  async login(user: User) {
+    throw new Error("Method not implemented.");
+  }
+  
+  async register(user: User){
+    const existing = await this.user.findOne(user.account);
+    // if (existing) throw new HttpException('账号已存在', 409);
+    // user.password = this.cryptoUtil.encryptPassword(user.password);
+    // await this.userRepo.save(this.userRepo.create(user));
+  }
   async all(){
     return this.user.find()
-    // const existing = this.findOneByAccount(user.account);
-    // if (existing) throw new HttpException('账号已存在', 409);
   }
-  /** search one
-   * @param id
-   */
   async one(id:number){
     return this.user.findOne(id);
   }
-  /** save one
-   * @param obj
-   */
   async save(obj:User) {
     return this.user.save(obj);
   }
-  /** update one
-   * @param id
-   * @param obj
-   */
   async update(id:number,obj) {
     return this.user.update(id,obj);
   }
-  /** remove one
-   * @param id
-   */
   async remove(id:number) {
     let rm = await this.user.findOne(id);
     return this.user.remove(rm);

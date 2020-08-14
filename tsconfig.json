@@ -1,8 +1,8 @@
 {
    "compilerOptions": {
-      "lib": ["es5", "es6","dom"],
+      "lib": ["es6","es7","dom"],
       "allowJs": true,
-      "target": "es5",
+      "target": "es6",
       "module": "commonjs",
       "moduleResolution": "node",
       "outDir": "./build",

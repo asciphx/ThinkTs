@@ -13,8 +13,4 @@ export class Controller{
   async login(ctx:Context){
     await html(ctx,{test:"test",author:"Login"})
   }
-  @Get("register.html")
-  async register(ctx:Context){
-    await html(ctx,{test:"test",author:"Register"})
-  }
 }
