@@ -87,9 +87,9 @@ export interface UserFace{
 ### Directory structure
 1. src: ` back end file entry`
 2. src/controller: ` control layer`
-3. src/entity:'entity layer`
+3. src/entity:`entity layer`
 4. src/interface: ` interface layer`
-5. src/service: service layer`
+5. src/service: `service layer`
 6. src/utils: ` tool layer`
 7. views: ` background EJS template rendering folder`
 8. routes: ` output the route file to view. Each controller will create one`
