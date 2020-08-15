@@ -2,9 +2,9 @@ import * as fs from "fs";import * as path from "path";
 import { Config } from '../config';
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$class
 
-const Class = (v?:String) => _class => {
+const Class = (v:String="") => _class => {
   let a=[],_=new _class;if(v==="")v=null;
-  v=v??_class.name.replace(/(\w*)[A-Z]\w*/,"/$1");
+  v=v??_class.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/")v=""
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].a=_[Routes[r].a].bind($class);Routes[r].r=v+Routes[r].r;a.push(Routes[r]);i++
   }
@@ -14,15 +14,15 @@ const Class = (v?:String) => _class => {
       if (err){return console.error(err);}
       fs.writeFile(path.resolve("./routes", `./${_class.name}.json`),
       JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
-    })
-    $b&&v!=="/"&&fs.writeFile(path.resolve("./routes", `./${_class.name}.json`),
+    });
+    $b&&fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_class.name}.json`),
     JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
   }a=_=$class=null;
 }
-const Get = (r="") => (target, key) => {Routes.push({a:key,m:"get",r:r})}
-const Post = (r="") => (target, key) => {Routes.push({a:key,m:"post",r:r})}
-const Put = (r="") => (target, key) => {Routes.push({a:key,m:"put",r:r})}
-const Del = (r="") => (target, key) => {Routes.push({a:key,m:"delete",r:r})}
+const Get = (r="") => (target, key) => {Routes.push({a:key,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
+const Post = (r="") => (target, key) => {Routes.push({a:key,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
+const Put = (r="") => (target, key) => {Routes.push({a:key,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
+const Del = (r="") => (target, key) => {Routes.push({a:key,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
 const Roles = (...r:Array<Function>) => (target, key) => {
   let f=Routes[Routes.length-1];if(f.a!==key){
     console.log(target.constructor.name+":"+key+" use @Roles has to be on the top!")

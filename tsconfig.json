@@ -1,14 +1,18 @@
 {
    "compilerOptions": {
-      "lib": ["es6","es7","dom"],
-      "allowJs": true,
-      "target": "es6",
       "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
+      "declaration": false,
+      "noImplicitAny": false,
+      "noUnusedLocals": false,
+      "removeComments": true,
+      "noLib": false,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
+      "target": "es6",
+      "sourceMap": false,
+      "allowJs": true,
+      "lib": ["es7","dom"],
+      "outDir": "./build"
    },
    "exclude": ["node_modules"]
 }

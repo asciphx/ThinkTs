@@ -10,8 +10,8 @@ createConnection().then(async connection => {require(__dirname+"/src/controller.
   const app = new Koa().use(bodyParser({jsonLimit:Config.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
   .use(views(require('path').join(__dirname,'./views'),{
     extension: 'html',map: { html: "ejs" }
-  }))//.use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
-  const router = new Router();//console.log(Routes)
+  })).use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
+  const router = new Router();console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)
