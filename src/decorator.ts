@@ -1,13 +1,12 @@
-import * as fs from "fs"
-import * as path from "path"
+import * as fs from "fs";import * as path from "path";
 import { Config } from '../config';
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$class
 
 const Class = (v?:String) => _class => {
-  let a=[];if(v==="")v=null;
-  v=v||_class.name.replace(/(\w*)[A-Z]\w*/,"/$1");
+  let a=[],_=new _class;if(v==="")v=null;
+  v=v??_class.name.replace(/(\w*)[A-Z]\w*/,"/$1");
   for (let r=i,l=Routes.length;r<l;r++){
-    Routes[r].a=(new _class)[Routes[r].a].bind($class);Routes[r].r=v+Routes[r].r;a.push(Routes[r]);i++
+    Routes[r].a=_[Routes[r].a].bind($class);Routes[r].r=v+Routes[r].r;a.push(Routes[r]);i++
   }
   if(Config.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
@@ -18,7 +17,7 @@ const Class = (v?:String) => _class => {
     })
     $b&&v!=="/"&&fs.writeFile(path.resolve("./routes", `./${_class.name}.json`),
     JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
-  }a=null;$class=null
+  }a=_=$class=null;
 }
 const Get = (r="") => (target, key) => {Routes.push({a:key,m:"get",r:r})}
 const Post = (r="") => (target, key) => {Routes.push({a:key,m:"post",r:r})}
@@ -29,5 +28,5 @@ const Roles = (...r:Array<Function>) => (target, key) => {
     console.log(target.constructor.name+":"+key+" use @Roles has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
 }
-const Service=v=>(target,key)=>{target[key] = new (v);$class=target}
+const Service=v=>(target,key)=>{Object.defineProperty($class={},key,{enumerable:false,configurable:false,writable:false,value:new(v)})}
 export {Routes,Class,Get,Post,Put,Del,Roles,Service};
