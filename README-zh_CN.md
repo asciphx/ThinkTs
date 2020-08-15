@@ -8,11 +8,11 @@
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript
-@Class()//The default value for the @Class decorator is the lowercase name of the controller entity
+@Class("user")
 export class UserController{
   @Service(UserService) readonly userSvc:UserService
 
-  @Post("/login")
+  @Post("login")
   async login(ctx:Context) {
     ctx.body=await this.userSvc.login(ctx.request.body);
   }
@@ -22,7 +22,7 @@ export class UserController{
     ctx.body=await this.userSvc.all();
   }
   @Roles(W.Login)
-  @Get("/:id")
+  @Get(":id")
   async one(ctx:Context) {
     let v=await this.userSvc.one(ctx.params.id);
     if (!v) {ctx.status = 404;return;}
@@ -92,7 +92,7 @@ export interface UserFace{
 8. routes:`输出查看的路由文件，每个controller会创建一个`
 
 ## **请赞助本项目**
-如你觉有收获，请给我打赏
+如你觉有收获，请务必给我打赏
 
 ![微信打赏](http://www.91huanwei.com/1.jpg)
 ![支付宝打赏](http://www.91huanwei.com/0.jpg)
