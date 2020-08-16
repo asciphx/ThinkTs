@@ -1,12 +1,12 @@
 import * as fs from "fs";import * as path from "path";
 import { Config } from '../config';
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$class
+let Routes:Array<any>=[],$b=true,i=0,$once=true
 
 const Class = (v:String="") => _class => {
   let a=[],_=new _class;if(v==="")v=null;
   v=v??_class.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/")v=""
   for (let r=i,l=Routes.length;r<l;r++){
-    Routes[r].a=_[Routes[r].a].bind($class);Routes[r].r=v+Routes[r].r;a.push(Routes[r]);i++
+    Routes[r].a=_[Routes[r].a].bind(_);Routes[r].r=v+Routes[r].r;a.push(Routes[r]);i++
   }
   if(Config.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
@@ -17,7 +17,7 @@ const Class = (v:String="") => _class => {
     });
     $b&&fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_class.name}.json`),
     JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
-  }a=_=$class=null;
+  }a=_=null;
 }
 const Get = (r="") => (target, key) => {Routes.push({a:key,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
 const Post = (r="") => (target, key) => {Routes.push({a:key,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
@@ -28,5 +28,5 @@ const Roles = (...r:Array<Function>) => (target, key) => {
     console.log(target.constructor.name+":"+key+" use @Roles has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
 }
-const Service=v=>(target,key)=>{Object.defineProperty($class={},key,{enumerable:false,configurable:false,writable:false,value:new(v)})}
+const Service=v=>(target,key)=>{target[key]=new(v)}
 export {Routes,Class,Get,Post,Put,Del,Roles,Service};

@@ -1,6 +1,6 @@
 import {Class,Get,Post,Put,Del,Roles,Service} from "../decorator"
 import {W} from '../weblogic'
-import {AdminService} from "../service/AdminService"
+import { AdminService } from '../service/AdminService';
 
 @Class("/admin")
 export class AdminController{
