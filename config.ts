@@ -3,5 +3,6 @@ export const Config={
   port:3000,
   upload:"upload",
   secret:'ياخشى',
-  jsonLimit:"1mb"
+  jsonLimit:"1mb",
+  view:'./views'
 }

@@ -3,20 +3,23 @@ import { Config } from '../config';
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$
 
 const Class = (v:String="") => _ => {let a=[];if(v==="")v=null;
-  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/")v=""
+  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
-    Routes[r].a=_.prototype[Routes[r].a].bind($);Routes[r].r=v+Routes[r].r;a.push(Routes[r]);i++
+    Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
+    Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
   if(Config.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
       fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
-      JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
+      JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null
     });
-    $b&&fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
-    JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
-  }a=_=$=null;
+    if($b){
+      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
+      JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null;
+    }_=$=null
+  }else a=_=$=null;
 }
 const Get = (r="") => (target, key) => {Routes.push({a:key,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
 const Post = (r="") => (target, key) => {Routes.push({a:key,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
