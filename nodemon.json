@@ -13,7 +13,7 @@
     "restart": ""
   },
   "ext": "js json ts tsx",
-  "watch": ["src"],
+  "watch": ["ts"],
   "env": {
     "NODE_ENV": "development",
     "PORT": "3002"
