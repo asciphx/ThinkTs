@@ -3,10 +3,10 @@ import * as Koa from "koa";import * as Router from "koa-router";
 import * as bodyParser from "koa-bodyparser";
 import * as views from "koa-views";import * as fs from "fs";
 import * as jwt from "koa-jwt";import { Config } from './config';
-import { Routes } from "./src/decorator";
+import { Routes } from "./ts/decorator";
 
-createConnection().then(async connection => {require(__dirname+"/src/controller.ts")//Import to use decorator preprocessing
-  await fs.readdirSync(__dirname+"/src/controller").forEach((i)=>{require(__dirname+"/src/controller/"+i)})
+createConnection().then(async connection => {require(__dirname+"/ts/controller.ts")//Import to use decorator preprocessing
+  await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
   const app = new Koa().use(bodyParser({jsonLimit:Config.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
   .use(views(require('path').join(__dirname,'./views'),{
     extension: 'html',map: { html: "ejs" }
