@@ -11,7 +11,7 @@ const Class = (v:String="") => _ => {let a=[];if(v==="")v=null;
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
-      fs.writeFile(path.resolve("./routes", `./${_.name}.json`),
+      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)})
     });
     $b&&fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
