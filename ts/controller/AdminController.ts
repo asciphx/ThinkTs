@@ -1,15 +1,19 @@
 import {Class,Get,Post,Put,Del,Roles,Service} from "../decorator"
 import {W} from '../weblogic'
 import { AdminService } from '../service/AdminService';
+import { UserService } from '../service/UserService';
 
 @Class("/admin")
 export class AdminController{
   @Service(AdminService) readonly adminSvc:AdminService
+  @Service(UserService) readonly userSvc:AdminService
   
   @Roles(W.Qx)
   @Get()
   async all(ctx) {
-    ctx.body=await this.adminSvc.all()
+    let adminList=await this.adminSvc.all()
+    let userList=await this.userSvc.all()
+    ctx.body=[...adminList,...userList]
   }
   @Roles(W.Login)
   @Get("/:id")

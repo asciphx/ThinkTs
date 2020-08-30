@@ -10,14 +10,14 @@ createConnection().then(async connection => {require(__dirname+"/ts/controller.t
   const app = new Koa().use(bodyParser({jsonLimit:Config.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
   .use(views(require('path').join(__dirname,Config.view),{
     extension: 'html',map: { html: "ejs" }
-  }))//.use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
+  })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
+  //.use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
   const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)
     })
   })
-  app.use(koaStatic(path.join(__dirname,Config.view)))
   app.use(router.routes()).use(router.allowedMethods()).listen(Config.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Config.port} to see`))
 }).catch(error => console.log(error));
