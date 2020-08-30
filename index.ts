@@ -8,7 +8,7 @@ import { Routes } from "./ts/decorator";import * as path from "path"
 createConnection().then(async connection => {require(__dirname+"/ts/controller.ts")//Import to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
   const app = new Koa().use(bodyParser({jsonLimit:Config.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
-  .use(views(require('path').join(__dirname,Config.view),{
+  .use(views(path.join(__dirname,Config.view),{
     extension: 'html',map: { html: "ejs" }
   })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   //.use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
