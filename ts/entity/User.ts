@@ -1,21 +1,32 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
+import { Orm } from '../orm';
+import { Role } from "./Role";
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id:number
-  @Column({length: 25})
-  account:string
-  @Column({length: 50})
-  password:string
-  @Column({length: 25})
-  name:string
-  @Column({length: 50,name: "photo"})
-  photo:string
-  constructor(a:string,b:string,c=a,d=""){
-    this.account=a;
-    this.password=b;
-    this.name=c;
-    this.photo=d;
+export class User extends Orm {
+  @Column({ comment: "账户", length: 10, unique: true })
+  account: string
+  @Column({ comment: "密码", length: 40 })
+  pwd: string
+  @Column({ comment: "昵称", length: 15 })
+  name: string
+  @Column({ default: true, comment: '默认状态：1，未禁用' })
+  status: boolean
+  @Column({ comment: "电话", length: 12, nullable: true })
+  phone: string;
+  @Column({ comment: "头像", length: 50, name: "photo", nullable: true })
+  photo: string
+  @ManyToMany(_ => Role, v => v.users, { cascade: ['insert', 'remove'] })
+  @JoinTable({
+    name: 'user_role',
+    joinColumn: { name: 'user_id' },
+    inverseJoinColumn: { name: 'role_id' },
+  })
+  roles: Role[]
+  constructor(a: string, b: string, c = a) {
+    super();
+    this.account = a;
+    this.pwd = b;
+    this.name = c;
   }
 }

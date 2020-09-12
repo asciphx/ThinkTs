@@ -7,9 +7,10 @@
 
 ### With ThinkTs your controller look like this:
 ```typescript
-@Class()
-export class UserController{
-  @Service(UserService) readonly userSvc:UserService
+@Class("/admin")//or @Class("admin")
+class AdminController{
+  @Service(AdminService) readonly adminSvc:AdminService
+  @Service(UserService) readonly userSvc:AdminService
 
   @Post("login")
   async login(ctx:Context) {
@@ -18,7 +19,9 @@ export class UserController{
   @Roles(W.Qx,W.Login)
   @Get()
   async all(ctx:Context) {
-    ctx.body=await this.userSvc.all();
+    let adminList=await this.adminSvc.all()
+    let userList=await this.userSvc.all()
+    ctx.body=[...adminList,...userList]
   }
   @Roles(W.Login)
   @Get(":id")
@@ -29,7 +32,7 @@ export class UserController{
   }
 }
 /** Here's how to show EJS template rendering */
-export class Controller{
+class View{
   @Get()
   @Get("index.html")
   async index(ctx:Context){
@@ -44,12 +47,14 @@ export class Controller{
 #### And your service looks like this:
 ```typescript
 export class UserService implements UserFace{
-  constructor(private user=getRepository(User)){}
-  async login(user: User) {
-    throw new Error("Method not implemented.");
-  }
+  constructor(
+    private admin=getRepository(Admin),
+    private user=getRepository(User)
+  ){}
   async all(){
-    return this.user.find()
+    let a=await this.admin.find()
+    let u=await this.user.find()
+    return [...a,...u]
   }
   async one(id:number){
     return this.user.findOne(id);
