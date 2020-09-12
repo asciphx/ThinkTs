@@ -4,7 +4,7 @@ import { UserService } from "../service/UserService"
 import { Context } from "koa"
 import { Controller } from '../controller';
 
-@Class(["add","delete","modify","search"])//or @Class("user",……),or @Class("/user",……)
+@Class(["add","delete","search"])//or @Class("user",……),or @Class("/user",……)
 class UserController extends Controller{
   @Service(UserService) readonly userSvc: UserService
 

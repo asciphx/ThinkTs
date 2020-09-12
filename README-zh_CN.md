@@ -8,7 +8,7 @@
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript
-@Class("admin")//or @Class("/admin")
+@Class(["add","delete","modify","search"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService
@@ -23,13 +23,6 @@ class AdminController{
     let adminList=await this.adminSvc.all()
     let userList=await this.userSvc.all()
     ctx.body=[...adminList,...userList]
-  }
-  @Roles(W.Login)
-  @Get(":id")
-  async one(ctx:Context) {
-    let v=await this.userSvc.one(ctx.params.id);
-    if (!v) {ctx.status = 404;return;}
-    ctx.body=v;
   }
 }
 /** Here's how to show EJS template rendering */
@@ -71,10 +64,6 @@ export interface UserFace{
   /** register one*/register(entity)
   /** login one*/login(entity)
   /** search all*/all()
-  /** search one*/one(id:number)
-  /** save one*/save(entity)
-  /** update one*/update(id:number,entity)
-  /** remove one*/remove(id:number)
 }
 ```
 ### 让你的entity看起来像是[TypeORM](https://github.com/typeorm/typeorm)中的写法
@@ -84,6 +73,7 @@ export interface UserFace{
 - [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去src/config.js下更改printRoute为false
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
+- [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查。后续会增加自动分页查询功能。
 
 
 ## 目录结构

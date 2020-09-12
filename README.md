@@ -7,7 +7,7 @@
 
 ### With ThinkTs your controller look like this:
 ```typescript
-@Class("/admin")//or @Class("admin")
+@Class(["add","delete","modify","search"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService
@@ -22,13 +22,6 @@ class AdminController{
     let adminList=await this.adminSvc.all()
     let userList=await this.userSvc.all()
     ctx.body=[...adminList,...userList]
-  }
-  @Roles(W.Login)
-  @Get(":id")
-  async one(ctx:Context) {
-    let v=await this.userSvc.one(ctx.params.id);
-    if (!v) {ctx.status = 404;return;}
-    ctx.body=v;
   }
 }
 /** Here's how to show EJS template rendering */
@@ -48,9 +41,9 @@ class View{
 ```typescript
 export class UserService implements UserFace{
   constructor(
-    private admin=getRepository(Admin),
-    private user=getRepository(User)
-  ){}
+    private user=getRepository(User),
+    private admin=getRepository(Admin)
+  ){ super(user) }
   async all(){
     let a=await this.admin.find()
     let u=await this.user.find()
@@ -70,10 +63,6 @@ export interface UserFace{
   /** register one*/register(entity)
   /** login one*/login(entity)
   /** search all*/all()
-  /** search one*/one(id:number)
-  /** save one*/save(entity)
-  /** update one*/update(id:number,entity)
-  /** remove one*/remove(id:number)
 }
 ```
 ### Finally, please refer to the entity class writing method of [TypeORM](https://github.com/typeorm/typeorm)
@@ -82,6 +71,7 @@ export interface UserFace{
 - [x] The default value of class class decorator is`/`+ entity class name, which can also be customized
 - [x] automatically scan controller directory and configure routes route
 - [x] automatically generate the configuration route file for reference, which is under the routes directory
+- [x] automatic implementation of addition, deletion, modification and query
 
 ### Steps to run this project:
 

@@ -21,7 +21,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
       }else {ctx.status = 500;ctx.body = e}
     }
   })
-  const router = new Router();//console.log(Routes)
+  const router = new Router();console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)

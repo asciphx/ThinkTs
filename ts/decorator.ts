@@ -6,10 +6,10 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[];
   if(t!==undefined)t=["add","delete","modify","search"].filter(k=>!t.includes(k));
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}//console.log(util.inspect(_,true,1,true))
   for (let r=i,l=Routes.length;r<l;r++){
-    if(t?.length!==0&&t?.indexOf(Routes[r].a)>-1){t.splice(t.indexOf(Routes[r].a),1);Routes.splice(r--, 1);i--;continue}
+    if(t?.length!==0&&t?.indexOf(Routes[r].a)>-1){t.splice(t.indexOf(Routes[r].a),1);Routes.splice(r--, 1);continue}
     if(Routes[r]===undefined)break;Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
     if(["add","delete","modify","search"].indexOf(Routes[r].a)>-1)
-      Routes[r].a=_.prototype[Routes[r].a].bind($[Object.keys($)[0]])
+      Routes[r].a=_.prototype[Routes[r].a].bind($[_.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase()+"Svc"])
     else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
   if(Config.printRoute){
