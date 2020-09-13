@@ -4,10 +4,10 @@
 - Modular development makes the application easier to layer and provides an easy-to-use modular management mechanism
 - AOP code is written in a low-key way, but it is easy to realize log, interceptor, filter and other functions
 - MVC, API, websocket, microservice and other systems are constructed fastest, good and most fiercely
-
+- The configuration is greater than the code, and priority is given to automatically implement five methods, such as adding, deleting, modifying and querying, and pagination, to facilitate the establishment of authority background system
 ### With ThinkTs your controller look like this:
 ```typescript
-@Class(["add","delete","modify","search"])//or @Class("/admin",……)or @Class("admin",……)
+@Class(["add","del","fix","info"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService

@@ -1,6 +1,12 @@
+interface Pagination {
+  current?: number;// 当前页
+  count?: number;// 每页多少
+  total?: number;// 总数
+  pageNum?: number;// 页数
+}
 export class Page {
 	private current:number=1;private total:number;private count:number;private pageNum:number=10;
-	public toObject():object{return {current:this.current,count:this.count,total:this.total,pageNum:this.pageNum}}
+	public get():Pagination{return {current:this.current,count:this.count,total:this.total,pageNum:this.pageNum}}
 	constructor(currentPage:number, pageSize:number,size:number,startPage:number){
 		this.current=currentPage;this.count=size;
         startPage<0?startPage=0:undefined;

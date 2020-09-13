@@ -17,11 +17,11 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
   .use(async (ctx:Koa.Context, next) => {
     try { await next() } catch (e) {
       if(e.code==="ER_DUP_ENTRY"){ctx.status = 409;
-        ctx.body={message:"Duplicate unique key"}
+        ctx.body={message:"Duplicate unique key"}//表示已经存在数据库中，唯一约束导致
       }else {ctx.status = 500;ctx.body = e}
     }
   })
-  const router = new Router();console.log(Routes)
+  const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)

@@ -4,11 +4,12 @@
 - 模块化开发，让应用程序更容易分层，提供了易于使用的模块化管理机制
 - 最低调编写 AOP 代码，面向切面编程，却轻松实现日志、拦截器、过滤器等功能
 - 最快，最迅速，最猛烈构建 MVC、API、websocket、微服务等系统
+- 配置大于编码，优先自动实现增删改查以及分页等五个方法，方便权限后台系统搭建
 - ......
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript
-@Class(["add","delete","modify","search"])//or @Class("/admin",……)or @Class("admin",……)
+@Class(["add","del","fix","info"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService
@@ -44,7 +45,7 @@ export class UserService implements UserFace{
   constructor(
     private admin=getRepository(Admin),
     private user=getRepository(User)
-  ){}
+  ){ super(user) }
   async all(){
     let a=await this.admin.find()
     let u=await this.user.find()

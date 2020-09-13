@@ -1,26 +1,34 @@
-import * as fs from "fs";import * as path from "path";import {Config} from '../config';import * as util from "util"
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
+import * as fs from "fs";import * as path from "path";import {Config} from '../config';
+let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null,print=""
 const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[];
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;} 
-  if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}
-  if(t!==undefined)t=["add","delete","modify","search"].filter(k=>!t.includes(k));
-  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}//console.log(util.inspect(_,true,1,true))
+  if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
+  t.forEach(v=>{
+    switch (v) {
+      case "add":Routes.push({a:"add",m:"post",r:""});break;
+      case "del":Routes.push({a:"del",m:"delete",r:"/:id"});break;
+      case "fix":Routes.push({a:"fix",m:"put",r:"/:id"});break;
+      case "info":Routes.push({a:"info",m:"get",r:"/:id"});break;
+      case "page":Routes.push({a:"page",m:"get",r:""});break;
+      default:console.error("Wrong entry!");break;
+    }
+  })
+  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}print=_.name;_=new _();
   for (let r=i,l=Routes.length;r<l;r++){
-    if(t?.length!==0&&t?.indexOf(Routes[r].a)>-1){t.splice(t.indexOf(Routes[r].a),1);Routes.splice(r--, 1);continue}
-    if(Routes[r]===undefined)break;Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
-    if(["add","delete","modify","search"].indexOf(Routes[r].a)>-1)
-      Routes[r].a=_.prototype[Routes[r].a].bind($[_.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase()+"Svc"])
-    else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
+    Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
+    if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)
+      Routes[r].a=_[Routes[r].a].bind($[(v as string).replace(/\//,"").toLowerCase()+"_"])
+    else Routes[r].a=_[Routes[r].a].bind($);i++
   }
   if(Config.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
-      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
+      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":print}.json`),
       JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null
     });
     if($b){
-      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
+      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":print}.json`),
       JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null
   }else a=_=$=null;
