@@ -8,7 +8,7 @@
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info"])//or @Class("/admin",……)or @Class("admin",……)
-class AdminController{
+class AdminController extends Controller{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService
 
@@ -39,21 +39,25 @@ class View{
 ```
 #### And your service looks like this:
 ```typescript
-export class UserService implements UserFace{
-  constructor(
-    private user=getRepository(User),
+export class UserService extends Service implements UserFace{
+  constructor(,
+    private user = getRepository(User),
     private admin=getRepository(Admin)
-  ){ super(user) }
+  ) {
+    super({
+      where: query => {
+        return new Brackets(qb => {
+          if (query.account) qb.where('account like :account', { account: `%${query.account}%` })
+          if (query.id) qb.andWhere('id >:id', { id: query.id })
+        });
+      },
+      orderBy: { "id": "desc" }
+    })
+  }
   async all(){
     let a=await this.admin.find()
     let u=await this.user.find()
     return [...a,...u]
-  }
-  async one(id:number){
-    return this.user.findOne(id);
-  }
-  async save(obj:User) {
-    return this.user.save(obj);
   }
 }
 ```

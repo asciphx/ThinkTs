@@ -14,17 +14,14 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     extension: 'html',map: { html: "ejs" }
   })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   //.use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
-  .use(async (ctx:Koa.Context, next) => {
-    try { await next() } catch (e) {
-      if(e.code==="ER_DUP_ENTRY"){ctx.status = 409;
-        ctx.body={message:"Duplicate unique key"}//表示已经存在数据库中，唯一约束导致
-      }else {ctx.status = 500;ctx.body = e}
-    }
-  })
-  const router = new Router();//console.log(Routes)
+  const router = new Router();console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
-      await r.a(ctx,next)
+      try {await r.a(ctx,next) } catch (e) {
+        if(e.code==="ER_DUP_ENTRY"){ctx.status = 409;
+          ctx.body={message:"Duplicate unique key"}//统一的异常处理，比如用户已存在
+        }else {ctx.status = 500;ctx.body = e}
+      }
     })
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Config.port,"0.0.0.0",()=>

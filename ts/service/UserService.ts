@@ -2,11 +2,22 @@ import { getRepository } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
+import { Brackets } from "typeorm";
 
 export class UserService extends Service implements UserFace {
   constructor(
     private user = getRepository(User)
-  ) { super(User.name) }//确保继承的基础服务类加载增删改查分页方法，也可写成字符串"user"
+  ) {
+    super({
+      where: query => {
+        return new Brackets(qb => {
+          if (query.account) qb.where('account like :account', { account: `%${query.account}%` })//模糊查询
+          if (query.id) qb.andWhere('id >:id', { id: query.id })//取id大于某个范围的
+        });
+      },
+      orderBy: { "id": "desc" }
+    })
+  }
 
   async register(user: User) {
     const existing = await this.user.findOne(user.account);

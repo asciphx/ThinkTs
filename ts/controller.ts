@@ -1,13 +1,6 @@
 import { Context } from "koa";
-export interface _ {
-    where?: Function;
-    orderBy?: {};
-}
+//基础控制器
 export abstract class Controller {
-  protected static _: _;
-  constructor(_:_){
-    Controller._=_;
-  }
   [x: string]: any;
   async add(ctx: Context) {
     ctx.body = await this.save(ctx.request.body);
@@ -24,6 +17,6 @@ export abstract class Controller {
     ctx.body = v;
   }
   async page(ctx: Context) {
-    ctx.body = await this.list(ctx,Controller._);
+    ctx.body = await this.list(ctx.query);
   }
 }

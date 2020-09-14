@@ -1,7 +1,7 @@
 import * as fs from "fs";import * as path from "path";import {Config} from '../config';
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null,print=""
-const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[];
-  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;} 
+let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
+const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
+  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
   t.forEach(v=>{
     switch (v) {
@@ -13,22 +13,22 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[];
       default:console.error("Wrong entry!");break;
     }
   })
-  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}print=_.name;_=new _();
+  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
     if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)
-      Routes[r].a=_[Routes[r].a].bind($[(v as string).replace(/\//,"").toLowerCase()+"_"])
-    else Routes[r].a=_[Routes[r].a].bind($);i++
+      Routes[r].a=_.prototype[Routes[r].a].bind($[(v as string).replace(/\//,"").toLowerCase()+"_"])
+    else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
   if(Config.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
-      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":print}.json`),
+      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null
     });
     if($b){
-      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":print}.json`),
+      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null
   }else a=_=$=null;
