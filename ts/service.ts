@@ -5,10 +5,9 @@ interface _ {
 }
 //基础服务类
 export abstract class Service{
-  private service:string;
+  private service:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
   private _: _;
-  constructor(_:_){
-    this.service=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
+  constructor(_?:_){
     this._=_;
   }
   private async save(obj) {
@@ -25,16 +24,15 @@ export abstract class Service{
     return this[this.service].findOne(id);
   }
   private async list(query) {
-    let { pageNum = 10, current = 1 } = query;//只需接收每页多少与当前页，默认每页10个，当前第一页
+    let { size = 10, current = 1 } = query;//只需接收每页多少与当前页，默认每页10个，当前第一页
     let v=(this[this.service]as Repository<ObjectLiteral>).createQueryBuilder()
-      .take(pageNum).skip(current*pageNum-pageNum);
+      .take(size).skip(current*size-size);
     if(this._){
       if(Object.keys(this._.orderBy).length!==0){
         for (const key in this._.orderBy) {v.addOrderBy(key,this._.orderBy[key].toUpperCase()) }
       }
       if(this._.where){v.where(this._.where(query))}
     }
-    return {list:await v.getMany(),
-      page:new Page(current,pageNum,await v.getCount(),current*pageNum-pageNum).get()};
+    return {list:await v.getMany(),page:new Page(current,size,await v.getCount()).get()};
   }
 }

@@ -17,7 +17,7 @@ export class Menu {
   @Column({ type: "tinyint", comment: "权重（0-99）" })
   weight: number;
   @CreateDateColumn({ comment: "创建日期" })
-  createTime: Date;
+  created: Date;
   @ManyToMany(_ => Role, v => v.menus)
   @JoinTable({
     name: 'menu_role',

@@ -1,8 +1,7 @@
-import { getRepository } from "typeorm"
+import { getRepository, Brackets } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
-import { Brackets } from "typeorm";
 
 export class UserService extends Service implements UserFace {
   constructor(
@@ -11,8 +10,8 @@ export class UserService extends Service implements UserFace {
     super({
       where: query => {
         return new Brackets(qb => {
-          if (query.account) qb.where('account like :account', { account: `%${query.account}%` })//模糊查询
-          if (query.id) qb.andWhere('id >:id', { id: query.id })//取id大于某个范围的
+          if (query.account) qb.where('account like :account', { account: `%${query.account}%` })
+          if (query.id) qb.andWhere('id >:id', { id: query.id })
         });
       },
       orderBy: { "id": "desc" }
@@ -26,6 +25,7 @@ export class UserService extends Service implements UserFace {
     // await this.userRepo.save(this.userRepo.create(user));
   }
   async login(user: User) {
-    throw new Error("Method not implemented.");
+
+    return "Method not implemented."
   }
 }

@@ -12,7 +12,7 @@ export class Role {
   @Column({ comment: "标签简介", nullable: true, length: 25 })
   remark: string;
   @CreateDateColumn({ comment: '创建时间' , type: 'timestamp', name: 'create_date' })
-  createDate: Date
+  created: Date
   @ManyToMany(_ => Menu, v => v.roles, { cascade: ['insert', 'remove'] })
   menus: Menu[];
   @ManyToMany(_ => User,v => v.roles)

@@ -1,11 +1,9 @@
 import * as fs from "fs";import * as url from "url";import { Context } from "koa"
 type Y<T>=object;type P<T>=Y<T[keyof T]>;
-const html = async (ctx: Context, ...obj:Array<P<{K:{k:string}}>>) => {
-  await ctx.render(url.parse(ctx.url).path.replace(/^\//, '') || "index", ...obj);
-}
-const suffix = (name: String) => name.replace(/().*(?=)\./, '\.');
+const html = async (ctx: Context, ...obj:Array<P<{K:{k:string}}>>) => 
+await ctx.render(url.parse(ctx.url).path.replace(/^\//, '') || "index", ...obj)
 const readFileList = (path, filesList) => {
-  fs.readdirSync(path).forEach((itm, index) => {
+  fs.readdirSync(path).forEach((itm) => {
     let stat = fs.statSync(path + itm);
     if (stat.isDirectory())
       readFileList(path + itm + "/", filesList)
@@ -26,4 +24,4 @@ const fileAction = async (ctx: Context) => {
   await readFileList(ctx.query.path, filesList);
   await ctx.send(filesList);
 }
-export { html, suffix, readFileList, deleteAll, deleteOne, fileAction }
+export { html, readFileList, deleteAll, deleteOne, fileAction }
