@@ -24,7 +24,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     }else{
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
-  })
+  })//上面的方法是鉴权，由于koa-jwt只能允许静态的secret便移除了，而现在允许前后端协调动态secret
   const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
