@@ -25,16 +25,17 @@
 		type: "GET",
 		dataType: "json",
 		headers: {
-      authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiZHJvZ29uIiwiaWF0IjoxNjAwMTczNzk0LCJleHAiOjE2MDAxODA5OTR9.BcSXxK3Qk9YG2AuawlHjg85hfbHVUcZJXZyUGb45l2A",
+      authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiZHJvZ29uIiwiaWF0IjoxNjAwMTg4NDM5LCJleHAiOjE2MDAxOTU2Mzl9.KIirq8sBXajkdNh7d8WLA2im98S_9QrRqlms_N2L6aU",
       secret:NTo10("asciphx",62).toString(36) //中间的填账户名
 		},
 		async: false,
 		cache: false,
 		success: function(data) {
-			console.log(data);
+      console.log(data);
+      
 		},
 		error: function(data) {
-			console.log(data);
+			console.log(data.responseText,data);
 		}
 	});
 </script>

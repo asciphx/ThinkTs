@@ -87,7 +87,7 @@ export interface UserFace{
 > authorization:`Bearer ${token}`
 > secret:NTo10(`${account}`,62).toString(36)
 > ```
->You just need to give the nto10 method to the front end, and use nto 10 (account). ToString (36) to further strengthen secret
+>You just need to give the nto10 method to the front end, and use NTo10(account,62).toString(36) to further strengthen secret
 
 ### Steps to run this project:
 

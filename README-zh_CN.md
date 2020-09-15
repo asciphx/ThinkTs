@@ -89,7 +89,7 @@ export interface UserFace{
 > authorization:`Bearer ${token}`
 > secret:NTo10(`${account}`,62).toString(36)
 > ```
-> 只需要把NTo10方法给前端，把自己登录的用户的账户名使用NTo10(account).toString(36),进一步强化secret
+> 只需要把NTo10方法给前端，把自己登录的用户的账户名使用NTo10('account',62).toString(36),进一步强化secret
 
 ## 目录结构
 1. src:`后端文件入口`

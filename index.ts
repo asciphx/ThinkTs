@@ -13,7 +13,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     extension: 'html',map: { html: "ejs" }
   })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   .use(async (ctx, next) => {
-    if(Config.unless.includes(ctx.url)||ctx.url.match(/^\/static\/*/)){await next();return}
+    if(ctx.url.match(Config.unless)){await next();return}
     const token = ctx.headers.authorization;
     if(token){
       try {
@@ -24,7 +24,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     }else{
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
-  })//上面的方法是鉴权，由于koa-jwt只能允许静态的secret便移除了，而现在允许前后端协调动态secret
+  })//动态secret,基于前后端共识算法，采用62进制转36进制(因账户名只能是数字或者英文字母共62个)。
   const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{

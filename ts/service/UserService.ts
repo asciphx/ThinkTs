@@ -32,7 +32,7 @@ export class UserService extends Service implements UserFace {
     if (!checkPassword(pwd, user.pwd))return {status:406,massage:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);
     return {code: 200, message: '登录成功',token:
-    jwt.sign({account:account},
+      jwt.sign({account:account},
       NTo10(account,62).toString(36),
       { expiresIn: '2h',algorithm: 'HS256' }
      )}
