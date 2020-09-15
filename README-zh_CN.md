@@ -42,9 +42,9 @@ class View{
 ### 让你的service看起来像是:
 ```typescript
 export class UserService extends Service implements UserFace{
-  constructor(,
-    @Inject(User) private user=container.get(User.name),
-    @Inject(Admin) private admin=container.get(Admin.name)
+  constructor(
+    private user=getRepository(User)
+    private admin=getRepository(Admin)
   ) {
     super({
       where: query => {
@@ -79,8 +79,8 @@ export interface UserFace{
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
 - [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页。
-- [x] 可以自定义调用的服务类变量名、实体类变量名。
-- [x] 实体类多次调用也不会浪费性能。
+- [x] 可以自定义控制器调用的服务类变量名，并且不会影响运行速度。
+- [x] 为降低代码开销和方法调用，服务若自定义实体变量名也需在实例化时放到super()里。
 
 
 ## 目录结构

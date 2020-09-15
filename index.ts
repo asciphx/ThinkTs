@@ -19,7 +19,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       try {await r.a(ctx,next) } catch (e) {
         if(e.code==="ER_DUP_ENTRY"){ctx.status = 409;
-          ctx.body={message:"Duplicate unique key"}//统一的异常处理，比如用户已存在
+          ctx.body={message:"Duplicate unique key"}//统一的异常处理
         }else {ctx.status = 500;ctx.body = e}
       }
     })
@@ -29,4 +29,4 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
   return connection.getRepository(User).save(new User("asciphx","654321"))
     .then(user => {console.log("User has been saved: ", user);
   }).catch(e => {if(String(e).indexOf("ER_DUP_ENTRY")>0)console.error("賬戶已存在！")});
-}).catch(e => console.error(e));
+}).catch(e => {console.error(e)});

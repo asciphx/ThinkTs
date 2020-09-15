@@ -41,8 +41,8 @@ class View{
 ```typescript
 export class UserService extends Service implements UserFace{
   constructor(,
-    @Inject(User) private user=container.get(User.name),
-    @Inject(Admin) private admin=container.get(Admin.name)
+    private user=getRepository(User)
+    private admin=getRepository(Admin)
   ) {
     super({
       where: query => {
@@ -78,7 +78,7 @@ export interface UserFace{
 - [x] automatic implementation of addition, deletion, modification and query
 - [x] now add the basic controller and service layer. The controller decorator can be customized to automatically add, delete, modify, query and pagination.
 - [x] the controller can now customize the name of the service class variable to be called.
-- [x] the variable name of the entity class of the service can also be customized, and the multiple calls of the entity class will not occupy additional parts.
+
 ### Steps to run this project:
 
 1. Run `npm i` command

@@ -1,10 +1,10 @@
-import { Brackets } from "typeorm"
+import { Brackets, getRepository } from "typeorm"
 import { Admin } from "../entity/Admin"
-import { Service, Inject, container } from "../service";
+import { Service } from "../service";
 
 export class AdminService extends Service {
   constructor(
-    @Inject(Admin) private adm=container.get(Admin.name)
+    private adm=getRepository(Admin)
   ) {
     super({
       where: query => {
@@ -14,6 +14,6 @@ export class AdminService extends Service {
         });
       },
       orderBy: { "id": "desc" }
-    });
+    },"adm");//如本实体不是按照全名称全小写命名，需要控制规范，来避免额外开销
   }
 }

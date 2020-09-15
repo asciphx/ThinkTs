@@ -1,11 +1,11 @@
-import { Brackets } from "typeorm"
+import { Brackets, getRepository } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
-import { Service, Inject, container } from "../service";
+import { Service } from "../service";
 
 export class UserService extends Service implements UserFace {
   constructor(
-    @Inject(User) private user=container.get(User.name)
+    private user=getRepository(User)
   ) {
     super({
       where: query => {
@@ -18,11 +18,11 @@ export class UserService extends Service implements UserFace {
     })
   }
 
-  async register(user: User) {
-    const existing = await this.user.findOne(user.account);
-    // if (existing) throw new HttpException('账号已存在', 409);
+  async register(user: User) {console.log(await this.user.findOne({id:1}))
     // user.password = this.cryptoUtil.encryptPassword(user.password);
-    // await this.userRepo.save(this.userRepo.create(user));
+    const existing = await this.user.findOne({account:user.account});
+    if (existing) return {status:409,massage:"账户已存在"};
+    return this.user.save(user);
   }
   async login(user: User) {
 
