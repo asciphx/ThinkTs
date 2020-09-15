@@ -4,7 +4,7 @@ import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as fs from "fs";import * as Jwt from "jsonwebtoken"
 import { Config } from './config';import { Routes } from "./ts/decorator";import * as path from "path";
 import { User } from './ts/entity/User';import "./ts/view";
-import { Tag } from "./ts/utils/tag";import {encryptPassword} from "./ts/utils/cryptoUtil"
+import { Tag } from "./ts/utils/tag";import {encryptPwd} from "./ts/utils/cryptoUtil"
 
 createConnection().then(async connection => {Tag.Init(connection.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
@@ -33,7 +33,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Config.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Config.port} to see`))
-  return connection.getRepository(User).save(new User("asciphx",encryptPassword("654321")))
+  return connection.getRepository(User).save(new User("asciphx",encryptPwd("654321")))
     .then(user => {console.log("User has been saved: ", user);
   }).catch(e => {if(String(e).indexOf("ER_DUP_ENTRY")>0)console.error("賬戶已存在！")});
 }).catch(e => {console.error(e)});

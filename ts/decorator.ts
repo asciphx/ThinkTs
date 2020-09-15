@@ -1,5 +1,9 @@
 import * as fs from "fs";import * as path from "path";import {Config} from '../config';
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
+/**
+ * @param v path路径,或者是t
+ * @param t curd等方法的Array<string>
+ */
 const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)

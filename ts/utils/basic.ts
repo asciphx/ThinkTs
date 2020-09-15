@@ -1,19 +1,24 @@
-const IntTo62 = (n: number) => {
-  const c = '0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ'; let s = '', t;
-  do {
-    t = n % 62;
-    n = (n - t) / 62;
-    s = c.charAt(t) + s;
-  }
-  while (n);
-  return s;
-};
+/**
+ * 随机id生成
+ */
 const GenerateId = () => {
   return 'xxx'.replace(/x/g, () => (Math.random() * 36 | 0).toString(36))
     + (('0x' + new Date().getTime() as any).toString(16) << 1).toString(36).replace(/^-/, '');
 }
+/**
+ * 取文件名类型
+ * @param name
+ */
 const Suffix = (name: string) => name.replace(/().*(?=)\./, '\.')
+/**
+ * json字符串在双引号的时候，完整转text格式
+ * @param json
+ */
 const J2T = (json: string) => json.replace(/(\\|\\'|\"|\n)/g, "\\\$1")
+/**
+ * 数据库内模糊查询支持反斜杠，并且不被截断
+ * @param str
+ */
 const Backslash = (str: string) => {
   let stri = str.split("\\", -1), b: string = "\\";
   for (let a = 0; a < stri.length; a++) {
@@ -22,7 +27,11 @@ const Backslash = (str: string) => {
     } else { if (a > 1 || stri[0] != "") b = b + "\\\\"; else b = b + "\\"; }
   }; return b;
 }
-const hextoString=(hex)=>{
+/**
+ * 哈希字符转字符串
+ * @param hex
+ */
+const hextoString=(hex:string)=>{
   let arr = hex.split("")
   let out = ""
   for (let i = 0; i < arr.length / 2; i++) {
@@ -32,4 +41,4 @@ const hextoString=(hex)=>{
   }
   return out
 }
-export { IntTo62, GenerateId, Suffix, J2T, Backslash, hextoString }
+export { GenerateId, Suffix, J2T, Backslash, hextoString }

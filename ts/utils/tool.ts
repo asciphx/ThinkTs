@@ -1,5 +1,10 @@
 import * as fs from "fs";import * as url from "url";import { Context } from "koa"
 type Y<T>=object;type P<T>=Y<T[keyof T]>;
+/**
+ * 将ejs模板渲染到html
+ * @param ctx koa的Context
+ * @param obj 展开的Object
+ */
 const html = async (ctx: Context, ...obj:Array<P<{K:{k:string}}>>) => 
 await ctx.render(url.parse(ctx.url).path.replace(/^\//, '') || "index", ...obj)
 const readFileList = (path, filesList) => {
