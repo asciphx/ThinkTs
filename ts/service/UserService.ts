@@ -4,6 +4,7 @@ import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
 import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
+import { Config } from "../../config";
 
 export class UserService extends Service implements UserFace {
   constructor(
@@ -33,7 +34,7 @@ export class UserService extends Service implements UserFace {
     user.logged=new Date(Date.now());this.user.update(user.id,user);
     return {code: 200, message: '登录成功',token:
       jwt.sign({account:account},
-      NTo10(account,62).toString(36),
+      NTo10(account,62).toString(Config.secret),
       { expiresIn: '2h',algorithm: 'HS256' }
      )}
   }

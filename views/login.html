@@ -18,15 +18,14 @@
 <script src="./static/js/index.js"></script>
 <script src="./static/js/jquery-1.8.3.min.js"></script>
 <script>
-  console.log(NTo10("asciphx",62).toString(36));//前后端共用一套加密解密sercet方法
   $.ajax({
 		url: "http://localhost:3000/user",
 		data:{account:"ph"},
 		type: "GET",
 		dataType: "json",
 		headers: {
-      authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiZHJvZ29uIiwiaWF0IjoxNjAwMTg4NDM5LCJleHAiOjE2MDAxOTU2Mzl9.KIirq8sBXajkdNh7d8WLA2im98S_9QrRqlms_N2L6aU",
-      secret:NTo10("asciphx",62).toString(16) //中间的填账户名,先转16进制，后端可以补码0x,然后变回去36进制。
+      authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYXNjaXBoeCIsImlhdCI6MTYwMDE5Mjc4MCwiZXhwIjoxNjAwMTk5OTgwfQ.6CX68Y9bNTPNzrCZrOPgVDLaJ48u9A9z5DxPwipeLS4",
+      secret:NTo10("asciphx",62).toString(16) //中间的填账户名,先转16进制，后端可以补码0x,然后变回去。
 		},
 		async: false,
 		cache: false,
