@@ -87,7 +87,7 @@ export interface UserFace{
 > Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里
 > ```javascript
 > authorization:`Bearer ${token}`
-> secret:NTo10(`${account}`).toString(36)
+> secret:NTo10(`${account}`,62).toString(36)
 > ```
 > 只需要把NTo10方法给前端，把自己登录的用户的账户名使用NTo10(account).toString(36),进一步强化secret
 

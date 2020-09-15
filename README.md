@@ -79,6 +79,16 @@ export interface UserFace{
 - [x] now add the basic controller and service layer. The controller decorator can be customized to automatically add, delete, modify, query and pagination.
 - [x] the controller can now customize the name of the service class variable to be called.
 
+## New version of custom JWT authentication description
+
+> The front and back end can coordinate an encryption algorithm for secret. For example, only the account name can be signed when logging in, and then
+> The header request header now has two parameters, and the original JWT does not change. Now add a secret. The algorithm is in the cryptoUtil.ts in
+> ```javascript
+> authorization:`Bearer ${token}`
+> secret:NTo10(`${account}`,62).toString(36)
+> ```
+>You just need to give the nto10 method to the front end, and use nto 10 (account). ToString (36) to further strengthen secret
+
 ### Steps to run this project:
 
 1. Run `npm i` command
