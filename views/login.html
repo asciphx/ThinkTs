@@ -26,7 +26,7 @@
 		dataType: "json",
 		headers: {
       authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiZHJvZ29uIiwiaWF0IjoxNjAwMTg4NDM5LCJleHAiOjE2MDAxOTU2Mzl9.KIirq8sBXajkdNh7d8WLA2im98S_9QrRqlms_N2L6aU",
-      secret:NTo10("asciphx",62).toString(36) //中间的填账户名
+      secret:NTo10("asciphx",62).toString(16) //中间的填账户名,先转16进制，后端可以补码0x,然后变回去36进制。
 		},
 		async: false,
 		cache: false,
