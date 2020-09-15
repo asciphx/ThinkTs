@@ -2,6 +2,8 @@ import { Brackets, getRepository } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
+import { encryptPassword, checkPassword, NTo10 } from "../utils/cryptoUtil"
+import * as jwt from "jsonwebtoken"
 
 export class UserService extends Service implements UserFace {
   constructor(
@@ -18,14 +20,21 @@ export class UserService extends Service implements UserFace {
     })
   }
 
-  async register(user: User) {console.log(await this.user.findOne({id:1}))
-    // user.password = this.cryptoUtil.encryptPassword(user.password);
-    const existing = await this.user.findOne({account:user.account});
-    if (existing) return {status:409,massage:"账户已存在"};
+  async register(user: User) {
+    const exist = await this.user.findOne({account:user.account});
+    if (exist) return {status:409,massage:"账户已存在"};
+    user.pwd = encryptPassword(user.pwd);
     return this.user.save(user);
   }
-  async login(user: User) {
-
-    return "Method not implemented."
+  async login(account:string,pwd:string) {
+    const user = await this.user.findOne({account:account});
+    if (!user) return {status:406,massage:"登录账号有误"};
+    if (!checkPassword(pwd, user.pwd))return {status:406,massage:"登录密码有误"};
+    user.logged=new Date(Date.now());this.user.update(user.id,user);
+    return {code: 200, message: '登录成功',token:
+    jwt.sign({account:account},
+      NTo10(account,62).toString(36),
+      { expiresIn: '2h',algorithm: 'HS256' }
+     )}
   }
 }

@@ -16,6 +16,8 @@ export class User extends Orm {
   phone: string;
   @Column({ comment: "头像", length: 50, name: "photo", nullable: true })
   photo: string
+  @Column({ comment: "登录时间", nullable: true })
+  logged : Date;
   @ManyToMany(_ => Role, v => v.users, { cascade: ['insert', 'remove'] })
   @JoinTable({
     name: 'user_role',

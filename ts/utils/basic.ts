@@ -22,5 +22,14 @@ const Backslash = (str: string) => {
     } else { if (a > 1 || stri[0] != "") b = b + "\\\\"; else b = b + "\\"; }
   }; return b;
 }
-
-export { IntTo62, GenerateId, Suffix, J2T, Backslash }
+const hextoString=(hex)=>{
+  let arr = hex.split("")
+  let out = ""
+  for (let i = 0; i < arr.length / 2; i++) {
+    let tmp = "0x" + arr[i * 2] + arr[i * 2 + 1]
+    let charValue = String.fromCharCode(tmp as any);
+    out += charValue
+  }
+  return out
+}
+export { IntTo62, GenerateId, Suffix, J2T, Backslash, hextoString }

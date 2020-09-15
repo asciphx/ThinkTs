@@ -82,6 +82,14 @@ export interface UserFace{
 - [x] 可以自定义控制器调用的服务类变量名，并且不会影响运行速度。
 - [x] 为降低代码开销和方法调用，服务若自定义实体变量名也需在实例化时放到super()里。
 
+## 新版自定义JWT鉴权说明
+> 前后端可以协调一个加密算法针对secret,比如登录的时候只签名账户名即可，然后
+> Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里
+> ```javascript
+> authorization:`Bearer ${token}`
+> secret:NTo10(`${account}`).toString(36)
+> ```
+> 只需要把NTo10方法给前端，把自己登录的用户的账户名使用NTo10(account).toString(36),进一步强化secret
 
 ## 目录结构
 1. src:`后端文件入口`
