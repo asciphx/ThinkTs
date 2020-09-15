@@ -1,11 +1,11 @@
-import { getRepository, Brackets } from "typeorm"
+import { Brackets } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
-import { Service } from "../service";
+import { Service, Inject, container } from "../service";
 
 export class UserService extends Service implements UserFace {
   constructor(
-    private user = getRepository(User)
+    @Inject(User) private user=container.get(User.name)
   ) {
     super({
       where: query => {

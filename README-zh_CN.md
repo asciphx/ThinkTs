@@ -43,8 +43,8 @@ class View{
 ```typescript
 export class UserService extends Service implements UserFace{
   constructor(,
-    private user = getRepository(User),
-    private admin=getRepository(Admin)
+    @Inject(User) private user=container.get(User.name),
+    @Inject(Admin) private admin=container.get(Admin.name)
   ) {
     super({
       where: query => {
@@ -78,7 +78,9 @@ export interface UserFace{
 - [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去src/config.js下更改printRoute为false
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
-- [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查。后续会增加自动分页查询功能。
+- [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页。
+- [x] 可以自定义调用的服务类变量名、实体类变量名。
+- [x] 实体类多次调用也不会浪费性能。
 
 
 ## 目录结构

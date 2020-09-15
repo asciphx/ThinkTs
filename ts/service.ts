@@ -1,31 +1,33 @@
-import { Page } from "./utils/page";import { Repository, ObjectLiteral } from "typeorm";
-interface _ {
-    where?: Function;
-    orderBy?: {};
-}
+import { Page } from "./utils/page";import HashMap = require('hashmap');
+import { getRepository, Repository, ObjectLiteral } from "typeorm";
+interface _ { where?:Function; orderBy?: {} }
+export const container=new HashMap<string, Repository<ObjectLiteral>>();
+export const Inject=v=>(t,k,d)=>{if(container.has(v.name)===false)container.set(v.name,getRepository(v))}
 //基础服务类
 export abstract class Service{
-  private service:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
+  protected $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1");
   private _: _;
+  private readonly service:Repository<ObjectLiteral>;
   constructor(_?:_){
     this._=_;
+    this.service=container.get(this.$)
   }
   private async save(obj) {
-    return this[this.service].save(obj);
+    return this.service.save(obj);
   }
   private async update(id: number, obj) {
-    return this[this.service].update(id, obj);
+    return this.service.update(id, obj);
   }
   private async remove(id: number) {
-    let rm = await this[this.service].findOne(id);
-    return this[this.service].remove(rm);
+    let rm = await this.service.findOne(id);
+    return this.service.remove(rm);
   }
   private async findOne(id: number) {
-    return this[this.service].findOne(id);
+    return this.service.findOne(id);
   }
   private async list(query) {
     let { size = 10, current = 1 } = query;//只需接收每页多少与当前页，默认每页10个，当前第一页
-    let v=(this[this.service]as Repository<ObjectLiteral>).createQueryBuilder()
+    let v=this.service.createQueryBuilder()
       .take(size).skip(current*size-size);
     if(this._){
       if(Object.keys(this._.orderBy).length!==0){

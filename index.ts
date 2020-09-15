@@ -14,7 +14,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     extension: 'html',map: { html: "ejs" }
   })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   //.use(jwt({secret:Config.secret}).unless({path:[/^\/user\/register/,/^\/user\/login/,/^\/login\.html/] }));
-  const router = new Router();console.log(Routes)
+  const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       try {await r.a(ctx,next) } catch (e) {

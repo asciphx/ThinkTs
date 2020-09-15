@@ -17,7 +17,7 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
     if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)
-      Routes[r].a=_.prototype[Routes[r].a].bind($[(v as string).replace(/\//,"").toLowerCase()+"_"])
+      Routes[r].a=_.prototype[Routes[r].a].bind($[_.prototype["_"]])
     else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
   if(Config.printRoute){
@@ -42,6 +42,9 @@ const Roles = (...r:Array<Function>) => (t, k) => {
     console.log(t.constructor.name+":"+k+" use @Roles has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
 }
-const Service=v=>(t,k)=>{if($===null)$={};Object.defineProperty($,k,{enumerable:true,configurable:false,writable:false,value:new(v)})}
+const Service=v=>(t,k)=>{
+  if($===null)$={};Object.defineProperty($,k,{enumerable:true,configurable:false,writable:false,value:new(v)})
+  if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["_"]=k;}
+}
 
 export {Routes,Class,Get,Post,Put,Del,Roles,Service};
