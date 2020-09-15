@@ -4,15 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <style src="./static/css/App.css"></style>
+  <link rel="stylesheet" href="./static/css/App.css">
 </head>
-<body>
+<body style="text-align: center;">
+  <div className="App">
+    <header className="App-header">
+      <img src="./static/logo192.png" className="App-logo" alt="logo" />
+    </header>
+  </div>
   <%= test %> for <%= author %><br/>
+  
 </body>
 <script src="./static/js/index.js"></script>
 <script src="./static/js/jquery-1.8.3.min.js"></script>
 <script>
-  console.log(NTo10("asciphx",62).toString(36));
+  console.log(NTo10("asciphx",62).toString(36));//前后端共用一套加密解密sercet方法
   $.ajax({
 		url: "http://localhost:3000/user",
 		data:{account:"ph"},
