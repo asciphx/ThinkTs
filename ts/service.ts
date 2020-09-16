@@ -1,6 +1,6 @@
 import { Page } from "./utils/page";
 import { Repository, ObjectLiteral } from "typeorm";
-interface _ { where?:Function; orderBy?: {}; select?:string[] }
+interface _ { where?:Function; orderBy?: {}; select?:string|string[]|any;addSelect?:string|string[]|any }
 //基础服务类，$默认是实体类小写名，如果有变化请在super的第二个参数传入，建议规范命名拒绝传参
 export abstract class Service{
   protected $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
@@ -31,6 +31,7 @@ export abstract class Service{
       }
       if(this._.where){v.where(this._.where(query))}
       if(this._.select){v.select(this._.select)}
+      if(this._.addSelect){v.addSelect(this._.addSelect)}
     }
     return {list:await v.getMany(),page:new Page(current,size,await v.getCount()).get()};
   }
