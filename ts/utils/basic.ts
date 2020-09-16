@@ -41,4 +41,57 @@ const hextoString=(hex:string)=>{
   }
   return out
 }
-export { GenerateId, Suffix, J2T, Backslash, hextoString }
+/**
+ * 字符串转byteArray数据格式
+ * @param str
+ */
+const strToBytes=(str:string)=>{
+  let bytes = new Array(),len, z;
+  len = str.length;
+  for (let i = 0; i < len; i++) {
+    z = str.charCodeAt(i);
+    if (z >= 0x010000 && z <= 0x10FFFF) {
+      bytes.push(((z >> 18) & 0x07) | 0xF0);
+      bytes.push(((z >> 12) & 0x3F) | 0x80);
+      bytes.push(((z >> 6) & 0x3F) | 0x80);
+      bytes.push((z & 0x3F) | 0x80);
+    } else if (z >= 0x000800 && z <= 0x00FFFF) {
+      bytes.push(((z >> 12) & 0x0F) | 0xE0);
+      bytes.push(((z >> 6) & 0x3F) | 0x80);
+      bytes.push((z & 0x3F) | 0x80);
+    } else if (z >= 0x000080 && z <= 0x0007FF) {
+      bytes.push(((z >> 6) & 0x1F) | 0xC0);
+      bytes.push((z & 0x3F) | 0x80);
+    } else {
+      bytes.push(z & 0xFF);
+    }
+  }
+  return bytes;
+}
+/**
+ * byteArray数据格式转字符串
+ * @param arr
+ */
+const bytesToStr=(arr:Array<number>)=>{
+  if (typeof arr === 'string') {
+    return arr;
+  }
+  let str = '',_arr = arr;
+  for (let i = 0; i < _arr.length; i++) {
+    let one = _arr[i].toString(2),
+        v = one.match(/^1+?(?=0)/);
+    if (v && one.length === 8) {
+      let bytesLength = v[0].length;
+      let store = _arr[i].toString(2).slice(7 - bytesLength);
+      for (let st = 1; st < bytesLength; st++) {
+        store += _arr[st + i].toString(2).slice(2);
+      }
+      str += String.fromCharCode(parseInt(store, 2));
+      i += bytesLength - 1;
+    } else {
+      str += String.fromCharCode(_arr[i]);
+    }
+  }
+  return str;
+}
+export { GenerateId, Suffix, J2T, Backslash, hextoString, strToBytes, bytesToStr }
