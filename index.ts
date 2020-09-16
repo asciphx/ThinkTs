@@ -2,9 +2,9 @@ import "reflect-metadata";import { createConnection } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as fs from "fs";import * as Jwt from "jsonwebtoken"
-import { Config } from './config';import { Routes } from "./ts/decorator";import * as path from "path";
-import { User } from './ts/entity/User';import "./ts/view";
-import { Tag } from "./ts/utils/tag";import {encryptPwd} from "./ts/utils/cryptoUtil"
+import { Config } from './config';import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
+import { User } from './ts/entity/User';import "./ts/view";import * as path from "path";
+import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
 
 createConnection().then(async connection => {Tag.Init(connection.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
@@ -14,17 +14,19 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
   })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   .use(async (ctx, next) => {
     if(ctx.url.match(Config.unless)){await next();return}
-    const token = ctx.headers.authorization;
+    const token:string = ctx.headers.authorization;
     if(token){
       try {
-        Jwt.verify(token.split(' ')[1],Number("0x"+ctx.headers.secret).toString(Config.secret),{complete:true});await next();
+        Jwt.verify(token.replace(/^[bB]earer /,""),
+        NTo10(ctx.headers.secret,Config.secret).toString(Config.cipher),
+        {complete:true});await next();
       } catch (e) {
         ctx.status=401;ctx.body=String(e);
       }
     }else{
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
-  })//动态secret,采用二次转，62进制转16进制+后端补码0x再转36进制(可以配置Config中的最终进制,因账户名只能是数字或者英文字母共62个)。
+  })//动态随机secret，范围在Config.secret,每次服务启动都是随机的，现在由后端在用户登录时提供
   const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{

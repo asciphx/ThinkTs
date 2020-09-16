@@ -85,10 +85,9 @@ export interface UserFace{
 > The header request header now has two parameters, and the original JWT does not change. Now add a secret. The algorithm is in the cryptoUtil.ts in
 > ```javascript
 > authorization:`Bearer ${token}`
-> secret:NTo10(`${account}`,62).toString(36)
+> secret:`${secret}`
 > ```
->You just need to give the nto10 method to the front end, and use NTo10(account,62).toString(36) to further strengthen secret
-
+> Secret is now provided by the back end
 ### Steps to run this project:
 
 1. Run `npm i` command

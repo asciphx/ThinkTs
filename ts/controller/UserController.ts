@@ -16,6 +16,7 @@ class UserController extends Controller {
   @Roles(W.Qx)
   @Post("login")
   async login(ctx: Context) {
-    ctx.body = await this.u_.login(ctx.request.body.account,ctx.request.body.pwd);
+    await this.u_.login(ctx.request.body.account,ctx.request.body.pwd)
+    .then(r=>ctx.body=r.status?r.mes:r).catch(e=>console.error(e))
   }
 }

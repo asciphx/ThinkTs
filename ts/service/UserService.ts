@@ -29,13 +29,12 @@ export class UserService extends Service implements UserFace {
   }
   async login(account:string,pwd:string) {
     const user = await this.user.findOne({account:account});
-    if (!user) return {status:406,massage:"登录账号有误"};
-    if (!checkPwd(pwd, user.pwd))return {status:406,massage:"登录密码有误"};
+    if (!user) return {status:406,mes:"登录账号有误"};
+    if (!checkPwd(pwd, user.pwd))return {status:406,mes:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);
-    return {code: 200, message: '登录成功',token:
-      jwt.sign({account:account},
-      NTo10(account,62).toString(Config.secret),
+    return {code: 200, mes: '登录成功',token:
+      jwt.sign({account:account},NTo10(account,62).toString(Config.cipher),
       { expiresIn: '2h',algorithm: 'HS256' }
-     )}
+     ),secret:NTo10(account,62).toString(Config.secret)}
   }
 }
