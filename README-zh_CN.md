@@ -86,7 +86,7 @@ export interface UserFace{
 > 前后端可以协调一个加密算法针对secret,比如登录的时候只签名账户名即可，然后
 > Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里
 > ```javascript
-> authorization:`Bearer ${token}`
+> authorization:`${token}`
 > secret:`${secret}`
 > ```
 > 现在由后端提供secret

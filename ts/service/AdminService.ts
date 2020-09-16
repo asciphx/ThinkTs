@@ -7,13 +7,13 @@ export class AdminService extends Service {
     private adm=getRepository(Admin)
   ) {
     super({
-      where: query => {
+      where: (query:{name:string}) => {
         return new Brackets(qb => {
-          if (query.name) qb.where('name like :name', { name: `%${query.name}%` })
-          if (query.id) qb.andWhere('id >:id', { id: query.id })
+          if (query.name) qb.where("name IN (:...names)", { names: query.name.split(',') })
         });
       },
-      orderBy: { "id": "desc" }
-    },"adm");//如本实体不是按照全名称全小写命名，需要控制规范，来避免额外开销
+      orderBy: { "id": "desc" },
+      select:[ 'adm.id', 'adm.name', 'adm.label']
+    },"adm");//http://localhost:3000/admin?name=Tim,jdk,lll 那么查找这三个名字的人
   }
 }

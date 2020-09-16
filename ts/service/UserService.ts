@@ -17,15 +17,17 @@ export class UserService extends Service implements UserFace {
           if (query.id) qb.andWhere('id >:id', { id: query.id })
         });
       },
-      orderBy: { "id": "desc" }
+      orderBy: { "id": "desc" }//, select:[ 'user.account', 'user.name', 'user.photo', 'user.status']
+      
     })
   }
 
-  async register(user: User) {
-    const exist = await this.user.findOne({account:user.account});
-    if (exist) return {status:409,massage:"账户已存在"};
-    user.pwd = encryptPwd(user.pwd);
-    return this.user.save(user);
+  async register(user: User):Promise<any>{//entity设置pwd是select:false，就只有select指定才能拿到
+    const exist = await this.user.createQueryBuilder()
+    .select("User.account").addSelect("User.pwd")
+    .where("account =:account",{account:user.account}).getOne()
+    if (exist) return {status:409,mes:"账户已存在"};
+    return this.user.insert(new User(user.account,encryptPwd(user.pwd),user.name));//insert用于新增比save快
   }
   async login(account:string,pwd:string) {
     const user = await this.user.findOne({account:account});
@@ -36,5 +38,9 @@ export class UserService extends Service implements UserFace {
       jwt.sign({account:account},NTo10(account,62).toString(Config.cipher),
       { expiresIn: '2h',algorithm: 'HS256' }
      ),secret:NTo10(account,62).toString(Config.secret)}
+  }
+  async fix(id: number,user: User){
+    user.pwd = encryptPwd(user.pwd);
+    return this.user.update(id,user);
   }
 }

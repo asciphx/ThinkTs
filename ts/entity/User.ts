@@ -6,7 +6,7 @@ import { Role } from "./Role";
 export class User extends Orm {
   @Column({ comment: "账户", length: 10, unique: true })
   account: string
-  @Column({ comment: "密码", length: 40 })
+  @Column({ comment: "密码（select禁用）", length: 40, select: false })
   pwd: string
   @Column({ comment: "昵称", length: 15 })
   name: string

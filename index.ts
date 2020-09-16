@@ -17,7 +17,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     const token:string = ctx.headers.authorization;
     if(token){
       try {
-        Jwt.verify(token.replace(/^[bB]earer /,""),
+        Jwt.verify(token.replace(/^Bearer /,""),
         NTo10(ctx.headers.secret,Config.secret).toString(Config.cipher),
         {complete:true});await next();
       } catch (e) {
