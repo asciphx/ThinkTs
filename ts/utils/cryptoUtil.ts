@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ';
+const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 /**
  * 加密登录密码
  * @param pwd 登录密码
