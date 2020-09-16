@@ -3,7 +3,7 @@ import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Context } from "koa"
 import { Controller } from '../controller';
-//自动实现curd,第一参数可省
+//修改功能涉及密码，需要另起一个方法。
 @Class("user",["add", "del", "info", "page"])
 class UserController extends Controller {
   @Service(UserService) readonly u_: UserService

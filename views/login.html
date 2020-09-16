@@ -23,9 +23,9 @@
 		data:{account:"ph"},
 		type: "GET",
 		dataType: "json",
-		headers: {//authorization：这里实际上不需要Bearer ,或是bearer .后端默认是Bearer ，所以直接放token
-      authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50Ijoienp3d2dnIiwiaWF0IjoxNjAwMjY3MzM3LCJleHAiOjE2MDAyNzQ1Mzd9.gWLqYurBSZWDR8Coz7Iir5eO46uY93NklwIvAWUxsUc",
-      secret:"i1kd02i0" //现在秘密由后端随机秘钥提供
+		headers: {//authorization：现为降低带宽，直接带上token即可，且用单字母表示
+      a: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50Ijoienp3d2dnIiwiaWF0IjoxNjAwMjY3MzM3LCJleHAiOjE2MDAyNzQ1Mzd9.gWLqYurBSZWDR8Coz7Iir5eO46uY93NklwIvAWUxsUc",
+      s:"i1kd02i0" //现在秘密可以支持分布式服务器，尽管sercet可能不同，不信重启试试，2h内不会失效
 		},
 		async: false,
 		cache: false,

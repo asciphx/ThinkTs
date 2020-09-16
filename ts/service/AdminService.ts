@@ -9,7 +9,7 @@ export class AdminService extends Service {
     super({
       where: (query:{name:string}) => {
         return new Brackets(qb => {
-          if (query.name) qb.where("name IN (:...names)", { names: query.name.split(',') })
+          if (query.name) qb.where("name IN (:...arr)", { arr: query.name.split(',') })
         });
       },
       orderBy: { "id": "desc" },

@@ -14,11 +14,11 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
   })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   .use(async (ctx, next) => {
     if(ctx.url.match(Config.unless)){await next();return}
-    const token:string = ctx.headers.authorization;
-    if(token){
+    const token:string = ctx.headers.a;const s:string=ctx.headers.s?.match(/[^#]+/g)
+    if(token&&s){
       try {
         Jwt.verify(token.replace(/^Bearer /,""),
-        NTo10(ctx.headers.secret,Config.secret).toString(Config.cipher),
+        NTo10(s[0],Number("0x"+s[1])).toString(Config.cipher),
         {complete:true});await next();
       } catch (e) {
         ctx.status=401;ctx.body=String(e);
@@ -26,7 +26,7 @@ createConnection().then(async connection => {Tag.Init(connection.name);//Require
     }else{
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
-  })//动态随机secret，范围在Config.secret,每次服务启动都是随机的，现在由后端在用户登录时提供
+  })//动态随机secret,现支持分布式,可以重启服务测试，之前的token也不会在有效期内验证失败。
   const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
