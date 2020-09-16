@@ -5,6 +5,7 @@ import { Service } from "../service";
 import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
 import { Config } from "../../config";
+import { Admin } from "../entity/Admin";
 
 export class UserService extends Service implements UserFace {
   constructor(
@@ -17,9 +18,9 @@ export class UserService extends Service implements UserFace {
           if (query.id) qb.andWhere('id >:id', { id: query.id })
         });
       },
-      orderBy: { "id": "desc" },
+      orderBy: { "id": "desc" },//下面select相当于select查询语句，写了的键就有
       // select:[ 'user.account', 'user.name', 'user.photo', 'user.status'],
-      addSelect:"user.pwd"//因密码设置了select为false，必须加上这个条件才能额外筛选密码这列
+      addSelect:"user.pwd"//因密码设置了select为false，必须加上这个条件才能额外筛选密码这列,或者在上面加入'user.pwd'也可
     })
   }
 
