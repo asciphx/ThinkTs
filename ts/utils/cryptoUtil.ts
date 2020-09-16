@@ -96,10 +96,10 @@ const TenToN=(v:number,n:number):string=>{
  * @param n 表示v是多少进制
  */
 const NTo10=(v:string,n:number):number=>{if(n>62||n<2)return;if(n<37)v=v.toLowerCase();
-  let addNumber=0
-  for(let i=0;i<v.length;i++){if(c.indexOf(v.charAt(i))===-1)return
-    for(let h=0;h<c.length;h++){
-      if(v.charAt(v.length-i-1)===c.charAt(h)){
+  let addNumber=0,l=v.length
+  for(let i=0;i<l;i++){if(c.indexOf(v.charAt(i))===-1)return
+    for(let h=0;h<62;h++){
+      if(v.charAt(l-i-1)===c.charAt(h)){
         addNumber=addNumber+h*Math.pow(n,i);
       }
     }
