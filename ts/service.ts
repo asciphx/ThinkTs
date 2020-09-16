@@ -3,7 +3,7 @@ import { Repository, ObjectLiteral } from "typeorm";
 interface _ { where?:Function; orderBy?: {}; select?:string|string[]|any;addSelect?:string|string[]|any }
 //基础服务类，$默认是实体类小写名，如果有变化请在super的第二个参数传入，建议规范命名拒绝传参
 export abstract class Service{
-  protected $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
+  private $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
   private _: _;
   constructor(_?:_,$?:string){
     this._=_;if($)this.$=$;

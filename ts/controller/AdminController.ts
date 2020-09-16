@@ -1,4 +1,4 @@
-import { Class, Post, Roles, Service } from "../decorator"
+import { Class, Post, Roles, Service, Get } from "../decorator"
 import { W } from '../weblogic'
 import { AdminService } from "../service/AdminService"
 import { Context } from "koa"
@@ -8,4 +8,9 @@ import { Controller } from '../controller';
 class AdminController extends Controller {
   @Service(AdminService) readonly adm_: AdminService
   
+  @Get("sql")
+  async sql(ctx:Context){
+    ctx.body = await this.adm_.sql(ctx.query);
+
+  }
 }
