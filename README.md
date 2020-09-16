@@ -81,11 +81,10 @@ export interface UserFace{
 
 ## New version of custom JWT authentication description
 
-> The front and back end can coordinate an encryption algorithm for secret. For example, only the account name can be signed when logging in, and then
 > The header request header now has two parameters, and the original JWT does not change. Now add a secret. The algorithm is in the cryptoUtil.ts in
 > ```javascript
-> authorization:`${token}`
-> secret:`${secret}`
+> a:`${token}`
+> s:`${secret}`
 > ```
 > Secret is now provided by the back end
 ### Steps to run this project:
