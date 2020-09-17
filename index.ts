@@ -21,16 +21,16 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         {complete:true});await next();
       } catch (e) {
         if(String(e)==="TokenExpiredError: jwt expired"){
-          ctx.status=401;ctx.body="Jwt Expired";//jwt过期处理
+          ctx.status=401;ctx.body="Jwt Expired";//jwt过期时
         }
         else{ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
-  })//动态随机secret,现支持分布式,headers将使用单字母变量节省带宽
-  Config.DATABASE=conn.driver.database;//保存DATABASE到全局变量，以便sql查询用
-  const router = new Router();console.log(Routes)
+  })
+  Config.DATABASE=conn.driver.database;
+  const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)

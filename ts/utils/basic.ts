@@ -1,9 +1,9 @@
 /**
- * 随机id生成
+ * 生成长度9的随机id
  */
 const GenerateId = () => {
   return 'xxx'.replace(/x/g, () => (Math.random() * 36 | 0).toString(36))
-    + (('0x' + new Date().getTime() as any).toString(16) << 1).toString(36).replace(/^-/, '');
+    + (('0x' + new Date().getTime() as any).toString(16)>>> 1).toString(36);
 }
 /**
  * 取文件名类型
