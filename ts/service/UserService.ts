@@ -36,7 +36,7 @@ export class UserService extends Service implements UserFace {
     user.logged=new Date(Date.now());this.user.update(user.id,user);
     return {code: 200, mes: '登录成功',
     token:jwt.sign({account:account},NTo10(account,62).toString(Config.cipher),{expiresIn:Config.expiresIn,algorithm:'HS256'}),
-    secret:NTo10(account,62).toString(Config.secret)+`#${Config.secret.toString(16)}`}
+    secret:NTo10(account,62).toString(Config.secret)+`#${(Config.secret*0x4F).toString(16)}`}
   }
   async fix(id: number,user: User){
     user.pwd = encryptPwd(user.pwd);

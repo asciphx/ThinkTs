@@ -18,7 +18,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     if(token&&s){
       try {
         Jwt.verify(token.replace(/^Bearer /,""),
-        NTo10(s[0],Number("0x"+s[1])).toString(Config.cipher),
+        NTo10(s[0],Number("0x"+s[1])/79).toString(Config.cipher),
         {complete:true});await next();
       } catch (e) {
         ctx.status=401;ctx.body=String(e);
@@ -27,7 +27,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
   })//动态随机secret,现支持分布式,headers将使用单字母变量节省带宽
-  global.v8debug=conn.driver.database;//保存链接的数据库名字到全局变量，以便sql查询用
+  Config.DATABASE=conn.driver.database;//保存链接的数据库名字到全局变量，以便sql查询用
   const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
