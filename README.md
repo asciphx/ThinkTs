@@ -40,8 +40,8 @@ class View{
 #### And your service looks like this:
 ```typescript
 export class UserService extends Service implements UserFace{
-  constructor(,
-    private user=getRepository(User)
+  constructor(
+    private user=getRepository(User),
     private admin=getRepository(Admin)
   ) {
     super({

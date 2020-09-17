@@ -4,7 +4,7 @@ import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
 import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
-import { Config } from "../../config";
+import { Conf } from "../../config";
 
 export class UserService extends Service implements UserFace {
   constructor(
@@ -35,8 +35,8 @@ export class UserService extends Service implements UserFace {
     if (!checkPwd(pwd, user.pwd))return {status:406,mes:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);
     return {code: 200, mes: '登录成功',
-    token:jwt.sign({account:account},NTo10(account,62).toString(Config.cipher),{expiresIn:Config.expiresIn,algorithm:'HS256'}),
-    secret:NTo10(account,62).toString(Config.secret)+`#${(Config.secret*0x4F).toString(16)}`}
+    token:jwt.sign({account:account},NTo10(account,62).toString(Conf.cipher),{expiresIn:Conf.expiresIn,algorithm:'HS256'}),
+    secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
   }
   async fix(id: number,user: User){
     user.pwd = encryptPwd(user.pwd);

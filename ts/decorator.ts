@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Config} from '../config';
+import * as fs from "fs";import * as path from "path";import {Conf} from '../config';
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -19,12 +19,12 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
   })
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
-    Routes[r].r=v+Routes[r].r;if(Config.printRoute)a.push(Routes[r]);
+    Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);
     if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)
       Routes[r].a=_.prototype[Routes[r].a].bind($[_.prototype["_"]])
     else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
-  if(Config.printRoute){
+  if(Conf.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
