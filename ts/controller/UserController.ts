@@ -3,8 +3,8 @@ import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Context } from "koa"
 import { Controller } from '../controller';
-//修改功能涉及密码，需要另起一个方法。
-@Class("user",["add", "del", "info", "page"])
+//新增修改功能均涉及密码，因此无需配置。
+@Class("user",["del", "info", "page"])
 class UserController extends Controller {
   @Service(UserService) readonly u_: UserService
   

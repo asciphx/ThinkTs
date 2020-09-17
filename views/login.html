@@ -13,29 +13,39 @@
     </header>
   </div>
   <%= test %> for <%= author %><br/>
-  
+  <input id="token" placeholder="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYXNjaXBoeCIsImlhdCI6MTYwMDMwOTI1MywiZXhwIjoxNjAwMzQ1MjUzfQ.UrfgJfaw4ohmaKN8Oir-qLuNZwYeZU0t_OTeJbezJX8"/>
+  <input id="secret" placeholder="secret" value="981fm5lo#acd"/>
+
+  <button id="ajax" onclick="ajax()">ajax跳转到静态页</button>
 </body>
-<script src="./static/js/index.js"></script>
-<script src="./static/js/jquery-1.8.3.min.js"></script>
-<script>
-  $.ajax({
-		url: "http://localhost:3000/user",
-		data:{account:"ph"},
-		type: "GET",
-		dataType: "json",
-		headers: {//authorization：现为降低带宽，直接带上token即可，且用单字母a来表示
-      a:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50Ijoienp3d2dnIiwiaWF0IjoxNjAwMjY3MzM3LCJleHAiOjE2MDAyNzQ1Mzd9.gWLqYurBSZWDR8Coz7Iir5eO46uY93NklwIvAWUxsUc",
-      s:"i1kd02i0" //现在秘密可以支持分布式服务器，尽管sercet可能不同
-		},
-		async: false,
-		cache: false,
-		success: function(data) {
-      console.log(data);
-      
-		},
-		error: function(data) {
-			console.log(data.responseText,data);
-		}
-	});
+<script src="./static/js/jquery.min.js"></script>
+<script>//模拟演示ajax请求获得静态页面.
+  function ajax(){
+    $.ajax({
+      url: "http://localhost:3000/admin/index.html",
+      type: "GET",
+      dataType: "html",
+      headers: {//authorization：现为降低带宽，直接带上token即可，且用单字母a来表示
+        a: document.getElementById("token").value,
+        s: document.getElementById("secret").value //现在秘密可以支持分布式服务器，尽管sercet可能不同
+      },
+      async: false,
+      success: function(data) {
+        if(document.documentMode >9|| document.documentMode == undefined){
+          var a=document.createElement("html");a.innerHTML=data.replace(/(<!|<)\w* ?html>\n?/g,"")
+          document.documentElement.parentNode.replaceChild(a,document.documentElement)
+        }else{
+          data=data.replace(/\n?(<!|<)\w* ?html ?(lang="en")?>|<\/html>/g,"")
+          document.body.innerHTML=data.replace(/.*(?=)+<body/g,"<body")
+          // document.head.innerText=data.replace(/\<head\>((\n.*)+)\<\/head\>/g,"$1")
+          // document.head在ie<10版本会是只读,所以若兼容ie10以下的版本，head尽量保持一致
+        }
+      },
+      error: function(data) {
+        document.getElementById("ajax").innerText=data.statusText
+        // console.log(data);
+      }
+    });
+  }
 </script>
 </html>

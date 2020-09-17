@@ -9,9 +9,8 @@ import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
   const app = new Koa().use(bodyParser({jsonLimit:Config.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
-  .use(views(path.join(__dirname,Config.view),{
-    extension: 'html',map: { html: "ejs" }
-  })).use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
+  .use(views(path.join(__dirname,Config.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
+  .use(koaStatic(path.join(__dirname,Config.view),{defer:true}))
   .use(async (ctx, next) => {
     if(ctx.url.match(Config.unless)){await next();return}
     const token:string=ctx.headers.a,s:string=ctx.headers.s?.match(/[^#]+/g)
@@ -21,14 +20,17 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         NTo10(s[0],Number("0x"+s[1])/79).toString(Config.cipher),
         {complete:true});await next();
       } catch (e) {
-        ctx.status=401;ctx.body=String(e);
+        if(String(e)==="TokenExpiredError: jwt expired"){
+          ctx.status=401;ctx.body="Jwt Expired";//jwt过期处理
+        }
+        else{ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
     }
   })//动态随机secret,现支持分布式,headers将使用单字母变量节省带宽
-  Config.DATABASE=conn.driver.database;//保存链接的数据库名字到全局变量，以便sql查询用
-  const router = new Router();//console.log(Routes)
+  Config.DATABASE=conn.driver.database;//保存DATABASE到全局变量，以便sql查询用
+  const router = new Router();console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)

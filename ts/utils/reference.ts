@@ -4,4 +4,13 @@ const paraFilter = obj => {
   }
   return obj;
 }
-export { paraFilter }
+
+const sortAsci=(obj:Object)=>{
+	let arr = new Array(),num = 0;
+	for (let i in obj)arr[num++]=i;
+	let a = arr.sort(),s = {};
+	for (let i in a)s[a[i]] = obj[a[i]];
+	return s;
+}
+
+export { paraFilter, sortAsci }

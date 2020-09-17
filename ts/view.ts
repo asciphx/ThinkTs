@@ -7,10 +7,10 @@ class View {
   @Get()
   @Get("index.html")
   async index(ctx: Context) {
-    await html(ctx, { test: "test", author: "asciphx" })
+    ctx.body = await html(ctx, { test: "test", author: "asciphx" })
   }
   @Get("login.html")
   async login(ctx: Context) {
-    await html(ctx, { test: "test", author: "Login" })
+    ctx.body = await html(ctx, { test: "test", author: "Login" })
   }
 }
