@@ -11,15 +11,16 @@ export class UserService extends Service implements UserFace {
     private user=getRepository(User)
   ) {
     super({
+      leftJoin:{e:"user.roles",a:'role'},
+      // select:[ 'user.id','user.account', 'role.id','role.name', 'user.photo', 'user.status'],
+      addSelect:['role.id','role.name'],
       where: query => {
         return new Brackets(qb => {
           if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
           if (query.id) qb.andWhere('id >:i', { i: query.id })
         });
       },
-      orderBy: { "id": "desc" },
-      // select:[ 'user.account', 'user.name', 'user.photo', 'user.status'],
-      addSelect:"user.pwd"
+      orderBy: { "user.id": "desc" }
     })
   }
 

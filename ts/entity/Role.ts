@@ -9,11 +9,11 @@ export class Role {
   @Index({ unique: true })
   @Column({ comment: "名称", length: 9 })
   name: string;
-  @Column({ comment: "标签简介", nullable: true, length: 25 })
+  @Column({ comment: "标签简介", nullable: true, length: 25, select:false })
   remark: string;
-  @CreateDateColumn({ comment: '创建时间' , type: 'timestamp', name: 'create_date' })
+  @CreateDateColumn({ comment: '创建时间' , type: 'timestamp', name: 'create_date', select:false })
   created: Date
-  @ManyToMany(_ => Menu, v => v.roles, { cascade: ['insert', 'remove'] })
+  @ManyToMany(_ => Menu, v => v.roles)
   menus: Menu[];
   @ManyToMany(_ => User,v => v.roles)
   users: User[];

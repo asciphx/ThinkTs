@@ -23,7 +23,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         if(e.includes('TokenExpiredError')){
           ctx.status=401;ctx.body="Jwt Expired";
         }else if(e.includes('QueryFailedError')){
-          ctx.status=406;ctx.body="ER_NO_DEFAULT_FOR_FIELD";
+          ctx.status=406;ctx.body=e;
         }else{ctx.status=401;ctx.body=e;}
       }
     }else{

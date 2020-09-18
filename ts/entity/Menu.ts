@@ -18,7 +18,7 @@ export class Menu {
   weight: number;
   @CreateDateColumn({ comment: "创建日期" })
   created: Date;
-  @ManyToMany(_ => Role, v => v.menus)
+  @ManyToMany(_ => Role, v => v.menus, { cascade: ['insert', 'remove'] })
   @JoinTable({
     name: 'menu_role',
     joinColumn: { name: 'menu_id' },
