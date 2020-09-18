@@ -8,7 +8,7 @@ import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/entity").forEach(i=>{
-    const en=require(__dirname+"/ts/entity/"+i);Conf[Object.keys(en)[0]]=conn.getRepository(en[Object.keys(en)[0]])
+    const en=require(__dirname+"/ts/entity/"+i);Conf[Object.keys(en)[0]]=getRepository(en[Object.keys(en)[0]])
   });
   await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
   const app = new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))

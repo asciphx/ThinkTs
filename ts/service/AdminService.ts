@@ -9,13 +9,13 @@ export class AdminService extends Service {
     private adm=Conf[Admin.name]
   ) {
     super({
+      select:[ 'adm.id', 'adm.name', 'adm.label'],
       where: (query:{name:string}) => {
         return new Brackets(qb => {
           if (query.name) qb.where("name IN (:...arr)", { arr: query.name.match(/[^,]+/g) })
         });
       },
-      orderBy: { "id": "desc" },
-      select:[ 'adm.id', 'adm.name', 'adm.label']
+      orderBy: { "id": "desc" }
     },"adm");//http://localhost:3000/admin?name=Tim,jdk,lll 那么查找这三个名字的人
   }
   async sql(query:any){

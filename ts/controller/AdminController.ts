@@ -1,5 +1,4 @@
 import { Class, Post, Roles, Service, Get } from "../decorator"
-import { W } from '../weblogic'
 import { AdminService } from "../service/AdminService"
 import { Context } from "koa"
 import { Controller } from '../controller';

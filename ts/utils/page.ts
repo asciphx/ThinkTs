@@ -9,7 +9,6 @@ export class Page {
 	public get():Pagination{return {current:this.current,count:this.count,total:this.total,size:this.size}}
 	constructor(current:number,size:number,count:number){
     this.current=current<1?1:current;
-    this.count=count<1?1:count;
 		this.size=size<1?1:size;
     this.total=Math.ceil(count/size);
 		this.current=this.current>=this.total?this.total:this.current;
