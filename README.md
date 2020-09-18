@@ -41,8 +41,8 @@ class View{
 ```typescript
 export class UserService extends Service implements UserFace{
   constructor(
-    private user=getRepository(User),
-    private admin=getRepository(Admin)
+    private user=Conf[User.name],
+    private admin=Conf[Admin.name]
   ) {
     super({
       where: query => {
@@ -78,6 +78,7 @@ export interface UserFace{
 - [x] automatic implementation of addition, deletion, modification and query
 - [x] now add the basic controller and service layer. The controller decorator can be customized to automatically add, delete, modify, query and pagination.
 - [x] the controller can now customize the name of the service class variable to be called.
+- [x] In order to reduce memory overhead and instance calls, we have implemented the containerization of entity classes.
 
 ## New version of custom JWT authentication description
 
