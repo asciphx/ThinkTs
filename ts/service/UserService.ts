@@ -1,4 +1,4 @@
-import { Brackets, getRepository } from "typeorm"
+import { Brackets } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
@@ -8,7 +8,7 @@ import { Conf } from "../../config";
 
 export class UserService extends Service implements UserFace {
   constructor(
-    private user=getRepository(User)
+    private user=Conf[User.name]
   ) {
     super({
       leftJoin:{e:"user.roles",a:'role'},

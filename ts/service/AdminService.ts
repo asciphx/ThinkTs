@@ -1,4 +1,4 @@
-import { Brackets, getRepository } from "typeorm"
+import { Brackets } from "typeorm"
 import { Admin } from "../entity/Admin"
 import { Service } from "../service";
 import { Page } from '../utils/page';
@@ -6,7 +6,7 @@ import { Conf } from "../../config";
 
 export class AdminService extends Service {
   constructor(
-    private adm=getRepository(Admin)
+    private adm=Conf[Admin.name]
   ) {
     super({
       where: (query:{name:string}) => {

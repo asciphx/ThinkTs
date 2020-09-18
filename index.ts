@@ -1,4 +1,4 @@
-import "reflect-metadata";import { createConnection } from "typeorm";
+import "reflect-metadata";import { createConnection, getRepository } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as fs from "fs";import * as Jwt from "jsonwebtoken"
@@ -7,6 +7,9 @@ import { User } from './ts/entity/User';import "./ts/view";import * as path from
 import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
+  await fs.readdirSync(__dirname+"/ts/entity").forEach(i=>{
+    let en=require(__dirname+"/ts/entity/"+i);Conf[Object.keys(en)[0]]=conn.getRepository(en[Object.keys(en)[0]])
+  });
   await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
   const app = new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
@@ -39,7 +42,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Conf.port} to see`))
-  return conn.getRepository(User).save(new User("asciphx",encryptPwd("654321")))
+  return Conf[User.name].save(new User("asciphx",encryptPwd("654321")))
     .then(user => {console.log("User has been saved: ", user);
   }).catch(e => {if(String(e).indexOf("ER_DUP_ENTRY")>0)console.error("賬戶已存在！")});
 }).catch(e => {console.error(e)});
