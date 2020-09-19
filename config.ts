@@ -5,7 +5,7 @@ const Conf={
   upload:"upload",
   expiresIn:"10h",//10个小时内jwt不会过期
   cipher:0x24,//最大值0x24，最小是0x2
-  secret:19+Math.random()*17|0,//19~35
+  secret:19+Math.random()*317|0,//19~335
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'./views'

@@ -20,7 +20,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     if(token&&s){
       try {
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
-          NTo10(s[0],Number("0x"+s[1])/79).toString(Conf.cipher),{complete:true}) as any;
+          NTo10(s[0],Number("0x"+s[1])/0x4F%0x24).toString(Conf.cipher),{complete:true}) as any;
         let ll:Array<any>=Object.entries(payload)[0];
         let l=ll[1] as Array<string>;//role list
         for (let i = 0; i < l.length; i++) {
