@@ -15,11 +15,12 @@ class AdminController extends Controller{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService
 
+  @Middle(W.Log)
   @Post("login")
   async login(ctx:Context) {
     ctx.body=await this.userSvc.login(ctx.request.body);
   }
-  @Roles(W.Qx,W.Login)
+  @Middle(W.Log)//This is an example, just to tell you that you can call it like this. But not recommended!
   @Get()
   async all(ctx:Context) {
     let adminList=await this.adminSvc.all()

@@ -7,16 +7,17 @@
 - The configuration is greater than the code, and priority is given to automatically implement five methods, such as adding, deleting, modifying and querying, and pagination, to facilitate the establishment of authority background system
 ### With ThinkTs your controller look like this:
 ```typescript
-@Class(["add","del","fix","info"])//or @Class("/admin",……)or @Class("admin",……)
+@Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController extends Controller{
   @Service(AdminService) readonly adminSvc:AdminService
   @Service(UserService) readonly userSvc:AdminService
 
+  @Middle(W.Log)
   @Post("login")
   async login(ctx:Context) {
     ctx.body=await this.userSvc.login(ctx.request.body);
   }
-  @Roles(W.Qx,W.Login)
+  @Middle(W.Log)//This is an example, just to tell you that you can call it like this. But not recommended!
   @Get()
   async all(ctx:Context) {
     let adminList=await this.adminSvc.all()
@@ -68,7 +69,6 @@ export class UserService extends Service implements UserFace{
 export interface UserFace{
   /** register one*/register(entity)
   /** login one*/login(entity)
-  /** search all*/all()
 }
 ```
 ### Finally, please refer to the entity class writing method of [TypeORM](https://github.com/typeorm/typeorm)
