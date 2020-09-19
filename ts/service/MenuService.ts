@@ -1,7 +1,7 @@
 import { Brackets, Repository } from "typeorm"
-import { Menu } from "../entity/Menu"
+import { Menu } from '../entity/Menu';
 import { Service } from "../service";
-import { Conf } from "../../config";
+import { Conf, Maps } from "../../config";
 
 export class MenuService extends Service {
   constructor(
@@ -18,5 +18,12 @@ export class MenuService extends Service {
       },
       orderBy: { "menu.id": "desc" }
     });//http://localhost:3000/menu?name=menu,log,human 那么查找这三个名称的菜单
+  }
+  async fix(id:number,menu:Menu) {
+    let e=menu.path;if(e===undefined) return await this.menu.update(id,menu);
+      else (e as any)=await this.menu.findOne({id:id});
+    const entries=Object.entries(Maps),i=entries.findIndex(v=>v[1].includes((e as any).path))
+    Maps[entries[i][0]][i]=menu.path;
+    return await this.menu.update(id,menu);
   }
 }

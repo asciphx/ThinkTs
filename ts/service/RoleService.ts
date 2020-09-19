@@ -1,11 +1,13 @@
 import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
 import { Service } from "../service";
-import { Conf } from "../../config";
+import { Conf, Maps } from "../../config";
+import { Menu } from "../entity/Menu";
 
 export class RoleService extends Service {
   constructor(
-    private role:Repository<Role>=Conf[Role.name]
+    private role:Repository<Role>=Conf[Role.name],
+    private menu:Repository<Menu>=Conf[Menu.name]
   ) {
     super({
       leftJoin:{e:"role.menus",a:'menu'},
@@ -18,5 +20,15 @@ export class RoleService extends Service {
       },
       orderBy: { "role.id": "desc" }
     });
+  }
+  
+  async fix(id:number,role:Role) {
+    let insert=await this.role.update(id,role),e=role.name;
+    if(e===undefined) return insert;
+    else (e as any)=await this.role.findOne({id:id});
+    const m=await this.menu.createQueryBuilder("m").leftJoin("m.roles","role")
+    .select("m.path").where("role.name =:e",{e:e}).getMany();
+    m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[e]=m
+    return insert
   }
 }
