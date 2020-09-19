@@ -1,11 +1,10 @@
 import "reflect-metadata";import { createConnection, getRepository, Repository } from "typeorm";
-import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";
+import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
-import * as views from "koa-views";import * as fs from "fs";import * as Jwt from "jsonwebtoken"
+import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path"
 import { Conf, Maps } from './config';import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
-import { User } from './ts/entity/User';import "./ts/view";import * as path from "path";
+import { User } from './ts/entity/User';import "./ts/view";import { Menu } from "./ts/entity/Menu";
 import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
-import { Menu } from "./ts/entity/Menu";
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/entity").forEach(i=>{
