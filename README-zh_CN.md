@@ -20,13 +20,6 @@ class AdminController extends Controller{
   async login(ctx:Context) {
     ctx.body=await this.userSvc.login(ctx.request.body);
   }
-  @Middle(W.Log)//This is an example, just to tell you that you can call it like this. But not recommended!
-  @Get()
-  async all(ctx:Context) {
-    let adminList=await this.adminSvc.all()
-    let userList=await this.userSvc.all()
-    ctx.body=[...adminList,...userList]
-  }
 }
 /** Here's how to show EJS template rendering */
 class View{
@@ -59,11 +52,6 @@ export class UserService extends Service implements UserFace{
       },
       orderBy: { "user.id": "desc" }
     })
-  }
-  async all(){
-    let a=await this.admin.find()
-    let u=await this.user.find()
-    return [...a,...u]
   }
 }
 ```
