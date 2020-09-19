@@ -44,8 +44,8 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       ctx.status=401;ctx.body="Authentication Error";console.log(ctx.method+ctx.url)
     }
   })
-  Conf.DATABASE=conn.driver.database;
-  const router = new Router();//console.log(Routes)
+  setInterval(()=>{Conf.secret=116+Math.random()*311|0;},15000);//每15秒换次sercet
+  Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       await r.a(ctx,next)
