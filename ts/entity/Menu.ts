@@ -24,5 +24,5 @@ export class Menu {
     joinColumn: { name: 'menu_id' },
     inverseJoinColumn: { name: 'role_id' },
   })
-  roles: Role;
+  roles: Role[];
 }

@@ -21,9 +21,14 @@ export class MenuService extends Service {
   }
   async fix(id:number,menu:Menu) {
     let e=menu.path;if(e===undefined) return await this.menu.update(id,menu);
-      else (e as string|Menu)=await this.menu.findOne({id:id});
+    (e as string|Menu)=await this.menu.findOne({id:id});
     const entries=Object.entries(Maps),i=entries.findIndex(v=>v[1].includes((e as any).path))
     if(i>-1)Maps[entries[i][0]][i]=menu.path;
     return await this.menu.update(id,menu);
+  }
+  async insert(menu:Menu) {
+    let res=await this.menu.save(menu);
+    if(menu.roles)menu.roles.forEach(e => {if(e.name)Maps[e.name].push(menu.name)});
+    return res
   }
 }

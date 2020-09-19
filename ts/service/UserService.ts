@@ -4,7 +4,7 @@ import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
 import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
-import { Conf } from "../../config";
+import { Conf, Maps } from "../../config";
 import { Role } from '../entity/Role';
 
 export class UserService extends Service implements UserFace {
@@ -28,6 +28,7 @@ export class UserService extends Service implements UserFace {
   async register(user: User):Promise<any>{
     const exist = await this.user.findOne({account:user.account});
     if (exist) return {status:409,mes:"账户已存在"};
+    if(user.roles)user.roles.forEach(e => {if(e.name)Maps[e.name].push(user.name)});
     return this.user.insert(new User(user.account,encryptPwd(user.pwd)));
   }
   async login(account:string,pwd:string) {
