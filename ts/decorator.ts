@@ -43,7 +43,7 @@ const Put = (r="") => (t, k) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:
 const Del = (r="") => (t, k) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
 const Middle = (...r:Array<Function>) => (t, k) => {
   let f=Routes[Routes.length-1];if(f.a!==k){
-    console.log(t.constructor.name+":"+k+" use @Roles has to be on the top!")
+    console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
 }
 const Service=v=>(t,k)=>{
