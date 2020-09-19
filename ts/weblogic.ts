@@ -1,11 +1,13 @@
 import { Context } from "koa"
 
 export const W = {
-  async Qx(ctx: Context, next) {
+  async Log(ctx: Context, next) {
+    const start = Date.now();
     await next();
+    const used = Date.now() - start;
+    console.log(`${ctx.request.method} ${ctx.request.url} used ${used}ms`); 
   },
-  async Login(ctx: Context, next) {
-    //session
-    if (!ctx.session?.user) { console.log("not login!"); return ctx.redirect('/'); } await next();
+  async Any(ctx: Context, next) {
+    //Anything else
   }
 }

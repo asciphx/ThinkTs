@@ -8,13 +8,13 @@ import { Controller } from '../controller';
 class UserController extends Controller {
   @Service(UserService) readonly u_: UserService
   
-  @Roles(W.Qx)
+  @Roles(W.Log)
   @Post("register")
   async register(ctx: Context) {
     await this.u_.register(ctx.request.body)
     .then(r=>ctx.body=r.status===409?r.mes:{code: 200, mes: `第${r.raw.insertId}位注册成功`});
   }
-  @Roles(W.Qx)
+  @Roles(W.Log)
   @Post("login")
   async login(ctx: Context) {
     await this.u_.login(ctx.request.body.account,ctx.request.body.pwd)
