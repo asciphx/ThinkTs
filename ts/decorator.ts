@@ -21,7 +21,7 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);
     if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)
-      Routes[r].a=_.prototype[Routes[r].a].bind($[_.prototype["_"]])
+      Routes[r].a=_.prototype[Routes[r].a].bind($[_.prototype["#"]])
     else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
   if(Conf.printRoute){
@@ -48,7 +48,7 @@ const Roles = (...r:Array<Function>) => (t, k) => {
 }
 const Service=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
-  if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["_"]=k;}
+  if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
 
 export {Routes,Class,Get,Post,Put,Del,Roles,Service};

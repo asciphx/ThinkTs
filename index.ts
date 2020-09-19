@@ -22,7 +22,9 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       try {
         const {payload}=Jwt.verify(token.replace(/^Bearer /,""),
           NTo10(s[0],Number("0x"+s[1])/79).toString(Conf.cipher),{complete:true}) as any;
-        const l=Object.entries(payload)[0][1] as Array<string>;//role list
+        let l:Array<any>=Object.entries(payload)[0];
+        if(l[0]==="admin"){await next();return}//超管无需验证直接通过,方便进行配置
+        l=l[1] as Array<string>;//role list
         for (let i = 0; i < l.length; i++) {
           if(Maps.hasOwnProperty(l[i])){
             if(Maps[l[i]].includes(ctx.url)){await next();return}continue;
@@ -52,7 +54,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Conf.port} to see`))
-  return Conf[User.name].save(new User("asciphx",encryptPwd("654321")))
+  return Conf[User.name].save(new User("admin",encryptPwd("654321")))
     .then(user => {console.log("User has been saved: ", user);
   }).catch(e => {if(String(e).indexOf("ER_DUP_ENTRY")>0)console.error("賬戶已存在！")});
 }).catch(e => {console.error(e)});
