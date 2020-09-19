@@ -47,7 +47,7 @@ const Roles = (...r:Array<Function>) => (t, k) => {
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
 }
 const Service=v=>(t,k)=>{
-  if($===null)$={};Object.defineProperty($,k,{enumerable:true,configurable:false,writable:false,value:new(v)})
+  if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["_"]=k;}
 }
 
