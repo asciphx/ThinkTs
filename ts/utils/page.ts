@@ -10,6 +10,7 @@ export class Page {
 	constructor(current:number,size:number,count:number){
     this.current=current<1?1:current;
 		this.size=size<1?1:size;
+		this.count=count;
     this.total=Math.ceil(count/size);
 		this.current=this.current>=this.total?this.total:this.current;
 	}

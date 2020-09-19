@@ -36,8 +36,12 @@ export class UserService extends Service implements UserFace {
     if (!user) return {status:406,mes:"登录账号有误"};
     if (!checkPwd(pwd, user.pwd))return {status:406,mes:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);
-    // const qx=this.role;
-    return {code: 200, mes: '登录成功',role:"admin",
+    // const [{roles}]=await this.user.createQueryBuilder("u").where("u.id =:u",{u:user.id})
+    // .leftJoin("u.roles","role").select(["u.id","role.name"]).getMany();
+    const roles=await this.role.createQueryBuilder("r").select(["r.name"])
+    .leftJoin("r.users","user").where("user.id =:u",{u:user.id}).getMany();
+    roles.forEach((e,i,p) => {p[i]=Object.entries(e)[0][1]});
+    return {code: 200, mes: '登录成功',role:roles,
     token:jwt.sign({account:account},NTo10(account,62).toString(Conf.cipher),{expiresIn:Conf.expiresIn,algorithm:'HS256'}),
     secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
   }
