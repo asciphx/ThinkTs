@@ -34,7 +34,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         }//权限验证包括方法拼接url
         if(ll[0]==="admin"){await next();return}
         ctx.status=403;ctx.body="Forbidden";l=ll=payload=null
-      } catch (e) { e=String(e);
+      } catch (e) { console.error(e);e=String(e);
         if(e.includes('TokenExpiredError')){
           ctx.status=401;ctx.body="Jwt Expired";
         }else if(e.includes('QueryFailedError')){
