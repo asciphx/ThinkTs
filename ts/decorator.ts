@@ -41,7 +41,7 @@ const Get = (r="") => (t, k) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:
 const Post = (r="") => (t, k) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
 const Put = (r="") => (t, k) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
 const Del = (r="") => (t, k) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
-const Roles = (...r:Array<Function>) => (t, k) => {
+const Middle = (...r:Array<Function>) => (t, k) => {
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Roles has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
@@ -51,4 +51,4 @@ const Service=v=>(t,k)=>{
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
 
-export {Routes,Class,Get,Post,Put,Del,Roles,Service};
+export {Routes,Class,Get,Post,Put,Del,Middle,Service};

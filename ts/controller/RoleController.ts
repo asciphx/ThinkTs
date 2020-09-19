@@ -1,4 +1,4 @@
-import { Class, Roles, Service, Put } from "../decorator"
+import { Class, Service, Put } from "../decorator"
 import { RoleService } from '../service/RoleService';
 import { Controller } from '../controller';
 import { Context } from "koa";

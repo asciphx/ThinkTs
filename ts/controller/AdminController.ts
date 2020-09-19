@@ -1,4 +1,4 @@
-import { Class, Post, Roles, Service, Get } from "../decorator"
+import { Class, Service, Get } from "../decorator"
 import { AdminService } from "../service/AdminService"
 import { Context } from "koa"
 import { Controller } from '../controller';
