@@ -24,7 +24,7 @@ export class RoleService extends Service {
   
   async fix(id:number,role:Role) {
     let e=role.name;if(e===undefined) return await this.role.update(id,role);
-    (e as string|Role)=await this.role.findOne({id:id});
+    e=await this.role.findOne({id:id}) as any;
     Maps[role.name]=Maps[(e as any).name];delete Maps[(e as any).name]
     return await this.role.update(id,role)
   }

@@ -12,7 +12,7 @@ export class Menu {
   pic: string;
   @Column({ type: "tinyint", comment: "类型（0：目录、1：路由、2：按钮）" })
   type: number;
-  @Column({ comment: "请求路径", length: 40 })
+  @Column({ comment: "请求方法路径，比如GET/menu", length: 40 })
   path: string;
   @Column({ type: "tinyint", comment: "权重（0-99）" })
   weight: number;

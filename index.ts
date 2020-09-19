@@ -20,20 +20,20 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     const token:string=ctx.headers.a,s:string=ctx.headers.s?.match(/[^#]+/g)
     if(token&&s){
       try {
-        const {payload}=Jwt.verify(token.replace(/^Bearer /,""),
+        let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
           NTo10(s[0],Number("0x"+s[1])/79).toString(Conf.cipher),{complete:true}) as any;
-        let l:Array<any>=Object.entries(payload)[0];
-        if(l[0]==="admin"){await next();return}//超管无需验证直接通过,方便进行配置
-        l=l[1] as Array<string>;//role list
+        let ll:Array<any>=Object.entries(payload)[0];
+        let l=ll[1] as Array<string>;//role list
         for (let i = 0; i < l.length; i++) {
           if(Maps.hasOwnProperty(l[i])){
-            if(Maps[l[i]].includes(ctx.url)){await next();return}continue;
+            if(Maps[l[i]].includes(ctx.method+ctx.url.replace(/\/\d+$/,""))){await next();return}continue;
           }
-          const m=await (Conf[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
+          let m=await (Conf[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
           .select("m.path").where("role.name =:e",{e:l[i]}).getMany();m.forEach((e,i,l)=>{(l[i] as any)=e.path});
-          Maps[l[i]]=m;if((m as any).includes(ctx.url)){await next();return}
-        }
-        ctx.status=403;ctx.body="Forbidden";
+          Maps[l[i]]=m;if((m as any).includes(ctx.method+ctx.url.replace(/\/\d+$/,""))){await next();m=null;return}m=null;
+        }//权限验证包括方法拼接url
+        if(ll[0]==="admin"){await next();return}
+        ctx.status=403;ctx.body="Forbidden";l=ll=payload=null
       } catch (e) { e=String(e);
         if(e.includes('TokenExpiredError')){
           ctx.status=401;ctx.body="Jwt Expired";
@@ -42,7 +42,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         }else{ctx.status=401;ctx.body=e;}
       }
     }else{
-      ctx.status=401;ctx.body="Authentication Error";console.log(ctx.url)
+      ctx.status=401;ctx.body="Authentication Error";console.log(ctx.method+ctx.url)
     }
   })
   Conf.DATABASE=conn.driver.database;

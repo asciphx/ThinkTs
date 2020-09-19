@@ -17,13 +17,13 @@ export class MenuService extends Service {
         });
       },
       orderBy: { "menu.id": "desc" }
-    });//http://localhost:3000/menu?name=menu,log,human 那么查找这三个名称的菜单
+    });
   }
   async fix(id:number,menu:Menu) {
     let e=menu.path;if(e===undefined) return await this.menu.update(id,menu);
-    (e as string|Menu)=await this.menu.findOne({id:id});
-    const entries=Object.entries(Maps),i=entries.findIndex(v=>v[1].includes((e as any).path))
-    if(i>-1)Maps[entries[i][0]][i]=menu.path;
+    e=await this.menu.findOne({id:id}) as any;
+    let o=Object.entries(Maps),i=o.findIndex(v=>v[1].includes((e as any).path)),I=i>-1?Maps[o[i][0]]:undefined;
+    if(I)I[I.findIndex(v=>v===(e as any).path)]=menu.path;I=o=null;//console.log(Maps)
     return await this.menu.update(id,menu);
   }
   async insert(menu:Menu) {

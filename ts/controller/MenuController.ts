@@ -1,7 +1,8 @@
-import { Class, Post, Service, Put } from "../decorator"
+import { Class, Post, Service, Put, Middle } from "../decorator"
 import { MenuService } from '../service/MenuService';
 import { Controller } from '../controller';
 import { Context } from "koa";
+import { W } from "../weblogic";
 
 @Class(["del", "info", "page"])
 class MenuController extends Controller {
@@ -11,6 +12,7 @@ class MenuController extends Controller {
   async _(ctx:Context){
     ctx.body = await this.menu.insert(ctx.request.body);
   }
+  @Middle(W.Log)
   @Put(":id")
   async $(ctx:Context){
     ctx.body = await this.menu.fix(ctx.params.id,ctx.request.body);
