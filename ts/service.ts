@@ -3,7 +3,7 @@ import { Repository, ObjectLiteral } from "typeorm";
 interface _ {orderBy?: {};groupBy?:{};leftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
 addLeftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
 where?:Function; select?:string|string[]|any; addSelect?:string|string[]|any }
-//基础服务类，$默认是实体类小写命名，如有变化请在super的第二个参数传入
+//基础服务类，$默认是实体类小写，如有变请在super第二个参数传入
 export abstract class Service{
   private $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
   private _: _;
@@ -24,7 +24,7 @@ export abstract class Service{
     return this[this.$].findOne(id);
   }
   private async list(query) {
-    let { size = 10, current = 1 } = query;//只需接收每页多少与当前页，默认每页10个，当前第一页
+    let { size = 10, current = 1 } = query;//默认每页10个，当前第一页
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
       .take(size).skip(current*size-size);
     if(this._){

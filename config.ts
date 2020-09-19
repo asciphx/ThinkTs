@@ -1,12 +1,11 @@
 export const Conf={
-  printRoute:true,//Output routing JSON file in 'dist/routes'
+  printRoute:true,//打印路由到routes目录
   port:3000,
-  DATABASE:"",//服务器启动时会匹配ormconfig.json中配置的数据库
+  DATABASE:"",//启动时会匹配ormconfig.json中的数据库
   upload:"upload",
   expiresIn:"10h",//10个小时内jwt不会过期
-  cipher:0x24,//目前是最大值，最小是0x2
-  secret:19+Math.random()*17|0,//范围19~35
-  //用|分隔符隔开，正则匹配开销更小
+  cipher:0x24,//最大值0x24，最小是0x2
+  secret:19+Math.random()*17|0,//19~35
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'./views'

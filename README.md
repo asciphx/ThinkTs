@@ -41,17 +41,19 @@ class View{
 ```typescript
 export class UserService extends Service implements UserFace{
   constructor(
-    private user=Conf[User.name],
-    private admin=Conf[Admin.name]
+    private user:Repository<User>=Conf[User.name],
+    private role:Repository<Role>=Conf[Role.name]
   ) {
     super({
+      leftJoin:{e:"user.roles",a:'role'},
+      addSelect:['role.id','role.name'],
       where: query => {
         return new Brackets(qb => {
-          if (query.account) qb.where('account like :account', { account: `%${query.account}%` })
-          if (query.id) qb.andWhere('id >:id', { id: query.id })
+          if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
+          if (query.id) qb.andWhere('id >:i', { i: query.id })
         });
       },
-      orderBy: { "id": "desc" }
+      orderBy: { "user.id": "desc" }
     })
   }
   async all(){
@@ -74,6 +76,7 @@ export interface UserFace{
 ### Features
 - [x] The default value of class class decorator is`/`+ entity class name, which can also be customized
 - [x] automatically scan controller directory and configure routes route
+- [x] automatically scan the entity directory and load it into conf, which is equivalent to a container, which can avoid multiple instances of entity
 - [x] automatically generate the configuration route file for reference, which is under the routes directory
 - [x] automatic implementation of addition, deletion, modification and query
 - [x] now add the basic controller and service layer. The controller decorator can be customized to automatically add, delete, modify, query and pagination.

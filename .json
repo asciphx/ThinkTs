@@ -9,9 +9,9 @@
     "min_uptime": "60s",
     "max_restarts": 30,
     "exec_mode" : "cluster_mode",
-    "error_file" : "./.vscode/test-err.log",
-    "out_file": "./.vscode/test-out.log",
-    "pid_file": "./.vscode/test.pid",
+    "error_file" : "./log/test-err.log",
+    "out_file": "./log/test-out.log",
+    "pid_file": "./log/test.pid",
     "watch": false
   }
 }

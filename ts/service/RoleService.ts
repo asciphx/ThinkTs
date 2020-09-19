@@ -1,12 +1,11 @@
-import { Brackets } from "typeorm"
+import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
 import { Service } from "../service";
-import { Page } from '../utils/page';
 import { Conf } from "../../config";
 
 export class RoleService extends Service {
   constructor(
-    private role=Conf[Role.name]
+    private role:Repository<Role>=Conf[Role.name]
   ) {
     super({
       leftJoin:{e:"role.menus",a:'menu'},

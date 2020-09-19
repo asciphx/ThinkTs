@@ -1,6 +1,5 @@
 .idea/
 node_modules/
-build/
+dist/
 routes/
-tmp/
-temp/
+log/

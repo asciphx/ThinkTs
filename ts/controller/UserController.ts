@@ -3,7 +3,7 @@ import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Context } from "koa"
 import { Controller } from '../controller';
-//新增修改功能均涉及密码，因此无需配置。
+
 @Class("user",["del", "info", "page"])
 class UserController extends Controller {
   @Service(UserService) readonly u_: UserService
@@ -23,6 +23,5 @@ class UserController extends Controller {
   @Put(":id")
   async update(ctx:Context){
     ctx.body = await this.u_.fix(ctx.params.id,ctx.request.body);
-
   }
 }

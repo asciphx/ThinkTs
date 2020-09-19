@@ -1,4 +1,4 @@
-import { Brackets } from "typeorm"
+import { Brackets, Repository } from "typeorm"
 import { Admin } from "../entity/Admin"
 import { Service } from "../service";
 import { Page } from '../utils/page';
@@ -6,7 +6,7 @@ import { Conf } from "../../config";
 
 export class AdminService extends Service {
   constructor(
-    private adm=Conf[Admin.name]
+    private adm:Repository<Admin>=Conf[Admin.name]
   ) {
     super({
       select:[ 'adm.id', 'adm.name', 'adm.label'],

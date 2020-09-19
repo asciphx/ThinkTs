@@ -5,6 +5,7 @@
 - 最低调编写 AOP 代码，面向切面编程，却轻松实现日志、拦截器、过滤器等功能
 - 最快，最迅速，最猛烈构建 MVC、API、websocket、微服务等系统
 - 配置大于编码，优先自动实现增删改查以及分页等五个方法，方便权限后台系统搭建
+- 服务能够implements接口，快速定位每个方法，轻松维护代码复杂繁多的service
 - ......
 ## 使用**ThinkTs**让你的controller看起来像是:
 
@@ -43,17 +44,19 @@ class View{
 ```typescript
 export class UserService extends Service implements UserFace{
   constructor(
-    private user=Conf[User.name],
-    private admin=Conf[Admin.name]
+    private user:Repository<User>=Conf[User.name],
+    private role:Repository<Role>=Conf[Role.name]
   ) {
     super({
+      leftJoin:{e:"user.roles",a:'role'},
+      select:[ 'user.id','user.account', 'role.id','role.name', 'user.photo', 'user.status'],
       where: query => {
         return new Brackets(qb => {
-          if (query.account) qb.where('account like :account', { account: `%${query.account}%` })
-          if (query.id) qb.andWhere('id >:id', { id: query.id })
+          if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
+          if (query.id) qb.andWhere('id >:i', { i: query.id })
         });
       },
-      orderBy: { "id": "desc" }
+      orderBy: { "user.id": "desc" }
     })
   }
   async all(){
@@ -74,6 +77,7 @@ export interface UserFace{
 ### 让你的entity看起来像是[TypeORM](https://github.com/typeorm/typeorm)中的写法
 ## 特征
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
+- [x] 自动扫描entity目录，载入到Conf，相当于一个容器,可以避免entity被多次实例化
 - [x] 自动扫描controller目录，并且配置Routes路由
 - [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去src/config.js下更改printRoute为false
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
