@@ -1,4 +1,4 @@
-export const Conf={
+const Conf={
   printRoute:true,//打印路由到routes目录
   port:3000,
   DATABASE:"",//启动时会匹配ormconfig.json中的数据库
@@ -9,4 +9,6 @@ export const Conf={
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'./views'
-}
+} 
+const Maps:Object={}
+export {Conf,Maps}

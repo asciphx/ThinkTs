@@ -2,7 +2,7 @@ import "reflect-metadata";import { createConnection, getRepository, Repository }
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as fs from "fs";import * as Jwt from "jsonwebtoken"
-import { Conf } from './config';import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
+import { Conf, Maps } from './config';import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
 import { User } from './ts/entity/User';import "./ts/view";import * as path from "path";
 import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
 import { Menu } from "./ts/entity/Menu";
@@ -22,12 +22,16 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       try {
         const {payload}=Jwt.verify(token.replace(/^Bearer /,""),
           NTo10(s[0],Number("0x"+s[1])/79).toString(Conf.cipher),{complete:true}) as any;
-        const l=Object.entries(payload)[0][1];//role list
-        const m=await (Conf[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
-        .select("m.path").where("role.name IN (:...arr)",{arr:l}).getMany();m.forEach((e,i,l)=>{(l[i] as any)=e.path});
-        console.log(m)//menu list
-        if((m as any).includes(ctx.url))await next();
-        else {ctx.status=401;ctx.body="Authentication Error";}
+        const l=Object.entries(payload)[0][1] as Array<string>;//role list
+        for (let i = 0; i < l.length; i++) {
+          if(Maps.hasOwnProperty(l[i])){
+            if(Maps[l[i]].includes(ctx.url)){await next();return}continue;
+          }
+          const m=await (Conf[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
+          .select("m.path").where("role.name =:e",{e:l[i]}).getMany();m.forEach((e,i,l)=>{(l[i] as any)=e.path});
+          Maps[l[i]]=m;if((m as any).includes(ctx.url)){await next();return}
+        }
+        ctx.status=403;ctx.body="Forbidden";
       } catch (e) { e=String(e);
         if(e.includes('TokenExpiredError')){
           ctx.status=401;ctx.body="Jwt Expired";
