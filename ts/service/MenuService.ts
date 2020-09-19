@@ -21,9 +21,9 @@ export class MenuService extends Service {
   }
   async fix(id:number,menu:Menu) {
     let e=menu.path;if(e===undefined) return await this.menu.update(id,menu);
-      else (e as any)=await this.menu.findOne({id:id});
+      else (e as string|Menu)=await this.menu.findOne({id:id});
     const entries=Object.entries(Maps),i=entries.findIndex(v=>v[1].includes((e as any).path))
-    Maps[entries[i][0]][i]=menu.path;
+    if(i>-1)Maps[entries[i][0]][i]=menu.path;
     return await this.menu.update(id,menu);
   }
 }

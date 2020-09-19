@@ -23,12 +23,9 @@ export class RoleService extends Service {
   }
   
   async fix(id:number,role:Role) {
-    let insert=await this.role.update(id,role),e=role.name;
-    if(e===undefined) return insert;
-    else (e as any)=await this.role.findOne({id:id});
-    const m=await this.menu.createQueryBuilder("m").leftJoin("m.roles","role")
-    .select("m.path").where("role.name =:e",{e:e}).getMany();
-    m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[e]=m
-    return insert
+    let e=role.name;if(e===undefined) return await this.role.update(id,role);
+      else (e as string|Role)=await this.role.findOne({id:id});
+    Maps[role.name]=Maps[(e as any).name];delete Maps[(e as any).name]
+    return await this.role.update(id,role)
   }
 }
