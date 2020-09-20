@@ -67,7 +67,7 @@ export interface UserFace{
 ### 让你的entity看起来像是[TypeORM](https://github.com/typeorm/typeorm)中的写法
 ## 特征
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
-- [x] 自动扫描entity目录，载入到Cacche，相当于一个容器,可以避免entity被多次实例化
+- [x] 自动扫描entity目录，载入到Cache，相当于一个容器,可以避免entity被多次实例化
 - [x] 自动扫描controller目录，并且配置Routes路由
 - [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去src/config.js下更改printRoute为false
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
