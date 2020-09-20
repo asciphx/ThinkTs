@@ -2,9 +2,9 @@ import "reflect-metadata";import { createConnection, getRepository, Repository }
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path"
-import { Conf, Cache, Maps } from './config';import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
+import { Conf, Cache, Maps } from './config';import { Routes } from "./ts/decorator";
 import { User } from './ts/entity/User';import "./ts/view";import { Menu } from "./ts/entity/Menu";
-import { Tag } from "./ts/utils/tag";import { Routes } from "./ts/decorator";
+import { Tag } from "./ts/utils/tag";import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/ts/entity").forEach(i=>{
@@ -28,8 +28,9 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
             if(Maps[l[i]].includes(ctx.method+path)){await next();return}continue;
           }
           let m=await (Cache[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
-          .select("m.path").where("role.name =:e",{e:l[i]}).getMany();m.forEach((e,i,l)=>{(l[i] as any)=e.path});
-          Maps[l[i]]=m;if((m as any).includes(ctx.method+path)){await next();m=null;return}m=null;
+          .select("m.path").where(`role.name ="${l[i]}"`).getMany();
+          if(m.length>0){m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[l[i]]=m;}
+          if((m as any).includes(ctx.method+path)){await next();m=null;return}m=null;
         }
         if(ll[0]==="admin"){await next();return}
         ctx.status=403;ctx.body=`'${ctx.method+path}' request is not authorized`;l=ll=payload=null

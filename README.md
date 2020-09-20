@@ -5,6 +5,7 @@
 - AOP code is written in a low-key way, but it is easy to realize log, interceptor, filter and other functions
 - MVC, API, websocket, microservice and other systems are constructed fastest, good and most fiercely
 - The configuration is greater than the code, and priority is given to automatically implement five methods, such as adding, deleting, modifying and querying, and pagination, to facilitate the establishment of authority background system
+- With the field level RBAC and pluggable middleware decorator, the assembly function has unlimited possibilities
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
