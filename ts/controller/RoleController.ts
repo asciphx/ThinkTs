@@ -1,6 +1,6 @@
-import { Class, Service, Put } from "../decorator"
+import { Class, Service, Put } from "../think/decorator"
 import { RoleService } from '../service/RoleService';
-import { Controller } from '../controller';
+import { Controller } from '../think/controller';
 import { Context } from "koa";
 
 @Class(["del", "info", "page", "add"])

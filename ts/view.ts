@@ -1,7 +1,7 @@
 import { Context } from "koa"
 import { html } from "./utils/tool"
-import { Class, Get } from "./decorator"
-import { Maps } from "../config"
+import { Class, Get } from "./think/decorator"
+import { Maps } from "./config"
 
 @Class()
 class View {

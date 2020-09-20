@@ -8,7 +8,7 @@ const Conf={
   secret:19+Math.random()*17|0,//19~35
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/favicon.ico/,
   jsonLimit:"1mb",
-  view:'./views'
+  view:'../views'
 } 
 const Cache:Object={}
 const Maps:Object={}

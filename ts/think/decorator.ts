@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from '../config';
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -29,11 +29,11 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
       fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
-      JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null
+      JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null
     });
     if($b){
       fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
-      JSON.stringify(a,['r','m'],"\t"),'utf8',e=>{if(e)console.error(e)});a=null;
+      JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null
   }else a=_=$=null;
 }

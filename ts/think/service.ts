@@ -1,4 +1,4 @@
-import { Page } from "./utils/page";
+import { Page } from "../utils/page";
 import { Repository, ObjectLiteral } from "typeorm";
 interface _ {orderBy?: {};groupBy?:{};leftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
 addLeftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};

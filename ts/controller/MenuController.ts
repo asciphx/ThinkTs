@@ -1,6 +1,6 @@
-import { Class, Post, Service, Put, Middle } from "../decorator"
+import { Class, Post, Service, Put, Middle } from "../think/decorator"
 import { MenuService } from '../service/MenuService';
-import { Controller } from '../controller';
+import { Controller } from '../think/controller';
 import { Context } from "koa";
 import { W } from "../weblogic";
 

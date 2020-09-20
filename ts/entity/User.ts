@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
-import { Orm } from '../orm';
+import { Orm } from '../think/orm';
 import { Role } from "./Role";
 
 @Entity()

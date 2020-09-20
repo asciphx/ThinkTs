@@ -86,6 +86,15 @@ export interface UserFace{
 2. Setup database settings inside `ormconfig.json` file
 3. Run `npm start` command
 
+## Authority management
+menu path,automatically generated(Matching rule)
+
+Add：POST/admin
+Delete：DELETE/admin/
+Modification：PUT/admin/
+Query：GET/admin/
+Pagination：GET/admin
+
 ### Directory structure
 1. src: ` back end file entry`
 2. src/controller: ` control layer`
@@ -95,6 +104,7 @@ export interface UserFace{
 6. src/utils: ` tool layer`
 7. views: ` background EJS template rendering folder`
 8. routes: ` output the route file to view. Each controller will create one`
+9. Lib: ` Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
 
 ### Other
 > Built by the world's No.1 man, Asciphx  

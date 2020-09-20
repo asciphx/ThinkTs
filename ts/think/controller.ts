@@ -1,7 +1,8 @@
+//@ts-nocheck
 import { Context } from "koa";
 //基础控制器
 export abstract class Controller {
-  [x: string]: any;
+ 
   private async add(ctx: Context) {
     ctx.body = await this.save(ctx.request.body);
   }

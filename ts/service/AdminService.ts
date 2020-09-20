@@ -1,8 +1,8 @@
 import { Brackets, Repository } from "typeorm"
 import { Admin } from "../entity/Admin"
-import { Service } from "../service";
+import { Service } from "../think/service";
 import { Page } from '../utils/page';
-import { Conf, Cache } from "../../config";
+import { Conf, Cache } from "../config";
 
 export class AdminService extends Service {
   constructor(

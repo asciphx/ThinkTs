@@ -1,7 +1,7 @@
 import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
-import { Service } from "../service";
-import { Cache, Maps } from "../../config";
+import { Service } from "../think/service";
+import { Cache, Maps } from "../config";
 
 export class RoleService extends Service {
   constructor(

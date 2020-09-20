@@ -1,7 +1,7 @@
 import { Brackets, Repository } from "typeorm"
 import { Menu } from '../entity/Menu';
-import { Service } from "../service";
-import { Cache, Maps } from "../../config";
+import { Service } from "../think/service";
+import { Cache, Maps } from "../config";
 
 export class MenuService extends Service {
   constructor(

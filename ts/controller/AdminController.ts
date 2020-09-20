@@ -1,7 +1,7 @@
-import { Class, Service, Get } from "../decorator"
+import { Class, Service, Get } from "../think/decorator"
 import { AdminService } from "../service/AdminService"
 import { Context } from "koa"
-import { Controller } from '../controller';
+import { Controller } from '../think/controller';
 import { html } from "../utils/tool";
 
 @Class(["add", "del", "info", "fix", "page"])

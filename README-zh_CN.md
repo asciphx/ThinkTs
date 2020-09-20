@@ -92,8 +92,15 @@ export interface UserFace{
 6. src/utils:`工具层`
 7. views:`后台ejs模板渲染文件夹`
 8. routes:`输出查看的路由文件，每个controller会创建一个`
+9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
 
 ## 权限管理
+PATH路径，自动生成的（匹配规则）
+增加：POST/admin
+删除：DELETE/admin/
+修改：PUT/admin/
+查询：GET/admin/
+分页：GET/admin
 菜单只包含目录结构，没有请求路径。
 路由的上级节点只能是菜单，包含请求路径。
 按钮的上级节点只能是路由，而且必须没有请求路径，是因为按钮的功能都基于spa单页应用。

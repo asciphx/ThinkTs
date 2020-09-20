@@ -2,15 +2,15 @@ import "reflect-metadata";import { createConnection, getRepository, Repository }
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path"
-import { Conf, Cache, Maps } from './config';import { Routes } from "./ts/decorator";
-import { User } from './ts/entity/User';import "./ts/view";import { Menu } from "./ts/entity/Menu";
-import { Tag } from "./ts/utils/tag";import { encryptPwd, NTo10 } from "./ts/utils/cryptoUtil"
+import { Conf, Cache, Maps } from './config';import { Routes } from "./think/decorator";
+import { User } from './entity/User';import "./view";import { Menu } from "./entity/Menu";
+import { Tag } from "./utils/tag";import { encryptPwd, NTo10 } from "./utils/cryptoUtil"
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
-  await fs.readdirSync(__dirname+"/ts/entity").forEach(i=>{
-    const en=require(__dirname+"/ts/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key])
+  await fs.readdirSync(__dirname+"/entity").forEach(i=>{
+    const en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key])
   });
-  await fs.readdirSync(__dirname+"/ts/controller").forEach((i)=>{require(__dirname+"/ts/controller/"+i)})
+  await fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
   const app = new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
@@ -22,7 +22,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
           NTo10(s[0],Number("0x"+s[1])/0x4F).toString(Conf.cipher),{complete:true}) as any;
         let ll:Array<any>=Object.entries(payload)[0], l=ll[1] as Array<string>;//role list
-        const path=ctx.url.replace(/\/\d+|(\w+)\?.+$/,"$1")
+        const path=ctx.url.replace(/\d+|(\w+)\?.+$/,"$1")
         for (let i = 0; i < l.length; i++) {
           if(Maps.hasOwnProperty(l[i])){
             if(Maps[l[i]].includes(ctx.method+path)){await next();return}continue;

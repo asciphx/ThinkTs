@@ -1,8 +1,8 @@
-import { Class, Post, Middle, Service, Put } from "../decorator"
+import { Class, Post, Middle, Service, Put } from "../think/decorator"
 import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Context } from "koa"
-import { Controller } from '../controller';
+import { Controller } from '../think/controller';
 
 @Class("user",["del", "info", "page"])
 class UserController extends Controller {

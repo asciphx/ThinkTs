@@ -1,10 +1,10 @@
 import { Brackets, Repository } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
-import { Service } from "../service";
+import { Service } from "../think/service";
 import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
-import { Conf, Cache } from "../../config";
+import { Conf, Cache } from "../config";
 import { Role } from '../entity/Role';
 
 export class UserService extends Service implements UserFace {

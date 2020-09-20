@@ -16,13 +16,13 @@
   <input id="token" placeholder="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYXNjaXBoeCIsImlhdCI6MTYwMDMwOTI1MywiZXhwIjoxNjAwMzQ1MjUzfQ.UrfgJfaw4ohmaKN8Oir-qLuNZwYeZU0t_OTeJbezJX8"/>
   <input id="secret" placeholder="secret" value="981fm5lo#acd"/>
 
-  <button id="ajax" onclick="ajax()">ajax跳转到静态页</button>
+  <button id="ajax" onclick='ajax("http://localhost:3000/admin/index.html")'>ajax跳转到静态页</button>
 </body>
 <script src="./static/js/jquery.min.js"></script>
 <script>//模拟演示ajax请求获得静态页面.
-  function ajax(){
+  function ajax(url){
     $.ajax({
-      url: "http://localhost:3000/admin/index.html",
+      url: url,
       type: "GET",
       dataType: "html",
       headers: {//authorization：现为降低带宽，直接带上token即可，且用单字母a来表示
@@ -31,6 +31,7 @@
       },
       async: false,
       success: function(data) {
+        window.history.pushState("",0,url);//模拟地址栏改变
         if(document.documentMode >9|| document.documentMode == undefined){
           var a=document.createElement("html");a.innerHTML=data.replace(/(<!|<)\w* ?html>\n?/g,"")
           document.documentElement.parentNode.replaceChild(a,document.documentElement)
