@@ -3,8 +3,6 @@
    "version": "1.0.0",
    "description": "TypeORM+KOA",
    "devDependencies": {
-      "@babel/core": "^7.11.6",
-      "@babel/preset-env": "^7.11.5",
       "@types/hashmap": "^2.3.0",
       "@types/jsonwebtoken": "^8.5.0",
       "@types/koa": "^2.11.3",
@@ -13,7 +11,6 @@
       "@types/koa-views": "^2.0.4",
       "@types/node": "^14.0.27",
       "gulp": "^4.0.2",
-      "gulp-babel": "^8.0.0",
       "gulp-terser": "^1.4.0",
       "gulp-typescript": "^6.0.0-alpha.1",
       "nodemon": "^2.0.4",
