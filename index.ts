@@ -37,7 +37,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         }else if(e.includes('QueryFailedError')){ ctx.status=406;ctx.body=e;
         }else{ctx.status=401;ctx.body="Authentication Error";}
       }
-    }else{ ctx.status=401;ctx.body="Authentication Error"; }
+    }else{ ctx.status=401;ctx.body="Headers Error"; }
   })
   setInterval(()=>{Conf.secret=116+Math.random()*311|0;},15000);//每15秒换次sercet
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
