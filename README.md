@@ -35,8 +35,8 @@ class View{
 ```typescript
 export class UserService extends Service implements UserFace{
   constructor(
-    private user:Repository<User>=Conf[User.name],
-    private role:Repository<Role>=Conf[Role.name]
+    private user:Repository<User>=Cache[User.name],
+    private role:Repository<Role>=Cache[Role.name]
   ) {
     super({
       leftJoin:{e:"user.roles",a:'role'},

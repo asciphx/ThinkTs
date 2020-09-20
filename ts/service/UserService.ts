@@ -4,13 +4,13 @@ import { UserFace } from "../interface/UserFace"
 import { Service } from "../service";
 import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
-import { Conf, Maps } from "../../config";
+import { Conf, Cache } from "../../config";
 import { Role } from '../entity/Role';
 
 export class UserService extends Service implements UserFace {
   constructor(
-    private user:Repository<User>=Conf[User.name],
-    private role:Repository<Role>=Conf[Role.name]
+    private user:Repository<User>=Cache[User.name],
+    private role:Repository<Role>=Cache[Role.name]
   ) {
     super({
       leftJoin:{e:"user.roles",a:'role'},

@@ -10,5 +10,6 @@ const Conf={
   jsonLimit:"1mb",
   view:'./views'
 } 
-const Maps:Object={}
-export {Conf,Maps}
+const Cache:Object={}//缓存实体
+const Maps:Object={}//缓存权限
+export {Conf,Cache,Maps}

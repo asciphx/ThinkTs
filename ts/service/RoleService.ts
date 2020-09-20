@@ -1,13 +1,11 @@
 import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
 import { Service } from "../service";
-import { Conf, Maps } from "../../config";
-import { Menu } from "../entity/Menu";
+import { Cache, Maps } from "../../config";
 
 export class RoleService extends Service {
   constructor(
-    private role:Repository<Role>=Conf[Role.name],
-    private menu:Repository<Menu>=Conf[Menu.name]
+    private role:Repository<Role>=Cache[Role.name]
   ) {
     super({
       leftJoin:{e:"role.menus",a:'menu'},
@@ -25,7 +23,7 @@ export class RoleService extends Service {
   async fix(id:number,role:Role) {
     let e=role.name;if(e===undefined) return await this.role.update(id,role);
     e=await this.role.findOne({id:id}) as any;
-    Maps[role.name]=Maps[(e as any).name];delete Maps[(e as any).name]
+    Maps[role.name]=Maps[(e as any).name];Maps[(e as any).name]=e=null;
     return await this.role.update(id,role)
   }
 }
