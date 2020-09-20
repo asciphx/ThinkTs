@@ -20,7 +20,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     if(token&&s){
       try {
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
-          NTo10(s[0],Number("0x"+s[1])/0x4F%0x24).toString(Conf.cipher),{complete:true}) as any;
+          NTo10(s[0],Number("0x"+s[1])/0x4F).toString(Conf.cipher),{complete:true}) as any;
         let ll:Array<any>=Object.entries(payload)[0], l=ll[1] as Array<string>;//role list
         const path=ctx.url.replace(/\/\d+|(\w+)\?.+$/,"$1")
         for (let i = 0; i < l.length; i++) {
@@ -40,7 +40,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       }
     }else{ ctx.status=401;ctx.body="Headers Error"; }
   });
-  setInterval(()=>{Conf.secret=(11+Math.random()*25|0)*0x24*(1+Math.random()*14|0);},15000);
+  setInterval(()=>{Conf.secret=11+Math.random()*25|0;},15000);
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{

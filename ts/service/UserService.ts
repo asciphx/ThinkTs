@@ -42,7 +42,7 @@ export class UserService extends Service implements UserFace {
     return {code: 200, mes: '登录成功',role:roles,
     token:jwt.sign(Object.defineProperty({},account,{enumerable:true,value:roles}),
       NTo10(account,62).toString(Conf.cipher),{expiresIn:Conf.expiresIn,algorithm:'HS256'}),
-    secret:NTo10(account,62).toString(Conf.secret%0x24)+`#${(Conf.secret*0x4F).toString(16)}`}
+    secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
   }
   async fix(id: number,user: User){
     user.pwd = encryptPwd(user.pwd);
