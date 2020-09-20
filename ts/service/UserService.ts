@@ -28,7 +28,6 @@ export class UserService extends Service implements UserFace {
   async register(user: User):Promise<any>{
     const exist = await this.user.findOne({account:user.account});
     if (exist) return {status:409,mes:"账户已存在"};
-    if(user.roles)user.roles.forEach(e => {if(e.name)Maps[e.name].push(user.name)});
     return this.user.insert(new User(user.account,encryptPwd(user.pwd)));
   }
   async login(account:string,pwd:string) {
