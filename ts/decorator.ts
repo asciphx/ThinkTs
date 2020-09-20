@@ -17,7 +17,7 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
       default:console.error("Wrong entry!");break;
     }
   })
-  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1");if(v==="/"){v="";}
+  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);
     if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)

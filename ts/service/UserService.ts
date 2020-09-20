@@ -17,7 +17,7 @@ export class UserService extends Service implements UserFace {
       addSelect:['role.id','role.name'],
       where: query => {
         return new Brackets(qb => {
-          if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
+          if (query.account) qb.where(`account like "%${query.account}%"`)
           if (query.id) qb.andWhere('id >:i', { i: query.id })
         });
       },

@@ -6,12 +6,6 @@
     "": "node",
     "js": "node --harmony"
   },
-  "events": {
-    "start": "",
-    "crash": "",
-    "exit": "",
-    "restart": ""
-  },
   "ext": "js json ts tsx",
   "watch": ["ts"],
   "env": {

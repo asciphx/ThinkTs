@@ -13,7 +13,8 @@
       "sourceMap": false,
       "allowJs": true,
       "lib": ["es7","dom"],
-      "outDir": "./dist"
+      "outDir": "./dist",
+      "baseUrl": "./ts"
    },
    "exclude": ["node_modules"]
 }

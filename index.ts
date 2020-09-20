@@ -22,24 +22,25 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
           NTo10(s[0],Number("0x"+s[1])/0x4F%0x24).toString(Conf.cipher),{complete:true}) as any;
         let ll:Array<any>=Object.entries(payload)[0], l=ll[1] as Array<string>;//role list
+        const path=ctx.url.replace(/\/\d+|(\w+)\?.+$/,"$1")
         for (let i = 0; i < l.length; i++) {
           if(Maps.hasOwnProperty(l[i])){
-            if(Maps[l[i]].includes(ctx.method+ctx.url.replace(/\/\d+$/,""))){await next();return}continue;
+            if(Maps[l[i]].includes(ctx.method+path)){await next();return}continue;
           }
           let m=await (Cache[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
           .select("m.path").where("role.name =:e",{e:l[i]}).getMany();m.forEach((e,i,l)=>{(l[i] as any)=e.path});
-          Maps[l[i]]=m;if((m as any).includes(ctx.method+ctx.url.replace(/\/\d+$/,""))){await next();m=null;return}m=null;
+          Maps[l[i]]=m;if((m as any).includes(ctx.method+path)){await next();m=null;return}m=null;
         }
         if(ll[0]==="admin"){await next();return}
-        ctx.status=403;ctx.body=`'${ctx.method+ctx.url}' request is not authorized`;l=ll=payload=null
+        ctx.status=403;ctx.body=`'${ctx.method+path}' request is not authorized`;l=ll=payload=null
       } catch (e) { console.error(e);e=String(e);
         if(e.includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(e.includes('QueryFailedError')){ ctx.status=406;ctx.body=e;
         }else{ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{ ctx.status=401;ctx.body="Headers Error"; }
-  })
-  setInterval(()=>{Conf.secret=116+Math.random()*311|0;},15000);//每15秒换次sercet
+  });
+  setInterval(()=>{Conf.secret=(11+Math.random()*25|0)*0x24*(1+Math.random()*14|0);},15000);
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
