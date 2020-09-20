@@ -5,7 +5,7 @@
 - 最低调编写 AOP 代码，面向切面编程，却轻松实现日志、拦截器、过滤器等功能
 - 最快，最迅速，最猛烈构建 MVC、API、websocket、微服务等系统
 - 配置大于编码，优先自动实现增删改查以及分页等五个方法，方便权限后台系统搭建
-- 服务能够implements接口，快速定位每个方法，轻松维护代码复杂繁多的service
+- 服务类能够implements接口，快速定位每个方法，轻松维护代码复杂繁多的service
 - ......
 ## 使用**ThinkTs**让你的controller看起来像是:
 
@@ -66,14 +66,13 @@ export interface UserFace{
 ### 让你的entity看起来像是[TypeORM](https://github.com/typeorm/typeorm)中的写法
 ## 特征
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
-- [x] 自动扫描entity目录，载入到Conf，相当于一个容器,可以避免entity被多次实例化
+- [x] 自动扫描entity目录，载入到Cacche，相当于一个容器,可以避免entity被多次实例化
 - [x] 自动扫描controller目录，并且配置Routes路由
 - [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去src/config.js下更改printRoute为false
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
 - [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页
 - [x] 可以自定义控制器调用的服务类变量名，并且不会影响运行速度
-- [x] 为降低内存开销和实例调用，现在已经实现实体类容器化
 
 ## 新版自定义JWT鉴权说明
 > Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里
