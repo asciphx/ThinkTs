@@ -34,7 +34,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         }
         if(ll[0]==="admin"){await next();return}
         ctx.status=403;ctx.body=`'${ctx.method+path}' request is not authorized`;l=ll=payload=null
-      } catch (e) { console.error(e);e=String(e);
+      } catch (e) {e=String(e);
         if(e.includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(e.includes('QueryFailedError')){ ctx.status=406;ctx.body=e;
         }else{ctx.status=401;ctx.body="Authentication Error";}

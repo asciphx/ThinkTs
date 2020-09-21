@@ -1,6 +1,6 @@
 {
    "name": "think-ts",
-   "version": "1.0.0",
+   "version": "1.6.0",
    "description": "TypeORM+KOA",
    "devDependencies": {
       "@types/hashmap": "^2.3.0",
@@ -36,7 +36,7 @@
       "dev": "nodemon",
       "tsc": "rm -rf ./dist && tsc",
       "build": "rm -rf ./dist && gulp build",
-      "start": "ts-node -r tsconfig-paths/register ts/index.ts",
+      "start": "ts-node ts/index.ts",
       "pro": "set NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
       "pm2": "pm2 start .json"
    }
