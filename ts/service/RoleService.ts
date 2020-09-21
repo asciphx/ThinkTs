@@ -2,10 +2,12 @@ import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
 import { Service } from "../think/service";
 import { Cache, Maps } from "../config";
+import { Menu } from "../entity/Menu";
 
 export class RoleService extends Service {
   constructor(
-    private role:Repository<Role>=Cache[Role.name]
+    private role:Repository<Role>=Cache[Role.name],
+    private menu:Repository<Menu>=Cache[Menu.name]
   ) {
     super({
       leftJoin:{e:"role.menus",a:'menu'},
@@ -25,5 +27,9 @@ export class RoleService extends Service {
     e=await this.role.findOne({id:id}) as any;
     Maps[role.name]=Maps[(e as any).name];Maps[(e as any).name]=e=null;
     return await this.role.update(id,role)
+  }
+  async perm(roles:string) {
+    return await this.menu.createQueryBuilder("m").select(["m.type","m.path"])
+    .leftJoin("m.roles","role").where(`role.name IN (${roles.replace(/([^,]+)/g,'"$1"')})`).getMany();
   }
 }

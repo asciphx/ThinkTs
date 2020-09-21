@@ -1,4 +1,4 @@
-import { Class, Post, Middle, Service, Put } from "../think/decorator"
+import { Class, Post, Middle, Service, Put, Get } from "../think/decorator"
 import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Context } from "koa"

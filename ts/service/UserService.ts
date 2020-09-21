@@ -33,6 +33,7 @@ export class UserService extends Service implements UserFace {
   async login(account:string,pwd:string) {
     const user = await this.user.createQueryBuilder()
     .addSelect("User.pwd").where("account =:ac",{ac:account}).getOne()
+    console.log(account,pwd)
     if (!user) return {status:406,mes:"登录账号有误"};
     if (!checkPwd(pwd, user.pwd))return {status:406,mes:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);
