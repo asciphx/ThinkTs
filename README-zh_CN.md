@@ -82,6 +82,7 @@ export interface UserFace{
 > s:`${secret}`
 > ```
 > 现在由后端提供secret
+> 在正式环境下启动的指令，windows使用的是npm run pro,而Mac或者Linux是npm run prod
 
 ## 目录结构
 1. ts:`后端文件入口`

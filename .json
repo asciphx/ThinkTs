@@ -3,7 +3,12 @@
   {
     "name": "ThinkTs",
     "cwd": "./",
+    "args": "-r tsconfig-paths/register",
     "script": "index.ts",
+    "ignore_watch": [
+      "node_modules",
+      ".vscode"
+    ],
     "exec_interpreter": "C:/nodejs/ts-node",
     "instances": "max",
     "min_uptime": "60s",
