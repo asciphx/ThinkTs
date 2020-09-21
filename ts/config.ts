@@ -1,11 +1,11 @@
 const Conf={
-  printRoute:true,//打印路由到routes目录
+  printRoute:true,//打印路由routes
   port:8080,
   DATABASE:"",//启动时匹配ormconfig.json中的数据库
   upload:"upload",
-  expiresIn:"10h",//10个小时内jwt不会过期
-  cipher:0x24,//最大值0x24，最小是0x2，静态的
-  secret:19+Math.random()*17|0,//19~35
+  expiresIn:"10h",
+  cipher:0x24,//0x2~0x24，静态，可配置
+  secret:19+Math.random()*17|0,//2~36,动态，配置无效
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'../views'
