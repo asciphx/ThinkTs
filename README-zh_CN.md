@@ -95,7 +95,7 @@ export interface UserFace{
 9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
 
 ## 权限管理
-PATH路径，自动生成的（匹配规则） 
+PATH路径，自动生成的（匹配规则）  
 增加：POST/admin  
 删除：DELETE/admin/  
 修改：PUT/admin/  

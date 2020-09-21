@@ -89,11 +89,11 @@ export interface UserFace{
 ## Authority management
 menu path,automatically generated(Matching rule)
 
-Add：POST/admin
-Delete：DELETE/admin/
-Modification：PUT/admin/
-Query：GET/admin/
-Pagination：GET/admin
+Add：POST/admin  
+Delete：DELETE/admin/  
+Modification：PUT/admin/  
+Query：GET/admin/  
+Pagination：GET/admin  
 
 ### Directory structure
 1. src: ` back end file entry`
