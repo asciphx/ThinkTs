@@ -16,9 +16,9 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
     ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    if (ctx.method === 'OPTIONS') { ctx.status=ctx.body=200; }
+    if (ctx.method === 'OPTIONS') { ctx.body=200; }
     if(ctx.url.match(Conf.unless)){await next();return}
     const token:string=ctx.headers.a,s:string=ctx.headers.s?.match(/[^#]+/g)
     if(token&&s){

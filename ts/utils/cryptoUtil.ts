@@ -5,7 +5,7 @@ const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
  * @param pwd 登录密码
  */
 const encryptPwd = (pwd: string): string => {
-  return createHash('shake256', { outputLength: 40 }).update(pwd).digest('latin1');
+  return createHash('shake256', { outputLength: 28 }).update(pwd).digest('base64');
 }
 /**
  * 检查登录密码是否正确

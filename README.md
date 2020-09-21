@@ -96,15 +96,16 @@ Query：GET/admin/
 Pagination：GET/admin  
 
 ### Directory structure
-1. src: ` back end file entry`
-2. src/controller: ` control layer`
-3. src/entity:`entity layer`
-4. src/interface: ` interface layer`
-5. src/service: `service layer`
-6. src/utils: ` tool layer`
-7. views: ` background EJS template rendering folder`
-8. routes: ` output the route file to view. Each controller will create one`
-9. Lib: ` Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
+1. ts: ` back end file entry`
+2. ts/controller: ` control layer`
+3. ts/entity:`entity layer`
+4. ts/interface: ` interface layer`
+5. ts/service: `service layer`
+6. ts/think: `base layer`
+7. ts/utils: ` tool layer`
+8. views: ` background EJS template rendering folder`
+9. routes: ` output the route file to view. Each controller will create one`
+10. Lib: ` Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
 
 ### Other
 > Built by the world's No.1 man, Asciphx  

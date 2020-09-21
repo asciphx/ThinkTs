@@ -84,15 +84,16 @@ export interface UserFace{
 > 现在由后端提供secret
 
 ## 目录结构
-1. src:`后端文件入口`
-2. src/controller:`控制层`
-3. src/entity:`实体层`
-4. src/interface:`接口层`
-5. src/service:`服务层`
-6. src/utils:`工具层`
-7. views:`后台ejs模板渲染文件夹`
-8. routes:`输出查看的路由文件，每个controller会创建一个`
-9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
+1. ts:`后端文件入口`
+2. ts/controller:`控制层`
+3. ts/entity:`实体层`
+4. ts/interface:`接口层`
+5. ts/service:`服务层`
+6. ts/think:`基础层`
+7. ts/utils:`工具层`
+8. views:`后台ejs模板渲染文件夹`
+9. routes:`输出查看的路由文件，每个controller会创建一个`
+10. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
 
 ## 权限管理
 PATH路径，自动生成的（匹配规则）  
