@@ -11,8 +11,6 @@ export class Role {
   name: string;
   @Column({ comment: "标签简介", nullable: true, length: 25 })
   remark: string;
-  @CreateDateColumn({ comment: '创建时间' , type: 'timestamp', name: 'create_date' })
-  created: Date
   @ManyToMany(_ => Menu, v => v.roles)
   menus: Menu[];
   @ManyToMany(_ => User,v => v.roles)

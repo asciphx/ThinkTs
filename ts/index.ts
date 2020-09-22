@@ -54,7 +54,10 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Conf.port}/index.html`))
+    
+  const exist = await Cache[User.name].findOne({account:"admin"});
+  if (exist) {console.error("董事长已存在!");return;} else
   return Cache[User.name].save(new User("admin",encryptPwd("654321")))
     .then(user => {console.log("User has been saved: ", user);
-  }).catch(e => {if(String(e).indexOf("ER_DUP_ENTRY")>0)console.error("賬戶已存在！")});
+  })
 }).catch(e => {console.error(e)});
