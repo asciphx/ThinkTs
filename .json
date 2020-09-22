@@ -4,7 +4,7 @@
     "name": "ThinkTs",
     "cwd": "./",
     "args": "-r tsconfig-paths/register",
-    "script": "index.ts",
+    "script": "ts/index.ts",
     "ignore_watch": [
       "node_modules",
       ".vscode"
