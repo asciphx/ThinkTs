@@ -15,12 +15,12 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(async (ctx, next) => {
-    ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
-    ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    ctx.set('Access-Control-Allow-Origin',"*");
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type,Content-Length,Authorization,Accept,Cache-Control,X-Requested-With');
+    ctx.set('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
     if (ctx.method === 'OPTIONS') { ctx.body=200; }
-    if(ctx.url.match(Conf.unless)){await next();return}
-    const token:string=ctx.headers.a,s:string=ctx.headers.s?.match(/[^#]+/g)
+    if(ctx.url.match(Conf.unless)||Conf.noJwt){await next();return}
+    const token:string=ctx.headers.a,s:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
     if(token&&s){
       try {
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),

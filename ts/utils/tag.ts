@@ -1,9 +1,9 @@
-import HashMap = require('hashmap');import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
+import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
 export class Tag {
-  static Map: HashMap<string, string>;
+  static Map: Object;
   static Repository: any;
   static Init(name: string) {
-    this.Map = new HashMap(); this.Repository = getConnection(name).getRepository(Parse); 
+    this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse); 
   }
   static async parseHtml(selectValue: string, selectAttValue: string, name: string, type: number, inputName: string, className: string) {
     let html: string = await this.getInputHtml(name, type, inputName, className);
@@ -25,24 +25,24 @@ export class Tag {
   static async getInputHtml(name: string, type: number, inputName: string, className: string): Promise<string> {
     if (type == 1 || type == 2) { } else type = 0;
     let numbFmt: string = name + type;
-    let html: string = this.Map.get(numbFmt);
+    let html: string|boolean = this.Map.hasOwnProperty(numbFmt);
     if (!html) {
       if (className != "") { className = "class='" + className + "'"; } else { className = ""; }
       let parameter = await this.getByNumb(name);
       if (parameter != null) {
         if (type == 1) {
-          html = await this.setRadioCheckbox(parameter, "radio", inputName, className);
+          html = this.setRadioCheckbox(parameter, "radio", inputName, className);
         } else if (type == 2) {
-          html = await this.setRadioCheckbox(parameter, "checkbox", inputName, className);
+          html = this.setRadioCheckbox(parameter, "checkbox", inputName, className);
         } else {
-          html = await this.setSelect(parameter, inputName, className);
+          html = this.setSelect(parameter, inputName, className);
         }
       }
-      this.Map.set(numbFmt, html);
+      this.Map[numbFmt]=html;
     }
-    return html;
+    return html as string;
   }
-  static async setSelect(parameter: Parse, inputName: string, className: string): Promise<string> {
+  static setSelect(parameter: Parse, inputName: string, className: string):string {
     let sb: string = "<label>" + parameter.parameterName + "</label><select " + className +
       "name='" + inputName + "'><option value=''></option>", vls: Array<string> = parameter.keywordDESC.split(",");
     for (let i in vls) {
@@ -56,7 +56,7 @@ export class Tag {
     } sb = sb + "</select>";
     return sb;
   }
-  static async setRadioCheckbox(parameter: Parse, type: string, inputName: string, className: string): Promise<string> {
+  static setRadioCheckbox(parameter: Parse, type: string, inputName: string, className: string):string {
     let sb: string = "<span " + className + ">" + parameter.parameterName + "：",
       vls: Array<string> = parameter.keywordDESC.split(",");
     for (let i in vls) {

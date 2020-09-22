@@ -7,12 +7,9 @@ import { Maps } from "./config"
 class View {
   @Get()
   @Get("index.html")
-  async index(ctx: Context) {
-    ctx.body = await html(ctx, { test: "test", author: "asciphx" })
-  }
   @Get("login.html")
-  async login(ctx: Context) {
-    ctx.body = await html(ctx, { test: "test", author: "Login" })
+  async html(ctx: Context) {
+    ctx.body = await html(ctx, { test: "For ", author: "anyone" })
   }
   @Get("_")
   async _(ctx: Context) {
