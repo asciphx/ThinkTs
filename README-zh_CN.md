@@ -76,12 +76,12 @@ export interface UserFace{
 - [x] 可以自定义控制器调用的服务类变量名，并且不会影响运行速度
 
 ## 新版自定义JWT鉴权说明
-> Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里并由后端额外提供动态secret，此项目只是个高度安全的案例，只要后端代码加强算法并不泄露，就难破解，但切记莫跟作者我较真。
+> Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里并由后端额外提供动态secret，此项目只是个高度安全的案例，只要后端代码加强算法并不泄露，就难破解。
 > ```javascript
 > a:`${token}`
 > s:`${secret}`
 > ```
-> 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面那样使用即可。前端目前还在实现中，因作者势单力薄，暂给大家用Postman吧。
+> 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜。
 > 在正式环境下启动的指令，windows使用的是npm run pro,而Mac或者Linux是npm run prod
 > 因我本人用的是windows10，暂pm2不支持linux或者Mac，如需使用请重写并自行测试
 
