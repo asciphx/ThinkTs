@@ -8,19 +8,21 @@ import { Tag } from "./utils/tag";import { encryptPwd, NTo10 } from "./utils/cry
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/entity").forEach(i=>{
-    const en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key])
+    let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);key=en=null
   });
   await fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
-  const app = new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"5mb",textLimit:"2mb"}))
+  const app = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "5mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(async (ctx, next) => {
-    ctx.set('Access-Control-Allow-Origin',"*");
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type,Content-Length,Authorization,Accept,Cache-Control,X-Requested-With');
-    ctx.set('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+    ctx.set('Access-Control-Allow-Origin',ctx.headers.origin);
+    ctx.set('Access-Control-Allow-Headers','content-type');
+    ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
+    ctx.set('Access-Control-Allow-Credentials',"true");
     if (ctx.method === 'OPTIONS') { ctx.body=200; }
     if(ctx.url.match(Conf.unless)||Conf.noJwt){await next();return}
     const token:string=ctx.headers.a,s:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
+    if (ctx.url === "/") { ctx.redirect('/index.html'); return }//重定向
     if(token&&s){
       try {
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
@@ -45,7 +47,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       }
     }else{ ctx.status=401;ctx.body="Headers Error"; }
   });
-  setInterval(()=>{Conf.secret=11+Math.random()*25|0;},15000);
+  setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);//每1.414秒换一次私钥
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
@@ -53,8 +55,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     })
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
-    console.log(`ThinkTs run on http://localhost:${Conf.port}/index.html`))
-    
+    console.log(`ThinkTs run on http://localhost:${Conf.port}`))
   const exist = await Cache[User.name].findOne({account:"admin"});
   if (exist) {console.error("董事长已存在!");return;} else
   return Cache[User.name].save(new User("admin",encryptPwd("654321")))
