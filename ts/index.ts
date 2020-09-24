@@ -20,9 +20,8 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
     ctx.set('Access-Control-Allow-Credentials',"true");
     if (ctx.method === 'OPTIONS') { ctx.body=200; }
-    if(ctx.url.match(Conf.unless)||Conf.noJwt){await next();return}
+    if(ctx.url.match(Conf.unless)||Conf.noJwt||ctx.url === "/"){await next();return}
     const token:string=ctx.headers.a,s:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
-    if (ctx.url === "/") { ctx.redirect('/index.html'); return }//重定向
     if(token&&s){
       try {
         let {payload}=Jwt.verify(token.replace(/^Bearer /,""),
