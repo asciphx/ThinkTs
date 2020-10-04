@@ -2,11 +2,12 @@ import { Brackets, Repository } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
 import { Service } from "../think/service";
-import { encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
+import { P, H, encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
 import * as jwt from "jsonwebtoken"
 import { Conf, Cache } from "../config";
 import { Role } from '../entity/Role';
 
+const type:P = "shake256", digest:H = "base64", length=28;
 export class UserService extends Service implements UserFace {
   constructor(
     private user:Repository<User>=Cache[User.name],
@@ -28,13 +29,13 @@ export class UserService extends Service implements UserFace {
   async register(user: User):Promise<any>{
     const exist = await this.user.findOne({account:user.account});
     if (exist) return {status:409,mes:"账户已存在"};
-    return this.user.insert(new User(user.account,encryptPwd(user.pwd)));
+    return this.user.insert(new User(user.account,encryptPwd(user.pwd,type,digest,length)));
   }
   async login(account:string,pwd:string) {
     const user = await this.user.createQueryBuilder()
-    .addSelect("User.pwd").where("account =:ac",{ac:account}).getOne()
+    .addSelect("User.pwd").where(`account ="${account}"`).getOne()
     if (!user) return {status:406,mes:"登录账号有误"};
-    if (!checkPwd(pwd, user.pwd))return {status:406,mes:"登录密码有误"};
+    if (!checkPwd(pwd, user.pwd,type,digest,length))return {status:406,mes:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);
     const roles=await this.role.createQueryBuilder("r").select("r.name")
     .leftJoin("r.users","user").where("user.id =:u",{u:user.id}).getMany();

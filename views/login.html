@@ -15,8 +15,9 @@
   <%= test %> for <%= author %><br/>
   <input id="token" placeholder="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYXNjaXBoeCIsImlhdCI6MTYwMDMwOTI1MywiZXhwIjoxNjAwMzQ1MjUzfQ.UrfgJfaw4ohmaKN8Oir-qLuNZwYeZU0t_OTeJbezJX8"/>
   <input id="secret" placeholder="secret" value="981fm5lo#acd"/>
+  <input id="html" placeholder="html" value="http://localhost:8080/admin/index.html"/>
 
-  <button id="ajax" onclick='ajax("http://localhost:3000/admin/index.html")'>ajax跳转到静态页</button>
+  <button id="ajax" onclick='ajax(document.getElementById("html").value)'>ajax跳转到静态页</button>
 </body>
 <script src="./static/js/jquery.min.js"></script>
 <script>//模拟演示ajax请求获得静态页面.
@@ -31,13 +32,14 @@
       },
       async: false,
       success: function(data) {
-        window.history.pushState("",0,url);//模拟地址栏改变
         if(document.documentMode >9|| document.documentMode == undefined){
           var a=document.createElement("html");a.innerHTML=data.replace(/(<!|<)\w* ?html>\n?/g,"")
           document.documentElement.parentNode.replaceChild(a,document.documentElement)
+          window.history.pushState(document.documentURI,a.ownerDocument.title,url);
         }else{
           data=data.replace(/\n?(<!|<)\w* ?html ?(lang="en")?>|<\/html>/g,"")
           document.body.innerHTML=data.replace(/.*(?=)+<body/g,"<body")
+          window.history.pushState("",0,url);
           // document.head.innerText=data.replace(/\<head\>((\n.*)+)\<\/head\>/g,"$1")
           // document.head在ie<10版本会是只读,所以若兼容ie10以下的版本，head尽量保持一致
         }

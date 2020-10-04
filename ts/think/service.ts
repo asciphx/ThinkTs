@@ -1,6 +1,6 @@
 import { Page } from "../utils/page";
 import { Repository, ObjectLiteral } from "typeorm";
-interface _ {orderBy?: {};groupBy?:{};leftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
+interface _ {orderBy?: {};groupBy?:string;leftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
 addLeftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
 where?:Function; select?:string|string[]|any; addSelect?:string|string[]|any }
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入
@@ -36,7 +36,9 @@ export abstract class Service{
       if(Object.keys(this._.orderBy).length!==0){
         for (const key in this._.orderBy) {v.addOrderBy(key,this._.orderBy[key].toUpperCase()) }
       }
+      if(this._.groupBy){v.where(v.groupBy(this._.groupBy))}
     }
-    return {list:await v.getMany(),page:new Page(current,size,await v.getCount()).get()};
+    const [list,count]=await v.getManyAndCount()
+    return {list:list,page:new Page(current,size,count).get()};
   }
 }

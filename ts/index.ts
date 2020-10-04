@@ -20,7 +20,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
     ctx.set('Access-Control-Allow-Credentials',"true");
     if (ctx.method === 'OPTIONS') { ctx.body=200; }
-    if(ctx.url.match(Conf.unless)||Conf.noJwt||ctx.url === "/"){await next();return}
+    if(ctx.url.match(Conf.unless)||Conf.noJwt){await next();return}
     const token:string=ctx.headers.a,s:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
     if(token&&s){
       try {
@@ -54,7 +54,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     })
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
-    console.log(`ThinkTs run on http://localhost:${Conf.port}`))
+    console.log(`ThinkTs run on http://localhost:${Conf.port}/test.html`))
   const exist = await Cache[User.name].findOne({account:"admin"});
   if (exist) {console.error("董事长已存在!");return;} else
   return Cache[User.name].save(new User("admin",encryptPwd("654321")))

@@ -1,19 +1,24 @@
 import { createHash } from 'crypto';
 const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+type P = "md5"|"sha1"|"shake128"|"shake256"|"sha256"|"sha224"|"sha512"|"sha384"|"sm3"|"whirlpool"|"ripemd";
+type H = "latin1"|"hex"|"base64";
 /**
- * 加密登录密码
+ * 加密登录密码,digest只有"hex"|"base64"支持utf8，而latin1只支持utf8mb4,下面初始值只是一个例子
+ * outputLength:加密后的密码长度=latin1，*1.25~1.45=base64，*2=hex
+ * 28的outputLength使用latin1输出的长度是28，base64是40，hex则56
+ * 对于outputLength输出,shake支持任意长度,ripemd只支持20,其他一般是16的倍数
  * @param pwd 登录密码
  */
-const encryptPwd = (pwd: string): string => {
-  return createHash('shake256', { outputLength: 28 }).update(pwd).digest('base64');
+const encryptPwd = (pwd: string,type:P='shake256',digest:H='latin1',length:number=40): string => {
+  return createHash(type, { outputLength: length }).update(pwd).digest(digest);
 }
 /**
  * 检查登录密码是否正确
  * @param pwd 登录密码
  * @param encryptedPwd 加密后的密码
  */
-const checkPwd = (pwd: string, encryptedPwd): boolean => {
-  const currentPass = encryptPwd(pwd);
+const checkPwd = (pwd: string, encryptedPwd,type:P,digest:H,length:number): boolean => {
+  const currentPass = encryptPwd(pwd,type,digest,length);
   if (currentPass === encryptedPwd) {
     return true;
   }
@@ -31,12 +36,12 @@ const utf8_encode = (string: string) => {
     if (z < 128) {
       utftext += String.fromCharCode(z);
     } else if (z > 127 && z < 2048) {
-      utftext += String.fromCharCode(z >> 6 | 192);
-      utftext += String.fromCharCode(z & 63 | 128);
+      utftext += String.fromCharCode(z >> 6|192);
+      utftext += String.fromCharCode(z & 63|128);
     } else {
-      utftext += String.fromCharCode(z >> 12 | 224);
-      utftext += String.fromCharCode(z >> 6 & 63 | 128);
-      utftext += String.fromCharCode(z & 63 | 128);
+      utftext += String.fromCharCode(z >> 12|224);
+      utftext += String.fromCharCode(z >> 6 & 63|128);
+      utftext += String.fromCharCode(z & 63|128);
     }
   }
   return utftext;
@@ -53,10 +58,10 @@ const utf8_decode = (utf8: string) => {
       string += String.fromCharCode(z);
       i++;
     } else if (z > 191 && z < 224) {
-      string += String.fromCharCode((z & 31) << 6 | (utf8.charCodeAt(i + 1) & 63));
+      string += String.fromCharCode((z & 31) << 6|(utf8.charCodeAt(i + 1) & 63));
       i += 2;
     } else {
-      string += String.fromCharCode((z & 15) << 12 | (utf8.charCodeAt(i + 1) & 63) << 6 | (utf8.charCodeAt(i + 2)
+      string += String.fromCharCode((z & 15) << 12|(utf8.charCodeAt(i + 1) & 63) << 6|(utf8.charCodeAt(i + 2)
         & 63));
       i += 3;
     }
@@ -106,4 +111,4 @@ const NTo10=(v:string,n:number):number=>{if(n>62||n<2)return;if(n<37)v=v.toLower
   }
   return addNumber;
 }
-export { encryptPwd, checkPwd, utf8_encode, utf8_decode, IntTo62, TenToN, NTo10 }
+export { P, H, encryptPwd, checkPwd, utf8_encode, utf8_decode, IntTo62, TenToN, NTo10 }
