@@ -36,7 +36,7 @@ export abstract class Service{
       if(Object.keys(this._.orderBy).length!==0){
         for (const key in this._.orderBy) {v.addOrderBy(key,this._.orderBy[key].toUpperCase()) }
       }
-      if(this._.groupBy){v.where(v.groupBy(this._.groupBy))}
+      if(this._.groupBy){v.groupBy(this._.groupBy)}
     }
     const [list,count]=await v.getManyAndCount()
     return {list:list,page:new Page(current,size,count).get()};
