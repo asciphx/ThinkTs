@@ -57,14 +57,24 @@ const Service=v=>(t,k)=>{
 const parameter=(oMethod,desc)=>{
   let o=Object.keys(oMethod);
   if(o[0]){o.reverse();
-    desc.value=async function(ctx:Context,next:Function){
-      switch (o.length) {
-        case 1:return await oMethod.call(this, ctx[o[0]], next);
-        case 2:return await oMethod.call(this, ctx[o[0]], ctx[o[1]], next);
-        case 3:return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
-        case 4:return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
-      }
-    };
+    switch (o.length) {
+      case 1:
+        desc.value=async function(ctx:Context,next:Function){
+          return await oMethod.call(this, ctx[o[0]], next);
+        };break
+      case 2:
+        desc.value=async function(ctx:Context,next:Function){
+          return await oMethod.call(this, ctx[o[0]], ctx[o[1]], next);
+        };break
+      case 3:
+        desc.value=async function(ctx:Context,next:Function){
+          return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
+        };break
+      case 4:
+        desc.value=async function(ctx:Context,next:Function){
+          return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
+        };break
+    }
   }else o=null;desc=null
 }
 export {Routes,Class,Get,Post,Put,Del,Middle,Service,P,Q,R,S};
