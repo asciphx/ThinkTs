@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import { Context } from "koa";
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -58,20 +58,16 @@ const parameter=(oMethod,desc)=>{
   let o=Object.keys(oMethod);
   if(o[0]){o.reverse();
     switch (o.length) {
-      case 1:
-        desc.value=async function(ctx:Context,next:Function){
+      case 1:desc.value=async function(ctx,next:Function){
           return await oMethod.call(this, ctx[o[0]], next);
         };break
-      case 2:
-        desc.value=async function(ctx:Context,next:Function){
+      case 2:desc.value=async function(ctx,next:Function){
           return await oMethod.call(this, ctx[o[0]], ctx[o[1]], next);
         };break
-      case 3:
-        desc.value=async function(ctx:Context,next:Function){
+      case 3:desc.value=async function(ctx,next:Function){
           return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
         };break
-      case 4:
-        desc.value=async function(ctx:Context,next:Function){
+      case 4:desc.value=async function(ctx,next:Function){
           return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
         };break
     }

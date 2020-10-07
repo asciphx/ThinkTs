@@ -15,8 +15,8 @@ class AdminController extends Controller{
 
   @Middle(W.Log)
   @Post("login")
-  async login(ctx:Context) {
-    ctx.body=await this.userSvc.login(ctx.request.body);
+  async login(@R request) {
+    return await this.userSvc.login(request.body);
   }
 }
 /** Here's how to show EJS template rendering */
