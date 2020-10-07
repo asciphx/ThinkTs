@@ -4,20 +4,20 @@ export abstract class Controller {
   [x: string]: any;
  
   private async add(ctx: Context) {
-    ctx.body = await this.save(ctx.request.body);
+    return await this.save(ctx.request.body);
   }
   private async del(ctx: Context) {
-    ctx.body = await this.remove(ctx.params.id);
+    return await this.remove(ctx.params.id);
   }
   private async fix(ctx: Context) {
-    ctx.body = await this.update(ctx.params.id, ctx.request.body);
+    return await this.update(ctx.params.id, ctx.request.body);
   }
   private async info(ctx: Context) {
     let v = await this.findOne(ctx.params.id);
-    if (!v) { ctx.status = 404; return; }
-    ctx.body = v;
+    if (!v) { ctx.status = 404; return "Not Found"; }
+    return v;
   }
   private async page(ctx: Context) {
-    ctx.body = await this.list(ctx.query);
+    return await this.list(ctx.query);
   }
 }

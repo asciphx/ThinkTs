@@ -9,10 +9,10 @@ class View {
   @Get("index.html")
   @Get("login.html")
   async html(ctx: Context) {
-    ctx.body = await html(ctx, { test: "For ", author: "anyone" });
+    return await html(ctx, { test: "For ", author: "anyone" });
   }
   @Get("_")
-  async _(ctx: Context) {
-    ctx.body = Maps;
+  async _() {
+    return Maps;
   }
 }

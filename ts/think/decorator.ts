@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import { Context } from "koa";
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -16,7 +16,7 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
       case "page":Routes.push({a:"page",m:"get",r:""});break;
       default:console.error("Wrong entry!");break;
     }
-  })
+  });
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);
@@ -37,10 +37,14 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
     }_=$=null
   }else a=_=$=null;
 }
-const Get = (r="") => (t, k) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
-const Post = (r="") => (t, k) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
-const Put = (r="") => (t, k) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
-const Del = (r="") => (t, k) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r})}
+const Get = (r="") => (t, k, d) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
+const Post = (r="") => (t, k, d) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
+const Put = (r="") => (t, k, d) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
+const Del = (r="") => (t, k, d) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
+const P=(t, k, i: number)=>{t[k]["params"]=i}
+const Q=(t, k, i: number)=>{t[k]["query"]=i}
+const R=(t, k, i: number)=>{t[k]["request"]=i}
+const S=(t, k, i: number)=>{t[k]["status"]=i}
 const Middle = (...r:Array<Function>) => (t, k) => {
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
@@ -50,5 +54,17 @@ const Service=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-
-export {Routes,Class,Get,Post,Put,Del,Middle,Service};
+const parameter=(oMethod,desc)=>{
+  let o=Object.keys(oMethod);
+  if(o[0]){o.reverse();
+    desc.value=async function(ctx:Context,next:Function){
+      switch (o.length) {
+        case 1:return await oMethod.call(this, ctx[o[0]], next);
+        case 2:return await oMethod.call(this, ctx[o[0]], ctx[o[1]], next);
+        case 3:return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
+        case 4:return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
+      }
+    };
+  }else o=null;desc=null
+}
+export {Routes,Class,Get,Post,Put,Del,Middle,Service,P,Q,R,S};

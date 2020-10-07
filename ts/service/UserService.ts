@@ -46,7 +46,7 @@ export class UserService extends Service implements UserFace {
     secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
   }
   async fix(id: number,user: User){
-    user.pwd = encryptPwd(user.pwd);
+    user.pwd = encryptPwd(user.pwd,type,digest,length);
     return this.user.update(id,user);
   }
 }

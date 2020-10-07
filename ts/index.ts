@@ -50,7 +50,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
     router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
-      await r.a(ctx,next)
+      ctx.body=await r.a(ctx,next)
     })
   })
   app.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>

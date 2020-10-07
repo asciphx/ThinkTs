@@ -1,7 +1,6 @@
-import { Class, Post, Service, Put, Middle } from "../think/decorator"
+import { Class, Post, Service, Put, Middle, R, P } from "../think/decorator"
 import { MenuService } from '../service/MenuService';
 import { Controller } from '../think/controller';
-import { Context } from "koa";
 import { W } from "../weblogic";
 
 @Class(["del", "info", "page"])
@@ -9,12 +8,12 @@ class MenuController extends Controller {
   @Service(MenuService) readonly menu: MenuService
 
   @Post()
-  async _(ctx:Context){
-    ctx.body = await this.menu.insert(ctx.request.body);
+  async _(@R r){
+    return await this.menu.insert(r.body);
   }
   @Middle(W.Log)
   @Put(":id")
-  async $(ctx:Context){
-    ctx.body = await this.menu.fix(ctx.params.id,ctx.request.body);
+  async $(@P p,@R r){
+    return await this.menu.fix(p.id,r.body);
   }
 }

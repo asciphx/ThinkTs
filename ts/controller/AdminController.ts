@@ -10,11 +10,11 @@ class AdminController extends Controller {
   
   @Get("sql")
   async sql(ctx:Context){
-    ctx.body = await this.adm_.sql(ctx.query);
+    return await this.adm_.sql(ctx.query);
   }
 
   @Get("index.html")
   async index(ctx:Context){
-    ctx.body= await html(ctx, { path: "admin" })
+    return await html(ctx, { path: "admin" })
   }
 }
