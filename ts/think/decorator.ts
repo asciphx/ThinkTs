@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import { Context } from "koa"
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -41,10 +41,6 @@ const Get = (r="") => (t, k, d) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"
 const Post = (r="") => (t, k, d) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
 const Put = (r="") => (t, k, d) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
 const Del = (r="") => (t, k, d) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const P=(t, k, i: number)=>{t[k]["params"]=i}
-const Q=(t, k, i: number)=>{t[k]["query"]=i}
-const R=(t, k, i: number)=>{t[k]["request"]=i}
-const S=(t, k, i: number)=>{t[k]["status"]=i}
 const Middle = (...r:Array<Function>) => (t, k) => {
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
@@ -54,6 +50,10 @@ const Service=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
+const P:Function=(t, k, i: number)=>{t[k]["params"]=i}//ctx.params
+const Q:Function=(t, k, i: number)=>{t[k]["query"]=i}//ctx.query
+const R:Function=(t, k, i: number)=>{t[k]["request"]=i}//ctx.request
+const S:Function=(t, k, i: number)=>{t[k]["status"]=i}//ctx.status
 const parameter=(oMethod,desc)=>{
   let o=Object.keys(oMethod);
   if(o[0]){o.reverse();
