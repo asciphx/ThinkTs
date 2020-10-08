@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import { Context } from "koa"
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -70,6 +70,7 @@ const parameter=(oMethod,desc)=>{
       case 4:desc.value=async function(ctx,next:Function){
           return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
         };break
+      default:console.error("Wrong parameter!");break;
     }
   }else o=null;desc=null
 }
