@@ -64,14 +64,14 @@ export interface UserFace{
 
 ### Features
 - [x] The default value of class class decorator is`/`+ entity class name, which can also be customized
-- [x] automatically scan controller directory and configure routes route
-- [x] automatically scan the entity directory and load it into Cache, which is equivalent to a container, which can avoid multiple instances of entity
-- [x] automatically generate the configuration route file for reference, which is under the routes directory
-- [x] automatic implementation of addition, deletion, modification and query
-- [x] now add the basic controller and service layer. The controller decorator can be customized to automatically add, delete, modify, query and pagination.
-- [x] the controller can now customize the name of the service class variable to be called.
+- [x] Automatically scan controller directory and configure routes route
+- [x] Automatically scan the entity directory and load it into Cache, which is equivalent to a container, which can avoid multiple instances of entity
+- [x] Automatically generate the configuration route file for reference, which is under the routes directory
+- [x] Automatic implementation of addition, deletion, modification and query
+- [x] Now add the basic controller and service layer. The controller decorator can be customized to automatically add, delete, modify, query and pagination.
+- [x] The controller can now customize the name of the service class variable to be called.
 - [x] In order to reduce memory overhead and instance calls, we have implemented the containerization of entity classes.
-
+- [x] Add parameter decorator, more convenient and beautiful, etc
 ## New version of custom JWT authentication description
 
 > The header request header now has two parameters, and the original JWT does not change. Now add a secret. Secret is now provided by the back end. The algorithm is in the cryptoUtil.ts in
@@ -96,6 +96,10 @@ Delete：DELETE/admin/
 Modification：PUT/admin/  
 Query：GET/admin/  
 Pagination：GET/admin  
+
+The return value in restful specification actually costs too much bandwidth. However, I think the front end only needs to judge whether the return is a string or an object. For example, the string is displayed directly (the front-end pop-up window is OK),
+If an object is returned, the request status code must be 200, so only the important data is taken without the code status code and mass message to indicate success (those two things are totally a waste of traffic).
+
 
 ### Directory structure
 1. ts: ` back end file entry`
