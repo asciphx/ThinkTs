@@ -10,20 +10,20 @@ export abstract class Service{
   constructor(_?:_,$?:string){
     this._=_;if($)this.$=$;
   }
-  private async save(obj) {
+  private async _save(obj) {
     return this[this.$].save(obj);
   }
-  private async update(id: number, obj) {
+  private async _update(id: number, obj) {
     return this[this.$].update(id, obj);
   }
-  private async remove(id: number) {
+  private async _remove(id: number) {
     let rm = await this[this.$].findOne(id);
     return this[this.$].remove(rm);
   }
-  private async findOne(id: number) {
+  private async _findOne(id: number) {
     return this[this.$].findOne(id);
   }
-  private async list(query) {
+  private async _list(query) {
     let { size = 10, current = 1 } = query;//默认每页10个，当前第一页
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
       .take(size).skip(current*size-size);

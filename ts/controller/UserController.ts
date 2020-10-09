@@ -20,7 +20,7 @@ class UserController extends Controller {
     .then(r=>r.status?r.mes:r).catch(e=>console.error(e))
   }
   @Put(":id")
-  async update(@P p,@R r){
-    return await this.u_.fix(p.id,r.body);
+  async fix(@P p,@R r){
+    return await this.u_.fix(p.id,r.body).then(r =>r.raw.changedRows?'已修改':'未修改')
   }
 }

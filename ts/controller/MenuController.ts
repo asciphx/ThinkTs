@@ -8,12 +8,12 @@ class MenuController extends Controller {
   @Service(MenuService) readonly menu: MenuService
 
   @Post()
-  async _(@R r){
-    return await this.menu.insert(r.body);
+  async add(@R r){
+    return await this.menu.add(r.body);
   }
   @Middle(W.Log)
   @Put(":id")
-  async $(@P p,@R r){
+  async fix(@P p,@R r){
     return await this.menu.fix(p.id,r.body);
   }
 }

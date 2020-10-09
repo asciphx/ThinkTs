@@ -47,6 +47,6 @@ export class UserService extends Service implements UserFace {
   }
   async fix(id: number,user: User){
     user.pwd = encryptPwd(user.pwd,type,digest,length);
-    return this.user.update(id,user);
+    return this.user.update(id, user)
   }
 }

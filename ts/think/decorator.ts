@@ -9,18 +9,18 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
   t.forEach(v=>{
     switch (v) {
-      case "add":Routes.push({a:"add",m:"post",r:""});break;
-      case "del":Routes.push({a:"del",m:"delete",r:"/:id"});break;
-      case "fix":Routes.push({a:"fix",m:"put",r:"/:id"});break;
-      case "info":Routes.push({a:"info",m:"get",r:"/:id"});break;
-      case "page":Routes.push({a:"page",m:"get",r:""});break;
+      case "add":Routes.push({a:"_add",m:"post",r:""});break;
+      case "del":Routes.push({a:"_del",m:"delete",r:"/:id"});break;
+      case "fix":Routes.push({a:"_fix",m:"put",r:"/:id"});break;
+      case "info":Routes.push({a:"_info",m:"get",r:"/:id"});break;
+      case "page":Routes.push({a:"_page",m:"get",r:""});break;
       default:console.error("Wrong entry!");break;
     }
   });
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);
-    if(["add","del","fix","info","page"].indexOf(Routes[r].a)>-1)
+    if(["_add","_del","_fix","_info","_page"].indexOf(Routes[r].a)>-1)
       Routes[r].a=_.prototype[Routes[r].a].bind($[_.prototype["#"]])
     else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
   }
@@ -37,10 +37,10 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
     }_=$=null
   }else a=_=$=null;
 }
-const Get = (r="") => (t, k, d) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Post = (r="") => (t, k, d) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Put = (r="") => (t, k, d) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Del = (r="") => (t, k, d) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
+const Get = (r="") => (t, k, d) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});return parameter(d.value,d)}
+const Post = (r="") => (t, k, d) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});return parameter(d.value,d)}
+const Put = (r="") => (t, k, d) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});return parameter(d.value,d)}
+const Del = (r="") => (t, k, d) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});return parameter(d.value,d)}
 const Middle = (...r:Array<Function>) => (t, k) => {
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")

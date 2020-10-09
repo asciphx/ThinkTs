@@ -7,7 +7,7 @@ class RoleController extends Controller {
   @Service(RoleService) readonly role_: RoleService
 
   @Put(":id")
-  async $(@P p,@R r){
+  async fix(@P p,@R r){
     return await this.role_.fix(p.id,r.body);
   }
   @Get("/perm")//http://localhost:3000/role/perm?roles=admin,normal,……

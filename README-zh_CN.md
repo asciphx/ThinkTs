@@ -73,7 +73,7 @@ export interface UserFace{
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
 - [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页
-- [x] 可以自定义控制器调用的服务类变量名，并且不会影响运行速度
+- [x] 增加参数装饰器，更加便捷美观，等等
 
 ## 新版自定义JWT鉴权说明
 > Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里并由后端额外提供动态secret，此项目只是个高度安全的案例，只要后端代码加强算法并不泄露，就难破解。

@@ -26,7 +26,7 @@ export class MenuService extends Service {
     if(I)I[I.findIndex(v=>v===(e as any).path)]=menu.path;I=o=e=null;//console.log(Maps)
     return await this.menu.update(id,menu);
   }
-  async insert(menu:Menu) {
+  async add(menu:Menu) {
     let res=await this.menu.save(menu);
     if(menu.roles)menu.roles.forEach(e => {if(e.name)Maps[e.name].push(menu.name)});
     return res
