@@ -10,8 +10,8 @@
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController extends Controller{
-  @Service(AdminService) readonly adminSvc:AdminService
-  @Service(UserService) readonly userSvc:AdminService
+  @Inject(AdminService) readonly adminSvc:AdminService
+  @Inject(UserService) readonly userSvc:AdminService
 
   @Middle(W.Log)
   @Post("login")
