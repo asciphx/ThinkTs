@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import { Context } from "koa"
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -50,28 +50,24 @@ const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const P:Function=(t, k, i: number)=>{t[k]["params"]=i}//ctx.params
-const Q:Function=(t, k, i: number)=>{t[k]["query"]=i}//ctx.query
-const R:Function=(t, k, i: number)=>{t[k]["request"]=i}//ctx.request
-const S:Function=(t, k, i: number)=>{t[k]["status"]=i}//ctx.status
-const parameter=(m,d)=>{
+const P:Function=(t, k, i: number)=>{t[k].params=i}//ctx.params
+const Q:Function=(t, k, i: number)=>{t[k].query=i}//ctx.query
+const R:Function=(t, k, i: number)=>{t[k].request=i}//ctx.request
+const parameter=(m:Function,d)=>{
   let o=Object.keys(m);
   if(o[0]){o.reverse();
     switch (o.length) {
-      case 1:d.value=async function(ctx,next:Function){
+      case 1:d.value=async function(ctx:Context,next:Function){
           return await m.call(this, ctx[o[0]], next);
         };break
       case 2:d.value=async function(ctx,next:Function){
-          return await m.call(this, ctx[o[0]], ctx[o[1]], next);
+          return await m.apply(this, [ctx[o[0]], ctx[o[1]], next]);
         };break
       case 3:d.value=async function(ctx,next:Function){
           return await m.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
-        };break
-      case 4:d.value=async function(ctx,next:Function){
-          return await m.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
         };break
       default:console.error("Wrong parameter!");break;
     }
   }else o=null;d=null
 }
-export {Routes,Class,Get,Post,Put,Del,Middle,Inject,P,Q,R,S};
+export {Routes,Class,Get,Post,Put,Del,Middle,Inject,P,Q,R};

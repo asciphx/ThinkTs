@@ -4,7 +4,7 @@ import { Role } from "./Role";
 
 @Entity()
 export class User extends Orm {
-  @Column({ comment: "账户", length: 10, unique: true })
+  @Column({ comment: "账户", length: 10 })
   account: string
   @Column({ comment: "密码（select禁用）", length: 40, select: false })
   pwd: string
