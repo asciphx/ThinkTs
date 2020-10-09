@@ -1,10 +1,10 @@
-import { Class, Service, Put, Get, Q, R, P } from "../think/decorator"
+import { Class, Inject, Put, Get, Q, R, P } from "../think/decorator"
 import { RoleService } from '../service/RoleService';
 import { Controller } from '../think/controller';
 
 @Class(["del", "info", "page", "add"])
 class RoleController extends Controller {
-  @Service(RoleService) readonly role_: RoleService
+  @Inject(RoleService) readonly role_: RoleService
 
   @Put(":id")
   async fix(@P p,@R r){

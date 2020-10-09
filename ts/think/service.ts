@@ -1,8 +1,6 @@
-import { Page } from "../utils/page";
-import { Repository, ObjectLiteral } from "typeorm";
-interface _ {orderBy?: {};groupBy?:string;leftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
-addLeftJoin?: {e:Function | string,a:string,c?:string,p?:ObjectLiteral;};
-where?:Function; select?:string|string[]|any; addSelect?:string|string[]|any }
+import { Page } from "../utils/page";import { Repository, ObjectLiteral } from "typeorm";
+interface _{orderBy?:{};groupBy?:string;leftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};where?:Function;
+addLeftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};select?:string|string[]|any;addSelect?:string|string[]|any}
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入
 export abstract class Service{
   private $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();

@@ -1,11 +1,11 @@
-import { Class, Post, Middle, Service, Put, R, P } from "../think/decorator"
+import { Class, Post, Middle, Inject, Put, R, P } from "../think/decorator"
 import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Controller } from '../think/controller';
 
 @Class("user",["del", "info", "page"])
 class UserController extends Controller {
-  @Service(UserService) readonly u_: UserService
+  @Inject(UserService) readonly u_: UserService
   
   @Middle(W.Log)
   @Post("register")
@@ -21,6 +21,6 @@ class UserController extends Controller {
   }
   @Put(":id")
   async fix(@P p,@R r){
-    return await this.u_.fix(p.id,r.body).then(r =>r.raw.changedRows?'已修改':'未修改')
+    return await this.u_.fix(p.id,r.body).then(r=>r.raw.changedRows?'已修改':'未修改')
   }
 }

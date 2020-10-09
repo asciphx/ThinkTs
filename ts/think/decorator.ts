@@ -46,7 +46,7 @@ const Middle = (...r:Array<Function>) => (t, k) => {
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
 }
-const Service=v=>(t,k)=>{
+const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
@@ -54,24 +54,24 @@ const P:Function=(t, k, i: number)=>{t[k]["params"]=i}//ctx.params
 const Q:Function=(t, k, i: number)=>{t[k]["query"]=i}//ctx.query
 const R:Function=(t, k, i: number)=>{t[k]["request"]=i}//ctx.request
 const S:Function=(t, k, i: number)=>{t[k]["status"]=i}//ctx.status
-const parameter=(oMethod,desc)=>{
-  let o=Object.keys(oMethod);
+const parameter=(m,d)=>{
+  let o=Object.keys(m);
   if(o[0]){o.reverse();
     switch (o.length) {
-      case 1:desc.value=async function(ctx,next:Function){
-          return await oMethod.call(this, ctx[o[0]], next);
+      case 1:d.value=async function(ctx,next:Function){
+          return await m.call(this, ctx[o[0]], next);
         };break
-      case 2:desc.value=async function(ctx,next:Function){
-          return await oMethod.call(this, ctx[o[0]], ctx[o[1]], next);
+      case 2:d.value=async function(ctx,next:Function){
+          return await m.call(this, ctx[o[0]], ctx[o[1]], next);
         };break
-      case 3:desc.value=async function(ctx,next:Function){
-          return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
+      case 3:d.value=async function(ctx,next:Function){
+          return await m.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
         };break
-      case 4:desc.value=async function(ctx,next:Function){
-          return await oMethod.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
+      case 4:d.value=async function(ctx,next:Function){
+          return await m.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], ctx[o[3]], next);
         };break
       default:console.error("Wrong parameter!");break;
     }
-  }else o=null;desc=null
+  }else o=null;d=null
 }
-export {Routes,Class,Get,Post,Put,Del,Middle,Service,P,Q,R,S};
+export {Routes,Class,Get,Post,Put,Del,Middle,Inject,P,Q,R,S};

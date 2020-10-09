@@ -42,9 +42,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
       } catch (e) {e=String(e);
         if(e.includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(e.includes('QueryFailedError')){ ctx.status=406;ctx.body=e;
-        } else {console.log(e)
-          ctx.status = 401; ctx.body = "Authentication Error";
-        }
+        }else{console.log("Authentication Error",e);ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{ ctx.status=401;ctx.body="Headers Error"; }
   });

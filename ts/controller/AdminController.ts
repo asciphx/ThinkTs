@@ -1,4 +1,4 @@
-import { Class, Service, Get } from "../think/decorator"
+import { Class, Inject, Get } from "../think/decorator"
 import { AdminService } from "../service/AdminService"
 import { Context } from "koa"
 import { Controller } from '../think/controller';
@@ -6,7 +6,7 @@ import { html } from "../utils/tool";
 
 @Class(["add", "del", "info", "fix", "page"])
 class AdminController extends Controller {
-  @Service(AdminService) readonly adm_: AdminService
+  @Inject(AdminService) readonly adm_: AdminService
   
   @Get("sql")
   async sql(ctx:Context){

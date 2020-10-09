@@ -1,11 +1,11 @@
-import { Class, Post, Service, Put, Middle, R, P } from "../think/decorator"
+import { Class, Post, Inject, Put, Middle, R, P } from "../think/decorator"
 import { MenuService } from '../service/MenuService';
 import { Controller } from '../think/controller';
 import { W } from "../weblogic";
 
 @Class(["del", "info", "page"])
 class MenuController extends Controller {
-  @Service(MenuService) readonly menu: MenuService
+  @Inject(MenuService) readonly menu: MenuService
 
   @Post()
   async add(@R r){
