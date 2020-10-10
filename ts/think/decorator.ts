@@ -50,7 +50,7 @@ const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const B:Function=(t,k,i:number)=>{t[k]["request.body"]=i}//ctx.body
+const B:Function=(t,k,i:number)=>{t[k]["request.body"]=i}//ctx.request.body
 const P:Function=(t,k,i:number)=>{t[k].params=i}//ctx.params
 const Q:Function=(t,k,i:number)=>{t[k].query=i}//ctx.query
 const R:Function=(t,k,i:number)=>{t[k].request=i}//ctx.request
