@@ -18,8 +18,8 @@ class AdminController extends Controller{
 
   @Middle(W.Log)
   @Post("login")
-  async login(@R request) {
-    return await this.userSvc.login(request.body);
+  async login(@B body) {
+    return await this.userSvc.login(body);
   }
 }
 /** Here's how to show EJS template rendering */
