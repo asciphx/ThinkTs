@@ -50,12 +50,12 @@ const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const B:Function=(t,k,i:number)=>{t[k]["request.body"]=i}//ctx.request.body
+const B:Function=(t,k,i:number)=>{t[k].$=i}//ctx.request.body
 const P:Function=(t,k,i:number)=>{t[k].params=i}//ctx.params
 const Q:Function=(t,k,i:number)=>{t[k].query=i}//ctx.query
 const R:Function=(t,k,i:number)=>{t[k].request=i}//ctx.request
 const param=(m:Function,d)=>{
-  let o=Object.keys(m),num=o.findIndex(v=>v.includes("."));
+  let o=Object.keys(m),num=o.findIndex(v=>v==="$");
   if(o[0]){o.reverse();
     switch (o.length) {
       case 1:d.value=num===-1?async function(ctx,next:Function){
