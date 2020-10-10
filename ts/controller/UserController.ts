@@ -12,9 +12,9 @@ class UserController extends Controller {
   async register(@B b) {
     return this.u_.register(b).then(r=>r.code?r.message:`第${r.raw.insertId}位注册成功`)
   }
-  @Middle(W.Log)
+  @Middle(W.Log,W.V_B("account","pwd"))
   @Post("login")
-  async login(@B b:{account:string,pwd:string}) {
+  async login(@B b) {
     return await this.u_.login(b.account,b.pwd)
   }
   @Put(":id")
