@@ -56,7 +56,7 @@ const Q:Function=(t,k,i:number)=>{t[k].query=i}//ctx.query
 const R:Function=(t,k,i:number)=>{t[k].request=i}//ctx.request
 const param=(m:Function,d)=>{
   let o=Object.keys(m),num=o.findIndex(v=>v.includes("."));
-  if(o[0]){o.reverse();num>-1&&(o[num]=o[num].match(/\w+/g) as any);
+  if(o[0]){o.reverse();
     switch (o.length) {
       case 1:d.value=num===-1?async function(ctx,next:Function){
           return await m.call(this,ctx[o[0]],next);
