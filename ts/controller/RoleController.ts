@@ -13,7 +13,7 @@ class RoleController extends Controller {
     return await this.role_.fix(p.id,r.body);
   }
   @Middle(W.Log,W.V_Q("roles"))
-  @Get("/perm")//http://localhost:8080/role/perm?roles=admin,normal,……
+  @Get("/perm")//http://localhost:8080/role/perm?roles=admin,super,……
   async perm(@Q q){
     return await this.role_.perm(q.roles);
   }

@@ -16,7 +16,7 @@ export class AdminService extends Service {
         });
       },
       orderBy: { "id": "desc" }
-    },"adm");//http://localhost:3000/admin?name=Tim,jdk,lll 那么查找这三个名字的人
+    },"adm");//http://localhost:8080/admin?name=Tim,jdk,lll 那么查找这三个名字的人
   }
   async sql(query:any){
     const {size=10,current=1}=query;
