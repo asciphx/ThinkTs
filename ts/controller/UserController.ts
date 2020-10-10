@@ -1,4 +1,4 @@
-import { Class, Post, Middle, Inject, Put, R, P } from "../think/decorator"
+import { Class, Post, Middle, Inject, Put, B, P } from "../think/decorator"
 import { W } from '../weblogic'
 import { UserService } from "../service/UserService"
 import { Controller } from '../think/controller';
@@ -9,16 +9,16 @@ class UserController extends Controller {
   
   @Middle(W.Log)
   @Post("register")
-  async register(@R r) {
-    return this.u_.register(r.body).then(r=>r.code?r.message:`第${r.raw.insertId}位注册成功`)
+  async register(@B b) {
+    return this.u_.register(b).then(r=>r.code?r.message:`第${r.raw.insertId}位注册成功`)
   }
   @Middle(W.Log)
   @Post("login")
-  async login(@R r) {
-    return await this.u_.login(r.body.account,r.body.pwd)
+  async login(@B b:{account:string,pwd:string}) {
+    return await this.u_.login(b.account,b.pwd)
   }
   @Put(":id")
-  async fix(@P p,@R r){
-    return this.u_.fix(p.id,r.body).then(r=>r.raw.changedRows?'已修改':'未修改')
+  async fix(@B b,@P p){
+    return this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')
   }
 }

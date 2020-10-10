@@ -4,7 +4,7 @@ let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
  * @param v path路径,或者是t
  * @param t curd等方法的Array<string>
  */
-const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
+const Class=(v:string | Array<string>="" ,t?:string[])=>_=>{let a=[]
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
   t.forEach(v=>{
@@ -28,20 +28,20 @@ const Class = (v:string | Array<string>="" ,t?:string[]) => _ => {let a=[]
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
-      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
+      fs.writeFile(path.resolve("./routes",`./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null
     });
     if($b){
-      fs.writeFile(path.resolve("./routes", `./${v===""?"$Controller":_.name}.json`),
+      fs.writeFile(path.resolve("./routes",`./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null
   }else a=_=$=null;
 }
-const Get = (r="") => (t, k, d) => {Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Post = (r="") => (t, k, d) => {Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Put = (r="") => (t, k, d) => {Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Del = (r="") => (t, k, d) => {Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});parameter(d.value,d)}
-const Middle = (...r:Array<Function>) => (t, k) => {
+const Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+const Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+const Put=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+const Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+const Middle=(...r:Array<Function>)=>(t,k)=>{
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
   }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
@@ -50,24 +50,48 @@ const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const P:Function=(t, k, i: number)=>{t[k].params=i}//ctx.params
-const Q:Function=(t, k, i: number)=>{t[k].query=i}//ctx.query
-const R:Function=(t, k, i: number)=>{t[k].request=i}//ctx.request
-const parameter=(m:Function,d)=>{
-  let o=Object.keys(m);
-  if(o[0]){o.reverse();
+const B:Function=(t,k,i:number)=>{t[k]["request.body"]=i}//ctx.body
+const P:Function=(t,k,i:number)=>{t[k].params=i}//ctx.params
+const Q:Function=(t,k,i:number)=>{t[k].query=i}//ctx.query
+const R:Function=(t,k,i:number)=>{t[k].request=i}//ctx.request
+const param=(m:Function,d)=>{
+  let o=Object.keys(m),num=o.findIndex(v=>v.includes("."));
+  if(o[0]){o.reverse();num>-1&&(o[num]=o[num].match(/\w+/g) as any);
     switch (o.length) {
-      case 1:d.value=async function(ctx:Context,next:Function){
-          return await m.call(this, ctx[o[0]], next);
+      case 1:d.value=num===-1?async function(ctx:Context,next:Function){
+          return await m.call(this,ctx[o[0]],next);
+        }:async function(ctx:Context,next:Function){
+          return await m.call(this,ctx[o[0][0]][o[0][1]],next);
         };break
-      case 2:d.value=async function(ctx,next:Function){
-          return await m.apply(this, [ctx[o[0]], ctx[o[1]], next]);
+      case 2:d.value=num===-1?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1]],next);
+        }:num===0?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0][0]][o[0][1]],ctx[o[1]],next);
+        }:async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1][0]][o[1][1]],next);
         };break
-      case 3:d.value=async function(ctx,next:Function){
-          return await m.call(this, ctx[o[0]], ctx[o[1]], ctx[o[2]], next);
+      case 3:d.value=num===-1?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2]],next);
+        }:num===0?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0][0]][o[0][1]],ctx[o[1]],ctx[o[2]],next);
+        }:num===1?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1][0]][o[1][1]],ctx[o[2]],next);
+        }:async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2][0]][o[2][1]],next);
         };break
+      case 4:d.value=num===-1?async function(ctx,next:Function){
+        return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2]],ctx[o[3]],next);
+      }:num===0?async function(ctx,next:Function){
+        return await m.call(this,ctx[o[0][0]][o[0][1]],ctx[o[1]],ctx[o[2]],ctx[o[3]],next);
+      }:num===1?async function(ctx,next:Function){
+        return await m.call(this,ctx[o[0]],ctx[o[1][0]][o[1][1]],ctx[o[2]],ctx[o[3]],next);
+      }:num===2?async function(ctx,next:Function){
+        return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2][0]][o[2][1]],ctx[o[3]],next);
+      }:async function(ctx,next:Function){
+        return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2]],ctx[o[3][0]][o[3][1]],next);
+      };break
       default:console.error("Wrong parameter!");break;
     }
   }else o=null;d=null
 }
-export {Routes,Class,Get,Post,Put,Del,Middle,Inject,P,Q,R};
+export {Routes,Class,Get,Post,Put,Del,Middle,Inject,B,P,Q,R};

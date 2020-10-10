@@ -11,7 +11,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);key=en=null
   });
   await fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
-  const app = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "5mb", textLimit: "2mb" }))
+  const app = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(async (ctx, next) => {
