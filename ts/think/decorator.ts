@@ -81,15 +81,15 @@ const param=(m:Function,d)=>{
         };break
       case 4:d.value=num===-1?async function(ctx,next:Function){
         return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2]],ctx[o[3]],next);
-      }:num===0?async function(ctx,next:Function){
-        return await m.call(this,ctx[o[0][0]][o[0][1]],ctx[o[1]],ctx[o[2]],ctx[o[3]],next);
-      }:num===1?async function(ctx,next:Function){
-        return await m.call(this,ctx[o[0]],ctx[o[1][0]][o[1][1]],ctx[o[2]],ctx[o[3]],next);
-      }:num===2?async function(ctx,next:Function){
-        return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2][0]][o[2][1]],ctx[o[3]],next);
-      }:async function(ctx,next:Function){
-        return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2]],ctx[o[3][0]][o[3][1]],next);
-      };break
+        }:num===0?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0][0]][o[0][1]],ctx[o[1]],ctx[o[2]],ctx[o[3]],next);
+        }:num===1?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1][0]][o[1][1]],ctx[o[2]],ctx[o[3]],next);
+        }:num===2?async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2][0]][o[2][1]],ctx[o[3]],next);
+        }:async function(ctx,next:Function){
+          return await m.call(this,ctx[o[0]],ctx[o[1]],ctx[o[2]],ctx[o[3][0]][o[3][1]],next);
+        };break
       default:console.error("Wrong parameter!");break;
     }
   }else o=null;d=null
