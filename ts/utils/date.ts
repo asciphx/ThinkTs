@@ -9,17 +9,17 @@ export default {
         return date.getFullYear()+'-'+(date.getMonth()+1).toString().padStart(2,'0')+'-'+date.getDate().toString().padStart(2,'0')+' '+date.getHours().toString().padStart(2,'0')+':'+date.getMinutes().toString().padStart(2,'0')+':'+date.getSeconds().toString().padStart(2,'0') 
     },
     /* 
-    * date2str(new Date,"yyyy-MM-dd hh:mm:ss.S") => 2019-08-02 08:09:04.423 
-    * date2str(new Date,"yyyy-MM-dd EE hh:mm:ss") => 2019-08-10 周六 08:09:04       
-    * 其他格式 MM/dd/yyyy HH  MM/dd/yyyy
+    * date2str(new Date,"YYYY-MM-DD hh:mm:ss.S") => 2019-08-02 08:09:04.423 
+    * date2str(new Date,"YYYY-MM-DD EE hh:mm:ss") => 2019-08-10 周六 08:09:04       
+    * 其他格式 MM/DD/YYYY HH  MM/DD/YYYY
     */
-    date2str(date:Date=new Date,fmt:string="yyyy-MM-dd EEE hh:mm:ss"){
-      let o = {"M+":date.getMonth()+1,"d+":date.getDate(),
+    date2str(date:Date=new Date,fmt:string="YYYY-MM-DD EEE hh:mm:ss"){
+      let o = {"M+":date.getMonth()+1,"D+":date.getDate(),
       "h+":date.getHours()%12 === 0 ? 12:date.getHours()%12,
       "H+":date.getHours(),"m+":date.getMinutes(),
       "s+":date.getSeconds(),"q+":Math.floor((date.getMonth()+3)/3),
       "S":date.getMilliseconds()};
-      if(/(y+)/.test(fmt)){fmt=fmt.replace(RegExp.$1,(date.getFullYear()+"").substr(4 - RegExp.$1.length));}
+      if(/(Y+)/.test(fmt)){fmt=fmt.replace(RegExp.$1,(date.getFullYear()+"").substr(4 - RegExp.$1.length));}
       if(/(E+)/.test(fmt)){fmt=fmt.replace(RegExp.$1,(RegExp.$1.length>1 ?
         (RegExp.$1.length>2 ? "\u661f\u671f":"\u5468"):"")
         +unescape(week[date.getDay()+""]));}
