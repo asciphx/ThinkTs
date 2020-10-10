@@ -7,7 +7,7 @@ import { Controller } from '../think/controller';
 class UserController extends Controller {
   @Inject(UserService) readonly u_: UserService
   
-  @Middle(W.Log)
+  @Middle(W.Log,W.V_B("account","pwd"))
   @Post("register")
   async register(@B b) {
     return this.u_.register(b).then(r=>r.code?r.message:`第${r.raw.insertId}位注册成功`)
