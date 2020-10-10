@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import { Context } from "koa"
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -58,9 +58,9 @@ const param=(m:Function,d)=>{
   let o=Object.keys(m),num=o.findIndex(v=>v.includes("."));
   if(o[0]){o.reverse();num>-1&&(o[num]=o[num].match(/\w+/g) as any);
     switch (o.length) {
-      case 1:d.value=num===-1?async function(ctx:Context,next:Function){
+      case 1:d.value=num===-1?async function(ctx,next:Function){
           return await m.call(this,ctx[o[0]],next);
-        }:async function(ctx:Context,next:Function){
+        }:async function(ctx,next:Function){
           return await m.call(this,ctx[o[0][0]][o[0][1]],next);
         };break
       case 2:d.value=num===-1?async function(ctx,next:Function){
