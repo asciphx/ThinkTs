@@ -13,10 +13,10 @@ class AdminController extends Controller{
   @Inject(AdminService) readonly adminSvc:AdminService
   @Inject(UserService) readonly userSvc:AdminService
 
-  @Middle(W.Log)
+  @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
   @Post("login")
   async login(@B body) {
-    return await this.userSvc.login(body);
+    return await this.userSvc.login(body.account,body.pwd)
   }
 }
 /** Here's how to show EJS template rendering */

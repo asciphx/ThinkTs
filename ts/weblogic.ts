@@ -23,12 +23,12 @@ export const W = {
         if (p === b[i]) {
           if(L[i]){
             if(L[i][0]>c[p].length||c[p].length>L[i][1]){
-              ctx.status=422;ctx.body=`The length of the field[${p}] is ${L[i][0]} to ${L[i][1]}`;b = null;return
+              ctx.status=422;ctx.body=`The length of the field[${p}] is ${L[i][0]} to ${L[i][1]}`;b=c=null;return
             }
           }
           ++i;
         } else if(R[i]!==0){
-          ctx.status = 412;ctx.body = `The field[${p}] isn't null`;b = null;return
+          ctx.status = 412;ctx.body = `The field[${p}] isn't null`;b=c=null;return
         } else if (R[i] === 0 && b[i] === undefined) {
           i++;
         }
@@ -50,12 +50,12 @@ export const W = {
         if (p === b[i]) {
           if(L[i]){
             if(L[i][0]>c[p].length||c[p].length>L[i][1]){
-              ctx.status=422;ctx.body=`The length of the field[${p}] is ${L[i][0]} to ${L[i][1]}`;b = null;return
+              ctx.status=422;ctx.body=`The length of the field[${p}] is ${L[i][0]} to ${L[i][1]}`;b=c=null;return
             }
           }
           ++i;
         } else if(R[i]!==0){
-          ctx.status = 412;ctx.body = `The field[${p}] isn't null`;b = null;return
+          ctx.status = 412;ctx.body = `The field[${p}] isn't null`;b=c=null;return
         } else if (R[i] === 0 && b[i] === undefined) {
           i++;
         }
