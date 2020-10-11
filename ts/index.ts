@@ -39,12 +39,12 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         }
         if(ll[0]==="admin"){await next();return}
         ctx.status=403;ctx.body=`'${ctx.method+path}' request is not authorized`;l=ll=payload=null
-      } catch (e) {e=String(e);
-        if(e.includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
-        }else if(e.includes('QueryFailedError')){ ctx.status=406;ctx.body=e;
-        }else{console.error("Error",e);ctx.status=401;ctx.body="Authentication Error";}
+      } catch (e) {
+        if(String(e).includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
+        }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
+        }else{console.error(e);ctx.status=401;ctx.body="Authentication Error";}
       }
-    }else{ ctx.status=401;ctx.body="Headers Error"; }
+    }else{ctx.status=401;ctx.body="Headers Error";}
   });
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);//每1.414秒换一次私钥
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
