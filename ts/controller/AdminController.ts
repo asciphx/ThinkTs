@@ -1,4 +1,4 @@
-import { Class, Inject, Get } from "../think/decorator"
+import { Class, Inject, Get, Q } from "../think/decorator"
 import { AdminService } from "../service/AdminService"
 import { Context } from "koa"
 import { Controller } from '../think/controller';
@@ -9,8 +9,8 @@ class AdminController extends Controller {
   @Inject(AdminService) readonly adm_: AdminService
   
   @Get("sql")
-  async sql(ctx:Context){
-    return await this.adm_.sql(ctx.query);
+  async sql(@Q q){
+    return await this.adm_.sql(q);
   }
 
   @Get("index.html")

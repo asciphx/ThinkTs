@@ -57,7 +57,8 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     console.log(`ThinkTs run on http://localhost:${Conf.port}/test.html`))
   const exist = await Cache[User.name].findOne({account:"admin"});
   if (exist) {console.error("董事长已存在!");return;} else
-  return Cache[User.name].save(new User({account:"admin",pwd:encryptPwd("654321")} as User))
+  return Cache[User.name].save(
+    new User({account:"admin",pwd:encryptPwd("654321","shake256","base64",28)} as User))
     .then(user => {console.log("User has been saved: ", user);
   })
 }).catch(e => {console.error(e)});
