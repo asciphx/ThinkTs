@@ -30,7 +30,7 @@ export class UserService extends Service implements UserFace {
     const exist = await this.user.findOne({account:user.account});
     if (exist) return { code: 409, message: "账户已存在" };
     user.pwd=encryptPwd(user.pwd,type,digest,length)
-    return this.user.insert(user);
+    return this.user.insert(new User(user));
   }
   async login(account:string,pwd:string) {
     const user = await this.user.createQueryBuilder()
@@ -46,7 +46,6 @@ export class UserService extends Service implements UserFace {
     secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
   }
   async fix(id: number, user: User) {
-    user.account&&delete user.account
     user.pwd = encryptPwd(user.pwd,type,digest,length);
     return this.user.update(id, user)
   }

@@ -25,10 +25,12 @@ export class User extends Orm {
     inverseJoinColumn: { name: 'role_id' },
   })
   roles: Role[]
-  constructor(a: string, b: string, c?: string) {
+  constructor(e?: User) {
     super();
-    this.account = a;
-    this.pwd = b;
-    this.name = c?c:a;
+    if(e){
+      this.account = e.account;
+      this.pwd = e.pwd;
+      this.name = e.name||e.account;
+    }
   }
 }

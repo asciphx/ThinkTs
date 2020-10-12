@@ -17,6 +17,7 @@ class UserController extends Controller {
   async login(@B b) {
     return await this.u_.login(b.account,b.pwd)
   }
+  @Middle(W.V_B("pwd#6~23|1","account|2#3~10","name#1~15","phone#12","photo#50"))
   @Put(":id")
   async fix(@B b,@P p){
     return this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')

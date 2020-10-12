@@ -9,8 +9,10 @@ export class Admin {
   label:string
   @CreateDateColumn({ comment: "加入日期" })
   created: Date;
-  constructor(a:string,b?:string){
-    this.name=a;
-    this.label=b;
+  constructor(e?: Admin){
+    if(e){
+      this.name=e.name;
+      this.label=e.label||"";
+    }
   }
 }
