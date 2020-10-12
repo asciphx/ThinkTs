@@ -29,8 +29,6 @@ export const W = {
           ++i;
         }else if(R[i]===1){
           ctx.status = 412;ctx.body = `The field[${p}] isn't null`;b=c=null;return
-        }else if(R[i]===2){
-          delete c[p];++i;
         }else if(R[i]===0&&b[i]===undefined)++i;
       }
       b=c=null;
@@ -56,8 +54,6 @@ export const W = {
           ++i;
         }else if(R[i]===1){
           ctx.status = 412;ctx.body = `The field[${p}] isn't null`;b=c=null;return
-        }else if(R[i]===2){
-          delete c[p];++i;
         }else if(R[i]===0&&b[i]===undefined)++i;
       }
       b=c=null;
