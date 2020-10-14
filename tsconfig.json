@@ -18,6 +18,6 @@
     "baseUrl": "./dist",
     "rootDir": "./ts"
   },
-  "exclude": ["node_modules","log","lib","dist","routes","views"],
+  "exclude": ["node_modules","log","lib","dist","routes","views","upload"],
   "include": ["ts/**/*.ts"]
 }

@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import * as _ from "koa-compose"
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
 /**
  * @param v path路径,或者是t
@@ -41,10 +41,10 @@ const Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r==="
 const Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 const Put=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 const Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
-const Middle=(...r:Array<Function>)=>(t,k)=>{
+const Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
-  }else if(f.w){f.w=[...f.w,...r]}else{f.w=r}f=null
+  }else if(f.w){f.w=_([...f.w,...r])}else{f.w=_(r)}f=null
 }
 const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})

@@ -1,8 +1,7 @@
-import { Class, Inject, Put, Get, B, R, P, Middle } from "../think/decorator"
+import { Class, Inject, Put, Get, B, R, P, Middle } from "../think/decorator";
 import { RoleService } from '../service/RoleService';
 import { Controller } from '../think/controller';
-import { Request } from "koa"
-import { W } from '../weblogic'
+import { W } from '../weblogic';import { Request } from "koa";
 
 @Class(["del", "info", "page", "add"])
 class RoleController extends Controller {

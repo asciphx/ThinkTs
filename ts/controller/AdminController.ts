@@ -1,6 +1,6 @@
-import { Class, Inject, Get, Q } from "../think/decorator"
-import { AdminService } from "../service/AdminService"
-import { Context } from "koa"
+import { Class, Inject, Get, Q } from "../think/decorator";
+import { AdminService } from "../service/AdminService";
+import { Context } from "koa";
 import { Controller } from '../think/controller';
 import { html } from "../utils/tool";
 

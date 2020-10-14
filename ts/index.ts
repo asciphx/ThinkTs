@@ -49,7 +49,7 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);//每1.414秒换一次私钥
   Conf.DATABASE=conn.driver.database;const router = new Router();//console.log(Routes)
   Routes.forEach(r => {
-    router[r.m](...r.w?[r.r,...r.w]:[r.r],async(ctx:Koa.Context,next)=>{
+    router[r.m](...r.w?[r.r,r.w]:[r.r],async(ctx:Koa.Context,next)=>{
       ctx.body=await r.a(ctx,next);
     })
   })

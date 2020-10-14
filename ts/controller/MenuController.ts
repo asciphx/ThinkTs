@@ -1,4 +1,4 @@
-import { Class, Post, Inject, Put, Middle, B, P } from "../think/decorator"
+import { Class, Post, Inject, Put, Middle, B, P } from "../think/decorator";
 import { MenuService } from '../service/MenuService';
 import { Controller } from '../think/controller';
 import { W } from "../weblogic";
