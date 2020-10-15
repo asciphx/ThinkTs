@@ -77,7 +77,7 @@ const param=(m:Function,d)=>{
         }:num===1?async function(ctx,next:Function){
           return await m.call(this,ctx[m[0]],ctx.request.body,ctx[m[2]],next);
         }:async function(ctx,next:Function){
-          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[2]],next);
+          return await m.call(this,ctx[m[0]],ctx[m[1]],ctx.request.body,next);
         };break
       case 4:d.value=num===-1?async function(ctx,next:Function){
         return await m.call(this,ctx[m[0]],ctx[m[1]],ctx[m[2]],ctx[m[3]],next);
@@ -88,7 +88,7 @@ const param=(m:Function,d)=>{
         }:num===2?async function(ctx,next:Function){
           return await m.call(this,ctx[m[0]],ctx[m[1]],ctx.request.body,ctx[m[3]],next);
         }:async function(ctx,next:Function){
-          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[2]],ctx[m[3]],next);
+          return await m.call(this,ctx[m[0]],ctx[m[1]],ctx[m[2]],ctx.request.body,next);
         };break
       default:console.error("Wrong parameter!");break;
     }
