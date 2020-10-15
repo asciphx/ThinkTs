@@ -21,6 +21,6 @@ class UserController extends Controller {
   @Put(":id")
   async fix(@B b,@P p) {
     if(b.__proto__===undefined)Object.setPrototypeOf(b, new Object());
-    return await this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')
+    return this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')
   }
 }

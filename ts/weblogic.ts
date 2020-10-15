@@ -13,10 +13,12 @@ const W = {
   //先使用U.single中间件，然后使用W.pic把实体类中对应的字段补充上文件路径
   pic(field:string):Middleware {
     return async (ctx: any, next) => {
-      let path=Conf.upload+'/'+ctx.request.file.filename;
-      let newpath=Conf.upload+"/"+createHash("sha1").update(fs.readFileSync(path)).digest("hex")+(ctx.request.file.size/19|0)+"."+ctx.request.file.mimetype.split('/')[1];
-      if(!fs.existsSync(newpath)){fs.rename(path,newpath,e=>{return e});}else fs.unlinkSync(path)
-      ctx.request.body[field]=newpath.slice(String(Conf.upload).length + 1);
+      if (ctx.request.file) {
+        let path=Conf.upload+'/'+ctx.request.file.filename;
+        let newpath=Conf.upload+"/"+createHash("sha1").update(fs.readFileSync(path)).digest("hex")+(ctx.request.file.size/19|0)+"."+ctx.request.file.mimetype.split('/')[1];
+        if(!fs.existsSync(newpath)){fs.rename(path,newpath,e=>{return e});}else fs.unlinkSync(path)
+        ctx.request.body[field]=newpath.slice(String(Conf.upload).length + 1);
+      }
       await next();
     }
   },
