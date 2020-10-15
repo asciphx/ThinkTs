@@ -31,7 +31,7 @@ const W = {
     });a=L=null;
     return async (ctx: Context, next) => {
       let c=ctx.request.body,l=0,b=Object.keys(c).filter(v => O.includes(v)?true:l=1),i=0;
-      if(l===0)b=Object.keys(c).sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=c=null;return};
+      if(l===0)b=b.sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=c=null;return};
       for (let p of O) {
         if(p===b[i]){if(R[l]===2){ctx.status=422;ctx.body=`The field[${p}] is must be null`;b=c=null;return}
           if(L1[l])
@@ -55,7 +55,7 @@ const W = {
     });a=L=null;
     return async (ctx: Context, next) => {
       let c=ctx.query,l=0,b=Object.keys(c).filter(v => O.includes(v)?true:l=1),i=0;
-      if(l===0)b=Object.keys(c).sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=c=null;return};
+      if(l===0)b=b.sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=c=null;return};
       for (let p of O) {
         if(p===b[i]){if(R[l]===2){ctx.status=422;ctx.body=`The field[${p}] is must be null`;b=c=null;return}
           if(L1[l])
