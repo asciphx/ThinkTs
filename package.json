@@ -1,6 +1,6 @@
 {
    "name": "think-ts",
-   "version": "1.9.0-alpha",
+   "version": "1.9.1",
    "description": "TypeORM+KOA",
    "devDependencies": {
       "@types/jsonwebtoken": "^8.5.0",

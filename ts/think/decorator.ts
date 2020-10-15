@@ -1,9 +1,6 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import * as _ from "koa-compose"
 let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
-/**
- * @param v path路径,或者是t
- * @param t curd等方法的Array<string>
- */
+/**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 const Class=(v:string | Array<string>="" ,t?:string[])=>_=>{let a=[]
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
@@ -50,10 +47,10 @@ const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
-const P:Function=(t,k,i:number)=>{t[k][i]="params"}//ctx.params
-const Q:Function=(t,k,i:number)=>{t[k][i]="query"}//ctx.query
-const R:Function=(t,k,i:number)=>{t[k][i]="request"}//ctx.request
+const B:Function=(t,k,i:number)=>{t[k][i]="$"}
+const P:Function=(t,k,i:number)=>{t[k][i]="params"}
+const Q:Function=(t,k,i:number)=>{t[k][i]="query"}
+const R:Function=(t,k,i:number)=>{t[k][i]="request"}
 const param=(m:Function,d)=>{
   let o=Object.keys(m),num=-1;for (let p in m)m[p]==="$"&&(num=Number(p));
   if(o.length){
