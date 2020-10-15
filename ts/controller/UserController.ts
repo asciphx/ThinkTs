@@ -1,7 +1,7 @@
 import { Class, Post, Middle, Inject, Put, B, P, R } from "../think/decorator";
-import { W } from '../weblogic';
 import { UserService } from "../service/UserService";
 import { Controller } from '../think/controller';
+import { U, W } from '../weblogic';
 
 @Class("user",["del", "info", "page"])
 class UserController extends Controller {
@@ -17,10 +17,10 @@ class UserController extends Controller {
   async login(@B b) {
     return await this.u_.login(b.account,b.pwd)
   }
-  @Middle(W.V_B("pwd#6~23|1","account|2","name#1~15","phone#12","photo|2"),W.single("avatar"))
+  @Middle(W.V_B("pwd#6~23","account|2","name#1~15","phone#12","photo|2","logged|2"),U.single("avatar"),W.pic("photo"))
   @Put(":id")
-  async fix(@B b, @P p, @R r) {
-    if(r.file)b.photo=r.file
-    return this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')
+  async fix(@B b, @P p) {
+    if(b.__proto__===undefined)Object.setPrototypeOf(b, new Object());console.log(b)
+    return await this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')
   }
 }

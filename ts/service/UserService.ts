@@ -2,12 +2,12 @@ import { Brackets, Repository } from "typeorm"
 import { User } from "../entity/User"
 import { UserFace } from "../interface/UserFace"
 import { Service } from "../think/service";
-import { P, H, encryptPwd, checkPwd, NTo10 } from "../utils/cryptoUtil"
+import { T, H, encrypt, checkPwd, NTo10 } from "../utils/crypto"
 import * as jwt from "jsonwebtoken"
 import { Conf, Cache } from "../config";
 import { Role } from '../entity/Role';
 
-const type:P = "shake256", digest:H = "base64", length=28;
+const type:T = "shake256", digest:H = "base64", length=28;
 export class UserService extends Service implements UserFace {
   constructor(
     private user:Repository<User>=Cache[User.name],
@@ -29,7 +29,7 @@ export class UserService extends Service implements UserFace {
   async register(user: User):Promise<any>{
     const exist = await this.user.findOne({account:user.account});
     if (exist) return { code: 409, message: "账户已存在" };
-    user.pwd=encryptPwd(user.pwd,type,digest,length)
+    user.pwd=encrypt(user.pwd,type,digest,length)
     return this.user.insert(new User(user));
   }
   async login(account:string,pwd:string) {
@@ -46,7 +46,7 @@ export class UserService extends Service implements UserFace {
     secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
   }
   async fix(id: number, user: User) {
-    user.pwd = encryptPwd(user.pwd,type,digest,length);
+    user.pwd&&(user.pwd=encrypt(user.pwd,type,digest,length));
     return this.user.update(id, user)
   }
 }

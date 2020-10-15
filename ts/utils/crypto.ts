@@ -1,6 +1,6 @@
 import { createHash } from 'crypto';
 const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-type P = "md5"|"sha1"|"shake128"|"shake256"|"sha256"|"sha224"|"sha512"|"sha384"|"sm3"|"whirlpool"|"ripemd";
+type T = "md5"|"sha1"|"shake128"|"shake256"|"sha256"|"sha224"|"sha512"|"sha384"|"sm3"|"whirlpool"|"ripemd";
 type H = "latin1"|"hex"|"base64";
 /**
  * 加密登录密码,digest只有"hex"|"base64"支持utf8，而latin1只支持utf8mb4,下面初始值只是一个例子
@@ -9,7 +9,7 @@ type H = "latin1"|"hex"|"base64";
  * 对于outputLength输出,shake支持任意长度,ripemd只支持20,其他一般是16的倍数
  * @param pwd 登录密码
  */
-const encryptPwd = (pwd: string,type:P='shake256',digest:H='latin1',length:number=40): string => {
+const encrypt = (pwd: string,type:T='shake256',digest:H='latin1',length:number=40): string => {
   return createHash(type, { outputLength: length }).update(pwd).digest(digest);
 }
 /**
@@ -17,8 +17,8 @@ const encryptPwd = (pwd: string,type:P='shake256',digest:H='latin1',length:numbe
  * @param pwd 登录密码
  * @param encryptedPwd 加密后的密码
  */
-const checkPwd = (pwd: string, encryptedPwd,type:P,digest:H,length:number): boolean => {
-  const currentPass = encryptPwd(pwd,type,digest,length);
+const checkPwd = (pwd: string, encryptedPwd,type:T,digest:H,length:number): boolean => {
+  const currentPass = encrypt(pwd,type,digest,length);
   if (currentPass === encryptedPwd) {
     return true;
   }
@@ -111,4 +111,4 @@ const NTo10=(v:string,n:number):number=>{if(n>62||n<2)return;if(n<37)v=v.toLower
   }
   return addNumber;
 }
-export { P, H, encryptPwd, checkPwd, utf8_encode, utf8_decode, IntTo62, TenToN, NTo10 }
+export { T, H, encrypt, checkPwd, utf8_encode, utf8_decode, IntTo62, TenToN, NTo10 }

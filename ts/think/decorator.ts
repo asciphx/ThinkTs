@@ -64,31 +64,31 @@ const param=(m:Function,d)=>{
           return await m.call(this,ctx.request.body,next);
         };break
       case 2:d.value=num===-1?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[1]],ctx[m[0]],next);
+          return await m.call(this,ctx[m[0]],ctx[m[1]],next);
         }:num===0?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[1]],ctx.request.body,next);
+          return await m.call(this,ctx.request.body,ctx[m[1]],next);
         }:async function(ctx,next:Function){
-          return await m.call(this,ctx.request.body,ctx[m[0]],next);
+          return await m.call(this,ctx[m[0],ctx.request.body],next);
         };break
       case 3:d.value=num===-1?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[2]],ctx[m[1]],ctx[m[0]],next);
+          return await m.call(this,ctx[m[0]],ctx[m[1]],ctx[m[2]],next);
         }:num===0?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[2]],ctx[m[1]],ctx.request.body,next);
+          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[2]],next);
         }:num===1?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[2]],ctx.request.body,ctx[m[0]],next);
+          return await m.call(this,ctx[m[0]],ctx.request.body,ctx[m[2]],next);
         }:async function(ctx,next:Function){
-          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[0]],next);
+          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[2]],next);
         };break
       case 4:d.value=num===-1?async function(ctx,next:Function){
-        return await m.call(this,ctx[m[3]],ctx[m[2]],ctx[m[1]],ctx[m[0]],next);
+        return await m.call(this,ctx[m[0]],ctx[m[1]],ctx[m[2]],ctx[m[3]],next);
         }:num===0?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[3]],ctx[m[2]],ctx[m[1]],ctx.request.body,next);
+          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[2]],ctx[m[3]],next);
         }:num===1?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[3]],ctx[m[2]],ctx.request.body,ctx[m[0]],next);
+          return await m.call(this,ctx[m[0]],ctx.request.body,ctx[m[2]],ctx[m[3]],next);
         }:num===2?async function(ctx,next:Function){
-          return await m.call(this,ctx[m[3]],ctx.request.body,ctx[m[1]],ctx[m[0]],next);
+          return await m.call(this,ctx[m[0]],ctx[m[1]],ctx.request.body,ctx[m[3]],next);
         }:async function(ctx,next:Function){
-          return await m.call(this,ctx.request.body,ctx[m[2]],ctx[m[1]],ctx[m[0]],next);
+          return await m.call(this,ctx.request.body,ctx[m[1]],ctx[m[2]],ctx[m[3]],next);
         };break
       default:console.error("Wrong parameter!");break;
     }

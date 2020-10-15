@@ -1,20 +1,24 @@
-import { Context,Middleware } from "koa";import date from "./utils/date";
-import { Conf } from "./config";import * as multer from '@koa/multer';//2097152=2mb
-const upload = multer({dest:Conf.upload,limits:{fieldNameSize:100,fieldSize:524288,fileSize:2097152}
+import { Context,Middleware } from "koa";import date from "./utils/date";import { createHash } from 'crypto';
+import { Conf } from "./config";import * as multer from '@koa/multer';import * as fs from "fs";//2097152=2mb
+const U = multer({dest:Conf.upload,limits:{fieldNameSize:100,fieldSize:524288,fileSize:2097152}
     // ,storage:multer.diskStorage({destination: function (req, file, cb) {cb(null, Config.pic);},
     // filename: function (req, file, cb) {cb(null, file.fieldname + '-' + Date.now());}})
-});
-export const W = {
-  async Log(ctx: Context, next) {
+});//U.single(uploadFile:string)上传文件的field  U.fields(arr:Array<{name:string,maxCount:number}>)
+const W = {
+  async Log(ctx: Context, next){
     const start = Date.now();
     await next();
     console.log(`${ctx.method}${ctx.url} used ${Date.now() - start}ms -> ${date.date2str()}`);
   },
-  single(str:string) {
-    return upload.single(str)
-  },
-  fields(arr:Array<{name:string,maxCount:number}>) {
-    return upload.fields(arr)
+  //先使用U.single中间件，然后使用W.pic把实体类中对应的字段补充上文件路径
+  pic(field:string):Middleware {
+    return async (ctx: any, next) => {
+      let path=Conf.upload+'/'+ctx.request.file.filename;
+      let newpath=Conf.upload+"/"+createHash("sha1").update(fs.readFileSync(path)).digest("hex")+ctx.request.file.size+"."+ctx.request.file.mimetype.split('/')[1];
+      if(!fs.existsSync(newpath)){fs.rename(path,newpath,e=>{return e});}else fs.unlinkSync(path)
+      ctx.request.body[field]=newpath.slice(String(Conf.upload).length + 1);
+      await next();
+    }
   },
   /*Verify链式校验，V_B校验body,V_Q校验query，非全检测，只要遇到错的就弹出，省开销
    *O是字段，L是length，R为是否必填(1是必填，0或者不写为可选)[用|1表示必填,|2表示过滤]
@@ -71,3 +75,4 @@ export const W = {
     }
   },
 }
+export { U, W }
