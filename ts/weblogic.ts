@@ -14,7 +14,7 @@ const W = {
   pic(field:string):Middleware {
     return async (ctx: any, next) => {
       let path=Conf.upload+'/'+ctx.request.file.filename;
-      let newpath=Conf.upload+"/"+createHash("sha1").update(fs.readFileSync(path)).digest("hex")+ctx.request.file.size+"."+ctx.request.file.mimetype.split('/')[1];
+      let newpath=Conf.upload+"/"+createHash("sha1").update(fs.readFileSync(path)).digest("hex")+(ctx.request.file.size/19|0)+"."+ctx.request.file.mimetype.split('/')[1];
       if(!fs.existsSync(newpath)){fs.rename(path,newpath,e=>{return e});}else fs.unlinkSync(path)
       ctx.request.body[field]=newpath.slice(String(Conf.upload).length + 1);
       await next();
