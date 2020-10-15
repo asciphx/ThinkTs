@@ -1,4 +1,4 @@
-import { Class, Post, Middle, Inject, Put, B, P, R } from "../think/decorator";
+import { Class, Post, Middle, Inject, Put, B, P } from "../think/decorator";
 import { UserService } from "../service/UserService";
 import { Controller } from '../think/controller';
 import { U, W } from '../weblogic';
@@ -17,7 +17,8 @@ class UserController extends Controller {
   async login(@B b) {
     return await this.u_.login(b.account,b.pwd)
   }
-  @Middle(W.V_B("pwd#6~23","account|2","name#1~15","phone#12","photo|2","logged|2"),U.single("avatar"),W.pic("photo"))
+  @Middle(W.V_B("pwd#6~23","account|2","name#1~15","phone#12","photo|2","logged|2")
+    ,U.single("avatar"),W.pic("photo"))
   @Put(":id")
   async fix(@B b,@P p) {
     if(b.__proto__===undefined)Object.setPrototypeOf(b, new Object());
