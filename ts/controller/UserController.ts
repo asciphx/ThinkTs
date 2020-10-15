@@ -19,8 +19,8 @@ class UserController extends Controller {
   }
   @Middle(W.V_B("pwd#6~23","account|2","name#1~15","phone#12","photo|2","logged|2"),U.single("avatar"),W.pic("photo"))
   @Put(":id")
-  async fix(@B b, @P p) {
-    if(b.__proto__===undefined)Object.setPrototypeOf(b, new Object());console.log(b)
+  async fix(@B b,@P p) {
+    if(b.__proto__===undefined)Object.setPrototypeOf(b, new Object());
     return await this.u_.fix(p.id,b).then(r=>r.raw.changedRows?'已修改':'未修改')
   }
 }
