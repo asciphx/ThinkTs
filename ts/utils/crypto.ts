@@ -56,7 +56,7 @@ const utf8_decode = (utf8: string) => {
     z = utf8.charCodeAt(i);
     if (z < 128) {
       string += String.fromCharCode(z);
-      i++;
+      ++i;
     } else if (z > 191 && z < 224) {
       string += String.fromCharCode((z & 31) << 6|(utf8.charCodeAt(i + 1) & 63));
       i += 2;
