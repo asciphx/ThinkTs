@@ -17,8 +17,8 @@ class UserController extends Controller {
   async login(@B b) {
     return await this.u_.login(b.account,b.pwd)
   }
-  @Middle(W.V_B("pwd#6~23","account|2","name#1~15","phone#12","photo|2","logged|2")
-    ,U.single("avatar"),W.pic("photo"))
+  @Middle(U.single("avatar"),W.pic("photo")
+    ,W.V_B("pwd#6~23","account|2","name#1~15","status","phone#12","photo","logged|2"))
   @Put(":id")
   async fix(@B b,@P p) {
     if(b.__proto__===undefined)Object.setPrototypeOf(b, new Object());
