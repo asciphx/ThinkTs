@@ -14,20 +14,15 @@ export default {
   * 其他格式 MM/DD/YYYY HH  MM/DD/YYYY
   */
   date2str(f:string="YYYY-MM-DD EEE hh:mm:ss",date:Date=new Date){
-    let o = {"M+":date.getMonth()+1,"D+":date.getDate(),
-    "h+":date.getHours() === 12 ? 12:date.getHours()%12,
-    "H+":date.getHours(),"m+":date.getMinutes(),
-    "s+":date.getSeconds(),"q+":Math.floor((date.getMonth()+3)/3),
-    "S":date.getMilliseconds()};
-    if(/(Y+)/.test(f)){f=f.replace(RegExp.$1,(date.getFullYear()+"").substr(4 - RegExp.$1.length));}
-    if(/(E+)/.test(f)){f=f.replace(RegExp.$1,(RegExp.$1.length>2 ?"\u661f\u671f":RegExp.$1.length>1?"\u5468":"")
-      +week[date.getDay()]);}
-    if(/(h+)/.test(f)){f=f.replace(/(?=h+)/,date.getHours()>12?"\u4E0B\u5348 ":"\u4E0A\u5348 ")}
+    let o = {"M+":date.getMonth()+1,"D+":date.getDate(),"h+":date.getHours()===12?12:date.getHours()%12,
+    "H+":date.getHours(),"m+":date.getMinutes(),"s+":date.getSeconds(),"S":date.getMilliseconds()};
+    if(/(Y+)/.test(f))f=f.replace(RegExp.$1,(date.getFullYear()+"").substr(4-RegExp.$1.length));
+    if(/(E+)/.test(f))f=f.replace(RegExp.$1,(RegExp.$1.length>2 ?"\u661f\u671f":RegExp.$1.length>1?"\u5468":"")
+      +week[date.getDay()]);
+    if(/(h+)/.test(f))f=f.replace(/(?=h+)/,date.getHours()>12?"\u4E0B\u5348 ":"\u4E0A\u5348 ")
     for(let k in o)
-      if(new RegExp("("+ k +")").test(f)){
-        f = f.replace(RegExp.$1, (RegExp.$1.length===1) ?
-        o[k]:("00"+ o[k]).substr((""+ o[k]).length));
-      }
+      if(new RegExp("("+ k +")").test(f))
+        f=f.replace(RegExp.$1,RegExp.$1.length===1?o[k]:("00"+o[k]).substr((""+o[k]).length));
     o=date=null;return f;
   }
 }
