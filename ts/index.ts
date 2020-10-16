@@ -8,7 +8,7 @@ import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/entity").forEach(i=>{
-    let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);key=en=null
+    let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null
   });
   await fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
   const app = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
