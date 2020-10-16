@@ -1,10 +1,10 @@
 const week = {"0":"\u65e5","1":"\u4e00","2":"\u4e8c","3":"\u4e09","4":"\u56db","5":"\u4e94","6":"\u516d"};
 export default {
   /**简易的获取时间
-  * @param time:new Date().getTime()
+  * @param time:Date.now()
   */
-  formateDate(time:number=Date.now()){
-    if(!time) return '';let date = new Date(time)
+  formateDate(time:number){
+    let date = new Date(time)
     let r = date.getFullYear()+'-'+(date.getMonth()+1).toString().padStart(2,'0')+'-'+date.getDate().toString().padStart(2,'0')+' '+date.getHours().toString().padStart(2,'0')+':'+date.getMinutes().toString().padStart(2,'0')+':'+date.getSeconds().toString().padStart(2,'0')
     date = null;return r
   },
