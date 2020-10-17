@@ -15,7 +15,7 @@
     "allowJs": true,
     "lib": ["es7","dom"],
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "/",
     "rootDir": "./ts"
   },
   "exclude": ["node_modules","log","lib","dist","routes","views","upload"],
