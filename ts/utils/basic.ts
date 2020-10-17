@@ -22,9 +22,9 @@ const J2T = (json: string) => json.replace(/(\\|\\'|\"|\n)/g, "\\\$1")
 const Backslash = (str: string) => {
   let stri = str.split("\\", -1), b: string = "\\";
   for (let a = 0; a < stri.length; a++) {
-    if (stri[a] != "") {
-      if (a != 0) b = b + "\\\\" + stri[a]; else b = b + stri[a];
-    } else { if (a > 1 || stri[0] != "") b = b + "\\\\"; else b = b + "\\"; }
+    if (stri[a] !== "") {
+      if (a !== 0) b = b + "\\\\" + stri[a]; else b = b + stri[a];
+    } else { if (a > 1 || stri[0] !== "") b = b + "\\\\"; else b = b + "\\"; }
   }; return b;
 }
 /**

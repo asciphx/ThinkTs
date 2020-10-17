@@ -41,7 +41,7 @@ const Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r=
 const Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
   let f=Routes[Routes.length-1];if(f.a!==k){
     console.log(t.constructor.name+":"+k+" use @Middle has to be on the top!")
-  }else if(f.w){f.w=_([...f.w,...r])}else{f.w=_(r)}f=null
+  }else if(f.w){f.w=_([...f.w,...r])}else{f.w=r.length===1?r[0]:_(r)}f=null
 }
 const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
