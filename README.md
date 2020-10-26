@@ -62,6 +62,8 @@ export interface UserFace{
 ```
 ### Finally, please refer to the entity class writing method of [TypeORM](https://github.com/typeorm/typeorm)
 
+### [Cache](https://github.com/typeorm/typeorm/blob/master/docs/caching.md)
+
 ### Features
 - [x] The default value of class class decorator is`/`+ entity class name, which can also be customized
 - [x] Automatically scan controller directory and configure routes route

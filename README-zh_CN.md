@@ -85,8 +85,8 @@ export interface UserFace{
 > s:`${secret}`
 > ```
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜。
-> 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`
-> 因我本人用的是windows10，暂`npm run pm2`不支持linux或者Mac
+> 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`.因本人用win10，暂`npm run pm2`不支持linux或者Mac
+> 新增redis，为了每个线程上的服务可以同步缓存，每个线程服务的每一个menu上的path路径的同步间隔目前为15秒，redis密码在config配置，默认6543210
 
 ## 目录结构
 1. ts:`后端文件入口`
