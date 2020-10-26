@@ -65,6 +65,9 @@ export interface UserFace{
 }
 ```
 ### 让你的entity看起来像是[TypeORM](https://github.com/typeorm/typeorm)中的写法
+
+### Cache用法：[Cache](https://github.com/typeorm/typeorm/blob/master/docs/caching.md)
+
 ## 特征
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
 - [x] 自动扫描entity目录，载入到Cache，相当于一个容器,可以避免entity被多次实例化

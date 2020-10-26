@@ -1,7 +1,7 @@
 import { Brackets, Repository } from "typeorm"
 import { Menu } from '../entity/Menu';
 import { Service } from "../think/service";
-import { Cache, Maps } from "../config";
+import { Cache, Maps, Redis } from "../config";
 
 export class MenuService extends Service {
   constructor(
@@ -23,7 +23,10 @@ export class MenuService extends Service {
     let e=menu.path;if(e===undefined) return await this.menu.update(id,menu);
     e=await this.menu.findOne({id:id}) as any;
     let o=Object.entries(Maps),i=o.findIndex(v=>v[1].includes((e as any).path)),I=i>-1?Maps[o[i][0]]:undefined;
-    if(I)I[I.findIndex(v=>v===(e as any).path)]=menu.path;I=o=e=null;
+    if(I){
+      I[I.findIndex(v=>v===(e as any).path)]=menu.path;
+      Redis.set(o[i][0],I.toString());
+    }I=o=e=null;
     return await this.menu.update(id,menu);
   }
   async add(menu:Menu) {

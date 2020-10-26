@@ -1,8 +1,9 @@
 {
    "name": "think-ts",
-   "version": "1.9.4",
+   "version": "1.9.5",
    "description": "TypeORM+KOA",
    "devDependencies": {
+      "@types/ioredis": "^4.17.6",
       "@types/jsonwebtoken": "^8.5.0",
       "@types/koa": "^2.11.4",
       "@types/koa-bodyparser": "^4.3.0",
@@ -21,6 +22,7 @@
       "@koa/multer": "^3.0.0",
       "crypto": "^1.0.1",
       "ejs": "^3.1.5",
+      "ioredis": "^4.19.0",
       "jsonwebtoken": "^8.5.1",
       "koa": "^2.13.0",
       "koa-bodyparser": "^4.3.0",

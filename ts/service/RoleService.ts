@@ -1,7 +1,7 @@
 import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
 import { Service } from "../think/service";
-import { Cache, Maps } from "../config";
+import { Cache, Maps, Redis } from "../config";
 import { Menu } from "../entity/Menu";
 
 export class RoleService extends Service {
@@ -24,8 +24,8 @@ export class RoleService extends Service {
   
   async fix(id:number,role:Role) {
     let e=role.name;if(e===undefined) return await this.role.update(id,role);
-    e=await this.role.findOne({id:id}) as any;
-    Maps[role.name]=Maps[(e as any).name];Maps[(e as any).name]=e=null;
+    e=await this.role.findOne({id:id}) as any;Maps[role.name]=Maps[(e as any).name];
+    Redis.set(role.name,Maps[(e as any).name].toString());Redis.del((e as any).name);Maps[(e as any).name]=e=null;
     return await this.role.update(id,role)
   }
   async perm(roles:string) {

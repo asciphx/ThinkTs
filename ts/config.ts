@@ -1,3 +1,4 @@
+import IORedis=require ("ioredis");
 const Conf={
   printRoute:true,//打印路由routes
   port:8080,
@@ -13,4 +14,11 @@ const Conf={
 } 
 const Cache:Object={}
 const Maps:Object={}
-export {Conf,Cache,Maps}
+const Redis=new IORedis({
+    port: 6379,
+    host: "127.0.0.1",
+    family: 4,
+    password: "6543210",
+    db:0
+  });
+export {Conf,Cache,Maps,Redis}
