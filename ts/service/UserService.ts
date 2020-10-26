@@ -19,7 +19,7 @@ export class UserService extends Service implements UserFace {
       where: query => {
         return new Brackets(qb => {
           if (query.account) qb.where(`account like "%${query.account}%"`)
-          if (query.id) qb.andWhere('id >:i', { i: query.id })
+          if (query.id) qb.andWhere(`id >"${query.id}"`)
         });
       },
       orderBy: { "user.id": "desc" }
