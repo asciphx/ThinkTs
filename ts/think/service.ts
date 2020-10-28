@@ -19,7 +19,7 @@ export abstract class Service{
     return this[this.$].remove(rm);
   }
   private async _findOne(id: number) {
-    return this[this.$].findOne(id)
+    return this[this.$].findOne(id);
   }
   private async _list(query) {
     let { size = 10, current = 1 } = query;//默认每页10个，当前第一页

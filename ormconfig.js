@@ -8,7 +8,7 @@ module.exports = {
     synchronize: true,
     entities: [`${process.env.NODE_ENV==='production'?'dist':'ts'}/entity/*{.ts,.js}`],
     cache: {
-        type: "database",duration: 5000
+        type: "database",duration: 3000
     },
     extra: {
         max: 9,
