@@ -4,7 +4,7 @@ import * as Router from "koa-router";import * as koaStatic from "koa-static";
 import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path"
 import { Conf, Cache, Maps, Redis } from './config';import { Routes } from "./think/decorator";
 import { User } from './entity/User';import "./view";import { Menu } from "./entity/Menu";
-import { Tag } from "./utils/tag"; import { encrypt, NTo10 } from "./utils/crypto"
+import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto"
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
   await fs.readdirSync(__dirname+"/entity").forEach(i=>{
@@ -30,8 +30,8 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
         const path=ctx.url.replace(/\d+|(\w+)\?.+$/,"$1")
         for (let i = 0; i < l.length; i++) {
           if(Maps.hasOwnProperty(l[i])){
-            if(Maps[l[i]].includes(ctx.method+path)){await next();return}//每15秒最小间隔若没匹配权限，才会去redis上取出放到Map
-            if(Date.now()-(fristTime[l[i]]||0)>15000){fristTime[l[i]]=Date.now()}else continue;const url=await Redis.get(l[i])
+            if(Maps[l[i]].includes(ctx.method+path)){await next();return}
+            if(Date.now()-(fristTime[l[i]]||0)>Conf.synchronize){fristTime[l[i]]=Date.now()}else continue;const url=await Redis.get(l[i])
             if(url.match(ctx.method+path)){Maps[l[i]]=url.split(",");await next();return}continue;
           }
           let m=await (Cache[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")

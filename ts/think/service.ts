@@ -19,7 +19,7 @@ export abstract class Service{
     return this[this.$].remove(rm);
   }
   private async _findOne(id: number) {
-    return this[this.$].findOne(id);
+    return this[this.$].findOne(id)
   }
   private async _list(query) {
     let { size = 10, current = 1 } = query;//默认每页10个，当前第一页
@@ -36,7 +36,7 @@ export abstract class Service{
       }
       if(this._.groupBy){v.groupBy(this._.groupBy)}
     }
-    const [list,count]=await v.getManyAndCount()
+    const [list,count]=await v.cache(true).getManyAndCount()
     return {list:list,page:new Page(current,size,count).get()};
   }
 }
