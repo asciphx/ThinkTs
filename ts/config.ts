@@ -11,7 +11,7 @@ const Conf={
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/test.html|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'../views',
-  synchronize:9000//Redis同步间隔毫秒,降低频繁访问（如有分布式）建议设置十秒延迟
+  synchronize:6000//同步间隔毫秒,也就是说一个就等于6个redis，不过延迟6秒(这里是打比方)
 } 
 const Cache:Object={}
 const Maps:Object={}

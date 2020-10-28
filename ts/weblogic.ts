@@ -19,7 +19,7 @@ const W = {
     }
   },
   /*Verify链式校验，V_B校验body,V_Q校验query，非全检测，只要遇到错的就弹出，省开销
-   *O是Valid字段，L代表length，R为是否必填(|0或者不写为可选字段)[用|1表示必填,|2表示不填]
+   *O是Valid字段，L代表length，R为是否必填(|0或不写是可选字段)[|1表示必填]未填是Invalid字段
    *name#5表示字段为name长度为0~5非必填，如果有则检验长度，现在可顺带着过滤无效字段*/
   V_B(...a:Array<string>):Middleware {const O=[""],R=[0],L0=[0],L1=[0];let L=[]
     a.sort().forEach((v, i) => {
@@ -32,7 +32,7 @@ const W = {
       let c=ctx.request.body,l=0,b=Object.keys(c).filter(v => O.includes(v)?true:l=1),i=0;
       if(l===0)b=b.sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=c=null;return};
       for (let p of O) {
-        if(p===b[i]){if(R[l]===2){ctx.status=422;ctx.body=`The field[${p}] is must be null`;b=c=null;return}
+        if(p===b[i]){
           if(L1[l])
             if(L0[l]>c[p].length||c[p].length>L1[l]){
               ctx.status=422;ctx.body=`The length of the field[${p}] is ${L0[l]} to ${L1[l]}`;b=c=null;return
@@ -56,7 +56,7 @@ const W = {
       let c=ctx.query,l=0,b=Object.keys(c).filter(v => O.includes(v)?true:l=1),i=0;
       if(l===0)b=b.sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=c=null;return};
       for (let p of O) {
-        if(p===b[i]){if(R[l]===2){ctx.status=422;ctx.body=`The field[${p}] is must be null`;b=c=null;return}
+        if(p===b[i]){
           if(L1[l])
             if(L0[l]>c[p].length||c[p].length>L1[l]){
               ctx.status=422;ctx.body=`The length of the field[${p}] is ${L0[l]} to ${L1[l]}`;b=c=null;return

@@ -1,6 +1,6 @@
 {
    "name": "think-ts",
-   "version": "1.9.6",
+   "version": "1.9.7",
    "description": "TypeORM+KOA",
    "devDependencies": {
       "@types/ioredis": "^4.17.6",
