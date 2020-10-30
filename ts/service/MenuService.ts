@@ -30,8 +30,11 @@ export class MenuService extends Service {
     return await this.menu.update(id,menu);
   }
   async add(menu:Menu) {
-    let res=await this.menu.save(menu);
-    if(menu.roles)menu.roles.forEach(e => {if(e.name)Maps[e.name].push(menu.name)});
-    return res
+    if (menu.roles) menu.roles.forEach(e => {
+      if (e.name) {
+        Maps[e.name].push(menu.name);Redis.set(e.name,Maps[e.name].toString());
+      }
+    });
+    return await this.menu.save(menu);
   }
 }
