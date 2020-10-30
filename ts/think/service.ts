@@ -15,8 +15,9 @@ export abstract class Service{
     return await this[this.$].update(id, obj);
   }
   private async _remove(id: number) {
-    let rm = await this[this.$].findOne(id);
-    return await this[this.$].remove(rm);
+    let v = await this[this.$].findOne(id);
+    if (!v) { return "Not Found"; }
+    return await this[this.$].remove(v);
   }
   private async _findOne(id: number) {
     return await this[this.$].findOne(id);
