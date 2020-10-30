@@ -9,17 +9,17 @@ export abstract class Service{
     this._=_;if($)this.$=$;
   }
   private async _save(obj) {
-    return this[this.$].save(obj);
+    return await this[this.$].save(obj);
   }
   private async _update(id: number, obj) {
-    return this[this.$].update(id, obj);
+    return await this[this.$].update(id, obj);
   }
   private async _remove(id: number) {
     let rm = await this[this.$].findOne(id);
-    return this[this.$].remove(rm);
+    return await this[this.$].remove(rm);
   }
   private async _findOne(id: number) {
-    return this[this.$].findOne(id);
+    return await this[this.$].findOne(id);
   }
   private async _list(query) {
     let { size = 10, current = 1 } = query;//默认每页10个，当前第一页

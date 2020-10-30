@@ -8,11 +8,11 @@ class View {
   @Get()
   @Get("index.html")
   @Get("login.html")
-  async html(ctx: Context) {
-    return await html(ctx, { test: "For ", author: "anyone" });
+  html(ctx: Context) {
+    return html(ctx, { test: "For ", author: "anyone" });
   }
   @Get("_")
-  async _() {
+  _() {
     return Maps;
   }
 }

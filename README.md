@@ -15,20 +15,20 @@ class AdminController extends Controller{
 
   @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
   @Post("login")
-  async login(@B body) {
-    return await this.userSvc.login(body.account,body.pwd)
+  login(@B body) {
+    return this.userSvc.login(body.account,body.pwd)
   }
 }
 /** Here's how to show EJS template rendering */
 class View{
   @Get()
   @Get("index.html")
-  async index(ctx:Context){
-    await html(ctx,{test:"test",author:"asciphx"})
+  index(ctx:Context){
+    html(ctx,{test:"test",author:"asciphx"})
   }
   @Get("login.html")
-  async login(ctx:Context){
-    await html(ctx,{test:"test",author:"Login"})
+  login(ctx:Context){
+    html(ctx,{test:"test",author:"Login"})
   }
 }
 ```

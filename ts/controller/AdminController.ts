@@ -9,12 +9,12 @@ class AdminController extends Controller {
   @Inject(AdminService) readonly adm_: AdminService
   
   @Get("sql")
-  async sql(@Q q){
-    return await this.adm_.sql(q);
+  sql(@Q q){
+    return this.adm_.sql(q);
   }
 
   @Get("index.html")
-  async index(ctx:Context){
-    return await html(ctx, { path: "admin" })
+  index(ctx:Context){
+    return html(ctx, { path: "admin" })
   }
 }

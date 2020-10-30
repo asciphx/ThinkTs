@@ -8,12 +8,12 @@ class RoleController extends Controller {
   @Inject(RoleService) readonly role_: RoleService
 
   @Put(":id")
-  async fix(@P p,@B b){
-    return await this.role_.fix(p.id,b);
+  fix(@P p,@B b){
+    return this.role_.fix(p.id,b);
   }
   @Middle(W.Log,W.V_Q("roles#25|1"))
   @Get("/perm")//http://localhost:8080/role/perm?roles=admin,super,……
-  async perm(@R r:Request){
-    return await this.role_.perm(r.query.roles);
+  perm(@R r:Request){
+    return this.role_.perm(r.query.roles);
   }
 }
