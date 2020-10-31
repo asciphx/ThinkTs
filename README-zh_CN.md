@@ -14,7 +14,7 @@
 @Class(["add","del","fix","info"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController extends Controller{
   @Inject(AdminService) readonly adminSvc:AdminService
-  @Inject(UserService) readonly userSvc:AdminService
+  @Inject(UserService) readonly userSvc:UserService
 
   @Middle(W.Log,W.V_B("pwd#6~23|1","account|1#3~10"))
   @Post("login")
