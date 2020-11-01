@@ -22,7 +22,7 @@ export class MenuService extends Service {
   async fix(id:number,menu:Menu) {
     let e=menu.path;if(e===undefined) return await this.menu.update(id,menu);
     e=await this.menu.findOne({id:id}) as any;
-    let o=Object.entries(Maps),i=o.findIndex(v=>v[1].includes((e as any).path)),I=i>-1?Maps[o[i][0]]:undefined;
+    let o=Object.entries(Maps),i=o.findIndex(v=>v[1].includes((e as any).path)),I=i>-1?Maps[o[i][0]]:void 0;
     if(I){
       I[I.findIndex(v=>v===(e as any).path)]=menu.path;
       Redis.set(o[i][0],I.toString());

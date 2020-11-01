@@ -7,13 +7,13 @@ import { User } from './entity/User';import "./view";import { Menu } from "./ent
 import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto"
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
-  await fs.readdirSync(__dirname+"/entity").forEach(i=>{
+  fs.readdirSync(__dirname+"/entity").forEach(i=>{
     let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null
   });let fristTime={};
-  await fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
+  fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
   const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
-  .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
+  .use(koaStatic(path.join(__dirname,Conf.view),{defer:true})).use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
   .use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin',ctx.headers.origin);
     ctx.set('Access-Control-Allow-Headers','content-type');

@@ -16,7 +16,7 @@ const readFileList = (path, filesList) => {
   })
 }
 const deleteAll = async (path) => {
-  path.slice(-1) === "/" ? undefined : path = path + "/";
+  path.slice(-1) === "/" ? void 0 : path = path + "/";
   fs.readdirSync(path).forEach((itm) => {
     fs.unlinkSync(path + itm)
   })

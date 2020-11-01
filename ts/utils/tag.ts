@@ -20,7 +20,7 @@ export class Tag {
   }
   static async getByNumb(numb: string): Promise<Parse> {
     let o = await this.Repository.findOne({ keyword: numb })
-    if (o) return o; else return undefined;
+    if (o) return o; else return void 0;
   }
   static async getInputHtml(name: string, type: number, inputName: string, className: string): Promise<string> {
     if (type == 1 || type == 2) { } else type = 0;
