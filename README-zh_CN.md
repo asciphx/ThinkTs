@@ -97,8 +97,11 @@ export interface UserFace{
 6. ts/think:`基础层`
 7. ts/utils:`工具层`
 8. views:`后台ejs模板渲染文件夹`
-9. routes:`输出查看的路由文件，每个controller会创建一个`
-10. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
+9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
+10. routes:`输出查看的路由文件，每个controller会创建一个`
+11. upload:`上传文件的存储目录`
+12. dist:`后台ejs模板渲染文件夹`
+13. log:`pm2输出日志目录`
 
 ## 权限管理
 PATH路径，自动生成的（匹配规则）  

@@ -104,16 +104,19 @@ If an object is returned, the request status code must be 200, so only the impor
 
 
 ### Directory structure
-1. ts: ` back end file entry`
-2. ts/controller: ` control layer`
+1. ts: `back end file entry`
+2. ts/controller: `control layer`
 3. ts/entity:`entity layer`
-4. ts/interface: ` interface layer`
+4. ts/interface: `interface layer`
 5. ts/service: `service layer`
 6. ts/think: `base layer`
-7. ts/utils: ` tool layer`
-8. views: ` background EJS template rendering folder`
-9. routes: ` output the route file to view. Each controller will create one`
-10. Lib: ` Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
+7. ts/utils: `tool layer`
+8. views: `background EJS template rendering folder`
+9. lib: `Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
+10. routes: `output the route file to view. Each controller will create one`
+11. upload: `the storage directory of the uploaded file`
+12. dist: `background EJS template rendering folder`
+13. log: `PM2 output log directory`
 
 ### Other
 > Built by the world's No.1 man, Asciphx  
