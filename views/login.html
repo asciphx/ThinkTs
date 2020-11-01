@@ -15,7 +15,7 @@
   <%= test %> for <%= author %><br/>
   <input id="token" placeholder="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYXNjaXBoeCIsImlhdCI6MTYwMDMwOTI1MywiZXhwIjoxNjAwMzQ1MjUzfQ.UrfgJfaw4ohmaKN8Oir-qLuNZwYeZU0t_OTeJbezJX8"/>
   <input id="secret" placeholder="secret" value="981fm5lo#acd"/>
-  <input id="html" placeholder="html" value="http://localhost:8080/admin/index.html"/>
+  <input id="html" placeholder="html" value=""/>
 
   <button id="ajax" onclick='ajax(document.getElementById("html").value)'>ajax跳转到静态页</button>
 </body>
@@ -50,5 +50,6 @@
       }
     });
   }
+  document.getElementById("html").value=document.location.origin+"/admin/index.html"
 </script>
 </html>
