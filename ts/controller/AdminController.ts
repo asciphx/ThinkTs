@@ -1,8 +1,8 @@
-import { Class, Inject, Get, Q } from "../think/decorator";
+import { Class, Inject, Get, Q, Middle } from "../think/decorator";
 import { AdminService } from "../service/AdminService";
-import { Context } from "koa";
 import { Controller } from '../think/controller';
-import { html } from "../utils/tool";
+import { Context } from "koa";import { html } from "../utils/tool";
+import { Tag } from "../utils/tag";import { W } from "../weblogic";
 
 @Class(["add", "del", "info", "fix", "page"])
 class AdminController extends Controller {
@@ -13,8 +13,11 @@ class AdminController extends Controller {
     return this.adm_.sql(q);
   }
 
+  @Middle(W.Log)
   @Get("index.html")
-  index(ctx:Context){
-    return html(ctx, { path: "admin" })
+  async index(ctx:Context){
+    return html(ctx,{path:"admin",STATUS:await Tag.h("0","selected","STATUS",0,"input-text"),
+        ID_TYPE:await Tag.h("0","checked","ID_TYPE",1,"input-radius"),
+        USER_TYPE:await Tag.h("0,P,T","checked","USER_TYPE",2,"input-text")})
   }
 }
