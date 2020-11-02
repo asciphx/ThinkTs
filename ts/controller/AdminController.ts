@@ -14,7 +14,7 @@ class AdminController extends Controller {
   }
 
   @Middle(W.Log)
-  @Get("index.html")
+  @Get("index.html")//允许后端模板渲染Tag，具体情况还是看是否前后端分离。
   async index(ctx:Context){
     return html(ctx,{path:"admin",STATUS:await Tag.h("0","selected","STATUS",0,"input-text"),
         ID_TYPE:await Tag.h("0","checked","ID_TYPE",1,"input-radius"),

@@ -5,21 +5,21 @@ export class Tag {
   static Init(name: string) {
     this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse); 
   }
-  static async h(selectValue: string, selectAttValue: string, name: string, type: 0|1|2, className: string) {
+  static async h(value: string, attr: string, name: string, type: 0|1|2, className: string) {
     let html: string = await this.getInputHtml(name, type, className);
     if (html !== null) {
-      if (selectValue !== "" && type !== 2) {
-        html = await html.replace("value='" + selectValue + "'", "value='" + selectValue + "' " + selectAttValue);
+      if (value !== "" && type !== 2) {
+        html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
       } else {
-        let sss: Array<string> = selectValue.split(",");
+        let sss: Array<string> = value.split(",");
         for (let i in sss) {
-          html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + selectAttValue);
+          html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
         }
       } return html;
     }
   }
   private static async getByNumb(numb: string): Promise<Parse> {
-    let o = await this.Repository.findOne({ keyword: numb })
+    let o = await this.Repository.findOne({ keyword: numb });
     if (o) return o; else return void 0;
   }
   private static async getInputHtml(name: string, type: number, className: string): Promise<string> {
@@ -29,7 +29,7 @@ export class Tag {
     if (!html) {
       if (className !== "") { className = "class='" + className + "'"; } else { className = ""; }
       let parameter = await this.getByNumb(name);
-      if (parameter !== null) {
+      if (parameter !== undefined) {
         if (type === 1) {
           html = this.setRadioCheckbox(parameter, "radio", name, className);
         } else if (type === 2) {
@@ -37,7 +37,7 @@ export class Tag {
         } else {
           html = this.setSelect(parameter, name, className);
         }
-      }
+      }else return ""
       this.Map[numbFmt]=html;
     }
     return html as string;

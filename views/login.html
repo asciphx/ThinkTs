@@ -5,8 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="./static/css/App.css">
+  <style>span{border: 1px solid #acacac;margin: 1px;}
+  </style>
+  <script src="./static/js/jquery.min.js"></script>
 </head>
 <body style="text-align: center;">
+  <script>function _P_(v,a,n,t,c){
+    $.ajax({url:"/static",type:"GET",async:false,data:{v:v,a:a,n:n,t:t,c:c}})
+    .done(function(result){document.write(result)})}
+  _P_("0","selected","BLOOD",0,"input-text");
+  _P_("0,1","checked","EDUCATION",2,"input-textarea");
+  _P_("P","checked","USER_TYPE",1,"input-text")//前端使用ajax请求来渲染Tag，这只是演示</script>
   <div className="App">
     <header className="App-header">
       <img src="./static/logo192.png" className="App-logo" alt="logo" />
@@ -19,7 +28,6 @@
 
   <button id="ajax" onclick='ajax(document.getElementById("html").value)'>ajax跳转到静态页</button>
 </body>
-<script src="./static/js/jquery.min.js"></script>
 <script>//模拟演示ajax请求获得静态页面.
   function ajax(url){
     $.ajax({

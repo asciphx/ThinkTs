@@ -115,7 +115,7 @@ If an object is returned, the request status code must be 200, so only the impor
 9. lib: `Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
 10. routes: `output the route file to view. Each controller will create one`
 11. upload: `the storage directory of the uploaded file`
-12. dist: `background EJS template rendering folder`
+12. dist: `package back end to formal environment directory`
 13. log: `PM2 output log directory`
 
 ### Other

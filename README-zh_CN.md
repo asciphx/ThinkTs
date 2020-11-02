@@ -100,7 +100,7 @@ export interface UserFace{
 9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
 10. routes:`输出查看的路由文件，每个controller会创建一个`
 11. upload:`上传文件的存储目录`
-12. dist:`后台ejs模板渲染文件夹`
+12. dist:`打包后端到正式环境的目录`
 13. log:`pm2输出日志目录`
 
 ## 权限管理
