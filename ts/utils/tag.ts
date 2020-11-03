@@ -1,15 +1,15 @@
 import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
 export class Tag {
-  static Map: Object; private static Time: number = 10000;//缓存10秒，减少sql访问
+  private static Map: Object; private static Time: number = 10000;//缓存10秒，减少sql访问
   private static Repository: any;
   static Init(name: string) {
     this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse); 
   }
   static async h(value: string, attr: string, name: string, type: 0|1|2, className: string) {
     let html: string = await this.getInputHtml(name, type, className);
-    if (value !== "" && type !== 2) {
+    if (value !== "" && type !== 2)
       html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
-    } else {
+    if(value !== ""){
       let sss: Array<string> = value.split(",");
       for (let i in sss) {
         html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
