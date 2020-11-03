@@ -1,4 +1,4 @@
-import { Class, Inject} from "../think/decorator";
+import { Class, Inject } from "../think/decorator";
 import { Controller } from '../think/controller';
 import { ParseService } from "../service/ParseService";
 

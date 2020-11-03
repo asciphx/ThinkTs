@@ -1,5 +1,6 @@
-import * as fs from "fs";import * as path from "path";import {Conf} from "../config";import * as _ from "koa-compose"
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
+import * as _ from "koa-compose";import * as Router from "koa-router";
+let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null;const ROUTER = new Router();
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 const Class=(v:string | Array<string>="" ,t?:string[])=>_=>{let a=[]
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
@@ -16,10 +17,12 @@ const Class=(v:string | Array<string>="" ,t?:string[])=>_=>{let a=[]
   });
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
-    Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);
+    Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);let A
+    const M=Routes[r].m,W=Routes[r].w?[Routes[r].r,Routes[r].w]:[Routes[r].r]
     if(["_add","_del","_fix","_info","_page"].indexOf(Routes[r].a)>-1)
-      Routes[r].a=_.prototype[Routes[r].a].bind($[_.prototype["#"]])
-    else Routes[r].a=_.prototype[Routes[r].a].bind($);i++
+      A=_.prototype[Routes[r].a].bind($[_.prototype["#"]])
+    else A=_.prototype[Routes[r].a].bind($);
+    ROUTER[M](...W,async(ctx,next)=>{ctx.body=await A(ctx,next)});++i;
   }
   if(Conf.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
@@ -91,4 +94,7 @@ const param=(m:Function,d)=>{
     }
   }o=d=null;
 }
-export {Routes,Class,Get,Post,Put,Del,Middle,Inject,B,P,Q,R};
+const cleanRoutes=()=>{//console.log(Routes);
+  Routes=null;
+}//清理Routes数组排泄内存，并暴露ROUTER，引入到控制器更改。severless将不再是梦
+export {ROUTER,Class,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,cleanRoutes};

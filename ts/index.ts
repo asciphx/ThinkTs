@@ -1,13 +1,13 @@
 import "reflect-metadata";import { createConnection, getRepository, Repository } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
-import * as Router from "koa-router";import * as koaStatic from "koa-static";
-import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path";
-import { Conf, Cache, Maps, Redis } from './config';import { Routes } from "./think/decorator";
-import { User } from './entity/User';import "./view";import { Menu } from "./entity/Menu";
-import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto";
+import * as koaStatic from "koa-static";import { ROUTER, cleanRoutes } from "./think/decorator";
+import * as path from "path";import { Conf, Cache, Maps, Redis } from './config';import "./view";
+import * as Jwt from "jsonwebtoken";import * as views from "koa-views";
+import { User } from './entity/User';import { Menu } from "./entity/Menu";
+import { encrypt, NTo10 } from "./utils/crypto";import { Tag } from "./utils/tag";
 
-createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;
-  const router = new Router();let fristTime={};Tag.Init(conn.name);//Require to use decorator preprocessing
+createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.Init(conn.name);
+  let fristTime={};//Require to use decorator preprocessing
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache[User.name].findOne({account:"admin"});
@@ -17,12 +17,7 @@ createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;
     })
   });
   fs.readdir(__dirname + "/controller", (e, f) => {
-    for (let i of f)require(__dirname+"/controller/"+i)
-    Routes.forEach(r => {
-      router[r.m](...r.w?[r.r,r.w]:[r.r],async(ctx:Koa.Context,next)=>{
-        ctx.body=await r.a(ctx,next);
-      })
-    });//console.log(Routes)
+    for (let i of f)require(__dirname+"/controller/"+i);cleanRoutes();
   });
   const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
@@ -65,6 +60,6 @@ createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;
     }else{ctx.status=401;ctx.body="Headers Error";}
   });
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
-  APP.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
+  APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Conf.port}/test.html`))
 })

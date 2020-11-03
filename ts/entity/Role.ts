@@ -15,5 +15,4 @@ export class Role {
   menus: Menu[];
   @ManyToMany(_ => User,v => v.roles)
   users: User[];
-
 }

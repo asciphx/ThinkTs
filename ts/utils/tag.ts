@@ -9,7 +9,7 @@ export class Tag {
     let html: string = await this.getInputHtml(name, type, className);
     if (value !== "" && type !== 2)
       html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
-    if(value !== ""){
+    else if(value !== ""){
       let sss: Array<string> = value.split(",");
       for (let i in sss) {
         html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
