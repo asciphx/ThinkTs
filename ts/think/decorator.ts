@@ -94,7 +94,7 @@ const param=(m:Function,d)=>{
     }
   }o=d=null;
 }
-const cleanRoutes=()=>{//console.log(Routes);
-  Routes=null;
-}//清理Routes数组排泄内存，并暴露ROUTER，引入到控制器更改。severless将不再是梦
+let cleanRoutes=()=>{//console.log(Routes);
+  Routes=cleanRoutes=null;
+}//清理Routes数组排泄内存，并暴露ROUTER。将其引入到控制器更改，从而实现纯前端修改后台代码, 离severless更近了
 export {ROUTER,Class,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,cleanRoutes};
