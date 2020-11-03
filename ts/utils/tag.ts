@@ -1,22 +1,20 @@
 import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
 export class Tag {
-  private static Map: Object;
+  static Map: Object; private static Time: number = 10000;//缓存10秒，减少sql访问
   private static Repository: any;
   static Init(name: string) {
     this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse); 
   }
   static async h(value: string, attr: string, name: string, type: 0|1|2, className: string) {
     let html: string = await this.getInputHtml(name, type, className);
-    if (html !== null) {
-      if (value !== "" && type !== 2) {
-        html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
-      } else {
-        let sss: Array<string> = value.split(",");
-        for (let i in sss) {
-          html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
-        }
-      } return html;
-    }
+    if (value !== "" && type !== 2) {
+      html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
+    } else {
+      let sss: Array<string> = value.split(",");
+      for (let i in sss) {
+        html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
+      }
+    } return html;
   }
   private static async getByNumb(numb: string): Promise<Parse> {
     let o = await this.Repository.findOne({ keyword: numb });
@@ -26,7 +24,7 @@ export class Tag {
     if (type === 1 || type === 2) void 0; else type = 0;
     let numbFmt: string = name + type;
     let html: string = this.Map[numbFmt];
-    if (!html) {
+    if (html===undefined||html===null) {
       if (className !== "") { className = "class='" + className + "'"; } else { className = ""; }
       let parameter = await this.getByNumb(name);
       if (parameter !== undefined) {
@@ -38,7 +36,8 @@ export class Tag {
           html = this.setSelect(parameter, name, className);
         }
       }else return ""
-      this.Map[numbFmt]=html;
+      this.Map[numbFmt] = html;
+      setTimeout(()=>this.Map[numbFmt]=null,this.Time)
     }
     return html as string;
   }

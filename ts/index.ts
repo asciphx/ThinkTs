@@ -1,19 +1,18 @@
 import "reflect-metadata";import { createConnection, getRepository, Repository } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as Router from "koa-router";import * as koaStatic from "koa-static";
-import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path"
+import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import * as path from "path";
 import { Conf, Cache, Maps, Redis } from './config';import { Routes } from "./think/decorator";
 import { User } from './entity/User';import "./view";import { Menu } from "./entity/Menu";
-import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto"
+import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto";
 
-createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
-  Conf.DATABASE = conn.driver.database;const router = new Router();let fristTime={};
+createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;
+  const router = new Router();let fristTime={};Tag.Init(conn.name);//Require to use decorator preprocessing
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache[User.name].findOne({account:"admin"});
     if (EXIST) {console.error("董事长已存在!");return;} else
-    return Cache[User.name].save(
-      new User({account:"admin",pwd:encrypt("654321","shake256","base64",28)} as User))
+    return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","base64",28)} as User))
       .then(user => {console.log("User has been saved: ", user);
     })
   });
