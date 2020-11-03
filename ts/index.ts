@@ -7,10 +7,24 @@ import { User } from './entity/User';import "./view";import { Menu } from "./ent
 import { Tag } from "./utils/tag";import { encrypt, NTo10 } from "./utils/crypto"
 
 createConnection().then(async conn => {Tag.Init(conn.name);//Require to use decorator preprocessing
-  fs.readdirSync(__dirname+"/entity").forEach(i=>{
-    let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null
-  });let fristTime={};
-  fs.readdirSync(__dirname+"/controller").forEach((i)=>{require(__dirname+"/controller/"+i)})
+  Conf.DATABASE = conn.driver.database;const router = new Router();let fristTime={};
+  fs.readdir(__dirname + "/entity", async (e, f) => {
+    for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
+    const EXIST = await Cache[User.name].findOne({account:"admin"});
+    if (EXIST) {console.error("董事长已存在!");return;} else
+    return Cache[User.name].save(
+      new User({account:"admin",pwd:encrypt("654321","shake256","base64",28)} as User))
+      .then(user => {console.log("User has been saved: ", user);
+    })
+  });
+  fs.readdir(__dirname + "/controller", (e, f) => {
+    for (let i of f)require(__dirname+"/controller/"+i)
+    Routes.forEach(r => {
+      router[r.m](...r.w?[r.r,r.w]:[r.r],async(ctx:Koa.Context,next)=>{
+        ctx.body=await r.a(ctx,next);
+      })
+    });//console.log(Routes)
+  });
   const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true})).use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
@@ -52,18 +66,6 @@ createConnection().then(async conn => {Tag.Init(conn.name);//Require to use deco
     }else{ctx.status=401;ctx.body="Headers Error";}
   });
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
-  Conf.DATABASE = conn.driver.database;const router = new Router();//console.log(Routes)
-  Routes.forEach(r => {
-    router[r.m](...r.w?[r.r,r.w]:[r.r],async(ctx:Koa.Context,next)=>{
-      ctx.body=await r.a(ctx,next);
-    })
-  })
   APP.use(router.routes()).use(router.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Conf.port}/test.html`))
-  const EXIST = await Cache[User.name].findOne({account:"admin"});
-  if (EXIST) {console.error("董事长已存在!");return;} else
-  return Cache[User.name].save(
-    new User({account:"admin",pwd:encrypt("654321","shake256","base64",28)} as User))
-    .then(user => {console.log("User has been saved: ", user);
-  })
 })
