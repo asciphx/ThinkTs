@@ -5,7 +5,7 @@ import { Cache, Maps, Redis } from "../config";
 
 export class MenuService extends Service {
   constructor(
-    private menu:Repository<Menu>=Cache[Menu.name]
+    private menu:Repository<Menu>=Cache["Menu"]
   ) {
     super({
       leftJoin:{e:"menu.roles",a:'role'},

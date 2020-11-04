@@ -10,8 +10,8 @@ import { Role } from '../entity/Role';
 const type:T = "shake256", digest:H = "base64", length=28;
 export class UserService extends Service implements UserFace {
   constructor(
-    private user:Repository<User>=Cache[User.name],
-    private role:Repository<Role>=Cache[Role.name]
+    private user:Repository<User>=Cache["User"],
+    private role:Repository<Role>=Cache["Role"]
   ) {
     super({
       leftJoin:{e:"user.roles",a:'role'},

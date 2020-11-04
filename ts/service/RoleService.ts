@@ -6,8 +6,8 @@ import { Menu } from "../entity/Menu";
 
 export class RoleService extends Service {
   constructor(
-    private role:Repository<Role>=Cache[Role.name],
-    private menu:Repository<Menu>=Cache[Menu.name]
+    private role:Repository<Role>=Cache["Role"],
+    private menu:Repository<Menu>=Cache["Menu"]
   ) {
     super({
       leftJoin:{e:"role.menus",a:'menu'},

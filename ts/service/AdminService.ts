@@ -6,7 +6,7 @@ import { Conf, Cache } from "../config";
 
 export class AdminService extends Service {
   constructor(
-    private adm:Repository<Admin>=Cache[Admin.name]
+    private adm:Repository<Admin>=Cache["Admin"]
   ) {
     super({
       select:[ 'adm.id', 'adm.name', 'adm.label'],

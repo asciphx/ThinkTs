@@ -5,7 +5,7 @@ import { Cache } from "../config"
 
 export class ParseService extends Service {
   constructor(
-    private parse:Repository<Parse>=Cache[Parse.name]
+    private parse:Repository<Parse>=Cache["Parse"]
   ) {
     super({
       where: (query:{keyword:string}) => {
