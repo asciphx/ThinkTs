@@ -1,9 +1,6 @@
-import { Context } from "koa"
-import { html } from "./utils/tool"
-import { Class, Get, Q } from "./think/decorator"
-import { Maps } from "./config"
-import { Tag } from "./utils/tag";
-
+import { html, getFilesPath } from "./utils/tool";import * as fs from "fs"
+import { Class, Get, Q } from "./think/decorator";import { Maps } from "./config"
+import { Tag } from "./utils/tag";import { Context } from "koa"
 @Class()
 class View {
   @Get()
@@ -16,8 +13,18 @@ class View {
   _() {
     return Maps;
   }
-  @Get("static")//前端渲染Tag，使用/static是为了方便
+  @Get("static/tag")//前端渲染Tag,前缀static可以不被拦截
   $(@Q q) {
     return Tag.h(q.v,q.a,q.n,Number(q.t)as 0,q.c);
+  }
+  @Get("static/tsx")//获取ts目录这一层的目录或者是文件的名称
+  tsx() {
+    let str=""
+    fs.readdirSync("./ts").forEach(i=>{str += i + ",";});
+    return str
+  }
+  @Get("static/ts")//获取ts路径下，所有文件的相对路径
+  ts() {
+    return getFilesPath("./ts")
   }
 }

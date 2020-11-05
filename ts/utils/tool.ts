@@ -1,11 +1,11 @@
-import * as fs from "fs";import * as url from "url";import { Context } from "koa"
+import path = require("path");import * as fs from "fs";import * as url from "url";import { Context } from "koa"
 type Y<T>=object;type P<T>=Y<T[keyof T]>;
 /**
  * 将ejs模板渲染到html
  * @param ctx koa的Context
  * @param obj 展开的Object
  */
-const html = async (ctx: Context, ...obj:Array<P<{K:{k:string}}>>) => 
+const html:Function = async (ctx: Context, ...obj:Array<P<{K:{k:string}}>>) => 
 await ctx.render(url.parse(ctx.url).path.replace(/^\//, '') || "index", ...obj)
 const readFileList = (path, filesList) => {
   fs.readdirSync(path).forEach((itm) => {
@@ -15,18 +15,32 @@ const readFileList = (path, filesList) => {
     else filesList.push(path + itm);
   })
 }
-const deleteAll = async (path) => {
+const deleteAll:Function = async (path) => {
   path.slice(-1) === "/" ? void 0 : path = path + "/";
   fs.readdirSync(path).forEach((itm) => {
     fs.unlinkSync(path + itm)
   })
 }
-const deleteOne = async (path) => {
+const deleteOne:Function = async (path) => {
   if (fs.existsSync(path)) fs.unlinkSync(path);
 }
-const fileAction = async (ctx: Context) => {
+const getfiles:Function = async (ctx: Context) => {
   let filesList = new Array;
   await readFileList(ctx.query.path, filesList);
-  await ctx.send(filesList);
+  return filesList;
 }
-export { html, readFileList, deleteAll, deleteOne, fileAction }
+const promise:Function=F=>(...a)=>new Promise((s,f)=>{F.call(this,...a,(e,d)=>{if(e){f(e)}else{s(d)}})});
+const getFilesPath:Function = async dir => {
+    let files:any = await promise(fs.readdir)(dir);
+    return Promise.all(files.map(file => {
+        let filePath = path.join(dir, file);
+        return promise(fs.stat)(filePath).then(stat => {
+            if ((stat as fs.StatsBase<any>).isDirectory()) {
+                return getFilesPath(filePath);
+            } else {
+                return filePath.replace("ts\\","");
+            }
+        });
+    }));
+};
+export { html, deleteAll, deleteOne, getfiles, promise, getFilesPath }

@@ -6,6 +6,7 @@ export class Tag {
     this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse); 
   }
   static async h(value: string, attr: string, name: string, type: 0|1|2, className: string) {
+    if (type === 1 || type === 2) void 0; else type = 0;
     let html: string = await this.getInputHtml(name, type, className);
     if (value !== "" && type !== 2)
       html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
@@ -16,28 +17,24 @@ export class Tag {
       }
     } return html;
   }
-  private static async getByNumb(numb: string): Promise<Parse> {
-    let o = await this.Repository.findOne({ keyword: numb });
-    if (o) return o; else return void 0;
+  private static async getByNumb(numb: string) {
+    let o: Parse = this.Map[numb];
+    if (o === undefined||o === null) {
+      o=await this.Repository.findOne({keyword:numb});this.Map[numb]=o;
+      setTimeout(()=>{this.Map[numb]=null},this.Time);
+    }
+    return o;
   }
   private static async getInputHtml(name: string, type: number, className: string): Promise<string> {
-    if (type === 1 || type === 2) void 0; else type = 0;
-    let numbFmt: string = name + type;
-    let html: string = this.Map[numbFmt];
-    if (html===undefined||html===null) {
-      if (className !== "") { className = "class='" + className + "'"; } else { className = ""; }
-      let parameter = await this.getByNumb(name);
-      if (parameter !== undefined) {
-        if (type === 1) {
-          html = this.setRadioCheckbox(parameter, "radio", name, className);
-        } else if (type === 2) {
-          html = this.setRadioCheckbox(parameter, "checkbox", name, className);
-        } else {
-          html = this.setSelect(parameter, name, className);
-        }
-      }else return ""
-      this.Map[numbFmt] = html;
-      setTimeout(()=>this.Map[numbFmt]=null,this.Time)
+    if (name === undefined) return "";
+    if (className !== "") { className = "class='" + className + "'"; } else { className = ""; }
+    let parameter = await this.getByNumb(name),html: string;
+    if (type === 1) {
+      html = this.setRadioCheckbox(parameter, "radio", name, className);
+    } else if (type === 2) {
+      html = this.setRadioCheckbox(parameter, "checkbox", name, className);
+    } else {
+      html = this.setSelect(parameter, name, className);
     }
     return html as string;
   }

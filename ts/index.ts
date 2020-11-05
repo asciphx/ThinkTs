@@ -19,7 +19,8 @@ createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.
   fs.readdir(__dirname + "/controller", (e, f) => {for (let i of f)require(__dirname+"/controller/"+i);cleanRoutes()});
   const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
-  .use(koaStatic(path.join(__dirname,Conf.view),{defer:true})).use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
+  .use(koaStatic(path.join(__dirname,Conf.view),{defer:true})).use(koaStatic(path.join(__dirname,"./ts")))
+  .use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
   .use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin',ctx.headers.origin);
     ctx.set('Access-Control-Allow-Headers','content-type');

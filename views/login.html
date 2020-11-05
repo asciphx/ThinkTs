@@ -9,9 +9,7 @@
   <script src="./static/js/jquery.min.js"></script>
 </head>
 <body style="text-align: center;">
-  <script>function _P_(v,a,n,t,c){
-    $.ajax({url:"/static",type:"GET",async:false,data:{v:v,a:a,n:n,t:t,c:c}})
-    .done(function(result){document.write(result)})}
+  <script>function _P_(v,a,n,t,c){$.ajax({url:"/static/tag",type:"GET",async:false,data:{v:v,a:a,n:n,t:t,c:c}}).done(function(r){document.write(r)})}
   _P_("0","selected","BLOOD",0,"input-text");
   _P_("0,1","checked","EDUCATION",2,"input-textarea");
   _P_("P","checked","USER_TYPE",1,"input-text")//前端使用ajax请求来渲染Tag，这只是演示</script>
