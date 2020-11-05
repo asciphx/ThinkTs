@@ -74,6 +74,7 @@ export interface UserFace{
 - [x] The controller can now customize the name of the service class variable to be called.
 - [x] In order to reduce memory overhead and instance calls, we have implemented the containerization of entity classes.
 - [x] Add parameter decorator, more convenient and beautiful, and will not affect the running speed
+- [x] decorators can be placed horizontally, and can be stacked, and the order is from right to left
 ## New version of custom JWT authentication description
 
 > The header request header now has two parameters, and the original JWT does not change. Now add a secret. Secret is now provided by the back end. The algorithm is in the cryptoUtil.ts in
