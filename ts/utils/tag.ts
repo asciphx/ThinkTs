@@ -1,9 +1,9 @@
 import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
 export class Tag {
-  private static Map: Object; private static Time: number = 10000;//缓存10秒，减少sql访问
+  private static Map: Object; private static Time: number = 10000;//默认缓存10秒，减少sql访问
   private static Repository: any;
-  static Init(name: string) {
-    this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse); 
+  static Init(name:string, time?:number) {
+    this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse);time&&(this.Time = time);
   }
   static async h(value: string, attr: string, name: string, type: 0|1|2, className: string) {
     if (type === 1 || type === 2) void 0; else type = 0;
