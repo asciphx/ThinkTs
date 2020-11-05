@@ -21,7 +21,7 @@ class View {
   tsx() {
     let str=""
     fs.readdirSync("./ts").forEach(i=>{str += i + ",";});
-    return str
+    return str.replace(/,$/,"")
   }
   @Get("static/ts")//获取ts路径下，所有文件的相对路径
   ts() {
