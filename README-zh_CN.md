@@ -8,7 +8,7 @@
 - 服务类能够implements接口，快速定位每个方法，轻松维护代码复杂繁多的service
 - 字段级别的rbac，加上可插拔的中间件装饰器，组装功能具有无限的可能
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
-- 允许用多种数据库，只要是typeORM允许的关系型数据库，目前已提供mysql，postgres
+- 可以用各种typeORM允许的关系型数据库，目前先提供mysql，postgres
 - ……
 ## 使用**ThinkTs**让你的controller看起来像是:
 
@@ -90,7 +90,7 @@ export interface UserFace{
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜。
 > 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`.因本人用win10，暂`npm run pm2`不支持linux或者Mac
 > 新增redis，为了每个线程上的服务可同步缓存,在ts/config.js下设置synchronize，默认6秒，redis密码在config配置，默认6543210
-> 允许使用postgres，windows用户得用登录windows账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database
+> 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database。
 
 ## 目录结构
 1. ts:`后端文件入口`
@@ -117,7 +117,7 @@ PATH路径，自动生成的（匹配规则）
 菜单只包含目录结构，没有请求路径。  路由的上级节点只能是菜单，包含请求路径。  
 按钮的上级节点只能是路由，而且必须没有请求路径，是因为按钮的功能都基于spa单页应用。  
 put方法实际上跟patch方法等同，如果局部修改也不会影响其他，所以没写patch装饰器。  
-ormconfig.js注释中包含是否输出log或者是错误，取消注释即可使用  
+ormconfig.js注释中包含是否输出log或错误，取消注释即可使用。 
 其中synchronize设置为true是自动同步，若是修改了实体类，自动同步可能会导致修改的字段数据清空。
 所以保存之前，重启服务前，先在数据库改，比如字段长度。然后在实体类改成一样的并保存，最后再重启服务。
 或，synchronize设置false，修改实体类重启服务则不同步 ，然后手动在数据库修改成与实体类一样的属性。
