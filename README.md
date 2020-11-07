@@ -6,6 +6,7 @@
 - MVC, API, websocket, microservice and other systems are constructed fastest, good and most fiercely
 - The configuration is greater than the code, and priority is given to automatically implement five methods, such as adding, deleting, modifying and querying, and pagination, to facilitate the establishment of authority background system
 - With the field level RBAC and pluggable middleware decorator, the assembly function has unlimited possibilities
+- Multiple databases are allowed, as long as it is a relational database allowed by typeorm. Currently, MySQL and Postgres have been provided
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)

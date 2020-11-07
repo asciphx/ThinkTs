@@ -90,6 +90,7 @@ export interface UserFace{
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜。
 > 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`.因本人用win10，暂`npm run pm2`不支持linux或者Mac
 > 新增redis，为了每个线程上的服务可同步缓存,在ts/config.js下设置synchronize，默认6秒，redis密码在config配置，默认6543210
+> 允许使用postgres，windows用户得用登录windows账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database
 
 ## 目录结构
 1. ts:`后端文件入口`
