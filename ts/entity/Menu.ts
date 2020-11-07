@@ -1,7 +1,7 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Role } from './Role';
-
+//由于pgsql不支持tinyint，为兼容所以type与weight都换成了smallint，但mysql则可以使用
 @Entity('menu')
 export class Menu {
   @PrimaryGeneratedColumn({ type: 'smallint' })
@@ -10,9 +10,9 @@ export class Menu {
   pid: number;
   @Column({ comment: "名称", length: 10, unique: true })
   name: string;
-  @Column({ type: "tinyint", comment: "类型（0：目录、1：路由[后端]、2：按钮）",default:1 })
+  @Column({ type: "smallint", comment: "类型（0：目录、1：路由[后端]、2：按钮）",default:1 })
   type: number;
-  @Column({ type: "tinyint", comment: "权重（0-99）",default:99 })
+  @Column({ type: "smallint", comment: "权重（0-99）",default:99 })
   weight: number;
   @Column({ comment: "前端标识", length: 15,default:"" })
   perm: string;

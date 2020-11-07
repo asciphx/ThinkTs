@@ -12,6 +12,6 @@ export class Page {
 		this.size=size<1?1:size;
 		this.count=count;
     this.total=Math.ceil(count/size);
-		this.current=this.current>=this.total?this.total:this.current;
+		this.current=this.current>this.total?this.total:this.current;
 	}
 }

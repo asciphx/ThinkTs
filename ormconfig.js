@@ -1,11 +1,10 @@
 module.exports = {
-    type: "mysql",
+    type: "mysql",port: 3306,username: "root",
+    //type: "postgres",port: 5432,username: "Asciphx",
     host: "127.0.0.1",
-    port: 3306,
-    username: "root",
+    synchronize: true,
     password: "",
     database: "spring",
-    synchronize: true,
     entities: [`${process.env.NODE_ENV==='production'?'dist':'ts'}/entity/*{.ts,.js}`],
     cache: {
         type: "database",duration: 2000

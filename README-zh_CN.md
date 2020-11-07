@@ -8,6 +8,7 @@
 - 服务类能够implements接口，快速定位每个方法，轻松维护代码复杂繁多的service
 - 字段级别的rbac，加上可插拔的中间件装饰器，组装功能具有无限的可能
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
+- 允许用多种数据库，只要是typeORM允许的关系型数据库，目前已提供mysql，postgres
 - ……
 ## 使用**ThinkTs**让你的controller看起来像是:
 

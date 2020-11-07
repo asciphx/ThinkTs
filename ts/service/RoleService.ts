@@ -15,7 +15,7 @@ export class RoleService extends Service {
       addSelect:['user.id','user.name','menu.id','menu.name'],
       where: (query:{name:string}) => {
         return new Brackets(qb => {
-          if (query.name) qb.where(`name like "%${query.name}%"`)
+          if (query.name) qb.where(`name like '%${query.name}%'`)
         });
       },
       orderBy: { "role.id": "desc" }
@@ -30,6 +30,6 @@ export class RoleService extends Service {
   }
   async perm(roles:string) {
     return await this.menu.createQueryBuilder("m").select(["m.type","m.path"])
-    .leftJoin("m.roles","role").where(`role.name IN (${roles.replace(/([^,]+)/g,'"$1"')})`).getMany();
+    .leftJoin("m.roles","role").where(`role.name IN (${roles.replace(/([^,]+)/g,"'$1'")})`).getMany();
   }
 }

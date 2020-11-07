@@ -18,8 +18,8 @@ export class UserService extends Service implements UserFace {
       addSelect:['role.id','role.name'],
       where: query => {
         return new Brackets(qb => {
-          if (query.account) qb.where(`account like "%${query.account}%"`)
-          if (query.id) qb.andWhere(`id >"${query.id}"`)
+          if (query.account) qb.where(`account like '%${query.account}%'`)
+          if (query.id) qb.andWhere(`id >'${query.id}'`)
         });
       },
       orderBy: { "user.id": "desc" }
@@ -34,7 +34,7 @@ export class UserService extends Service implements UserFace {
   }
   async login(account:string,pwd:string) {
     const user = await this.user.createQueryBuilder()
-    .addSelect("User.pwd").where(`account ="${account}"`).getOne()
+    .addSelect("User.pwd").where(`account ='${account}'`).getOne()
     if (!user) return {code:406,message:"登录账号有误"};
     if (!checkPwd(pwd, user.pwd,type,digest,length))return {code:406,message:"登录密码有误"};
     user.logged=new Date(Date.now());this.user.update(user.id,user);

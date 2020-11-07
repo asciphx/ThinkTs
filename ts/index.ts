@@ -45,7 +45,7 @@ createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.
             }
           }
           let m=await (Cache[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
-          .select("m.path").where(`role.name ="${ROLE}"`).getMany();
+          .select("m.path").where(`role.name ='${ROLE}'`).getMany();
           if(m.length>0){m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[ROLE]=m;Redis.set(ROLE,m.toString());}
           if((m as any).includes(PATH)){await next();m=null;return}m=null;
         }

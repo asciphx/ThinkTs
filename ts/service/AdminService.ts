@@ -12,7 +12,7 @@ export class AdminService extends Service {
       select:[ 'adm.id', 'adm.name', 'adm.label'],
       where: (query:{name:string}) => {
         return new Brackets(qb => {
-          if (query.name) qb.where(`name IN (${query.name.replace(/([^,]+)/g,'"$1"')})`)
+          if (query.name) qb.where(`name IN (${query.name.replace(/([^,]+)/g,"'$1'")})`)
         });
       },
       orderBy: { "id": "desc" }
