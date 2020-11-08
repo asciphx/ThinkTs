@@ -6,8 +6,7 @@ import * as Jwt from "jsonwebtoken";import * as views from "koa-views";
 import { User } from './entity/User';import { Menu } from "./entity/Menu";
 import { encrypt, NTo10 } from "./utils/crypto";import { Tag } from "./utils/tag";
 
-createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.Init(conn.name,9000);
-  let fristTime={};//Require to use decorator preprocessing
+createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.Init(conn.name,9000);let fristTime={};
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache[User.name].findOne({account:"admin"});
