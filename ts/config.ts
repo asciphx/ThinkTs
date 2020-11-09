@@ -2,7 +2,8 @@ import IORedis=require ("ioredis");
 const Conf={
   printRoute:true,//打印路由routes
   port:8080,
-  DATABASE:"",//启动时匹配ormconfig.json中的数据库
+  DATABASE:"",//启动时匹配ormconfig.json中的database
+  TYPE:"",//启动时匹配ormconfig.json中的type
   upload:"upload",//上传文件夹路径
   expiresIn:"10h",//jwt有效期
   noJwt:false,//是否禁用jwt验证，默认不禁用

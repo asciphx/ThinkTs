@@ -147,7 +147,7 @@ ALTER TABLE ONLY public.role ALTER COLUMN id SET DEFAULT nextval('public.role_id
 
 ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq'::regclass);
 
-INSERT INTO public.admin (id,name,label,created) VALUES (1,'fuck','第一次报道','2020-09-23 02:32:18.711136'),
+INSERT INTO public.admin (id,name,label,created) VALUES (1,'萌新','第一次报道','2020-09-23 02:32:18.711136'),
 (2,'新人','来逛逛','2020-09-23 02:32:29.142567'),
 (3,'老板','打赏','2020-09-23 02:32:40.422285'),
 (4,'商人','寻求商机','2020-09-23 02:32:46.201144');
@@ -222,7 +222,7 @@ INSERT INTO public.parse (keyword,"keywordDESC","parameterName") VALUES ('BLOOD'
 -- Dumping data for table user
 --
 
-INSERT INTO public."user" (id,created,updated,account,pwd,name,status,phone,photo,logged) VALUES (1,'2020-09-23 00:13:34.795000','2020-10-26 14:00:33.000000','admin','t1wPmUNdtxVEd9A74trQAmEiH6uVbTIWbf2RUA==','fucks',true,'12345678912','','2020-11-07 23:29:46'),
+INSERT INTO public."user" (id,created,updated,account,pwd,name,status,phone,photo,logged) VALUES (1,'2020-09-23 00:13:34.795000','2020-10-26 14:00:33.000000','admin','t1wPmUNdtxVEd9A74trQAmEiH6uVbTIWbf2RUA==','萌新',true,'12345678912','','2020-11-07 23:29:46'),
 (2,'2020-09-23 00:15:05.662503','2020-09-23 00:15:05.662503','Asciphx','uMhKTT7phiDrYM5DGOFhEb6r+dt4E9DZdNsDJQ==','accp',true,NULL,NULL,NULL),
 (3,'2020-09-23 00:15:15.705353','2020-09-23 00:15:15.705353','Asp.net','t1wPmUNdtxVEd9A74trQAmEiH6uVbTIWbf2RUA==','asp.net',true,NULL,NULL,NULL),
 (4,'2020-09-23 00:15:30.421221','2020-09-23 00:15:30.421221','Jdk','t1wPmUNdtxVEd9A74trQAmEiH6uVbTIWbf2RUA==','jdk',true,NULL,NULL,NULL),

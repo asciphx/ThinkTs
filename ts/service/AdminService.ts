@@ -19,9 +19,14 @@ export class AdminService extends Service {
     },"adm");//http://localhost:8080/admin?name=Tim,jdk,lll 那么查找这三个名字的人
   }
   async sql(query:any){
-    const {size=10,current=1}=query;
-    const sql=`select id,name,label from ${Conf.DATABASE}.admin limit ${current*size-size},${size}`
-    const count=await this.adm.query(`select count(*) as c from (${ sql.replace(/ limit .+/,'') }) $`)
-    return {list:await this.adm.query(sql),page:new Page(current,size,count[0].c)}
+    const { size = 10, current = 1 } = query;let sql,count
+    if(Conf.TYPE==="postgres"){
+      sql=`select id,name,label from public.admin limit ${size} offset ${current*size-size}`;
+      count=await this.adm.query(`select count(*) from public.admin`);
+    }else{
+      sql=`select id,name,label from ${Conf.DATABASE}.admin limit ${current*size-size},${size}`;
+      count=await this.adm.query(`select count(*) as count from ${Conf.DATABASE}.admin`)
+    }
+    return {list:await this.adm.query(sql),page:new Page(current,size,count[0].count)}
   }
 }

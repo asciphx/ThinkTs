@@ -6,7 +6,7 @@ import * as Jwt from "jsonwebtoken";import * as views from "koa-views";
 import { User } from './entity/User';import { Menu } from "./entity/Menu";
 import { encrypt, NTo10 } from "./utils/crypto";import { Tag } from "./utils/tag";
 
-createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.Init(conn.name,9000);let fristTime={};
+createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={};
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache[User.name].findOne({account:"admin"});
@@ -14,7 +14,7 @@ createConnection().then(async conn => {Conf.DATABASE = conn.driver.database;Tag.
     return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","base64",28)} as User))
       .then(user => {console.log("User has been saved: ", user);
     })
-  });
+  });Conf.DATABASE = conn.driver.database;Conf.TYPE=conn.driver.options.type;
   fs.readdir(__dirname + "/controller", (e, f) => {for (let i of f)require(__dirname+"/controller/"+i);cleanRoutes()});
   const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
