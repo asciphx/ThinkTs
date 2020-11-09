@@ -1,6 +1,6 @@
 module.exports = {
-    // type: "mysql",port: 3306,username: "root",
-    type: "postgres",port: 5432,username: "Asciphx",
+    type: "mysql",port: 3306,username: "root",
+    // type: "postgres",port: 5432,username: "Asciphx",
     host: "127.0.0.1",
     synchronize: true,
     password: "",

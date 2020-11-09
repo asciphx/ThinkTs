@@ -23,7 +23,7 @@ export abstract class Service{
     return await this[this.$].findOne(id);
   }
   private async _list(query) {
-    let { size = 10, current = 1 } = query;//默认每页10个，当前第一页
+    let { size = 10, current = 1 } = query;
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
       .take(size).skip(current*size-size);
     if(this._){

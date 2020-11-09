@@ -1,7 +1,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Role } from './Role';
-//由于pgsql不支持tinyint，为兼容所以type与weight都换成了smallint，但mysql则可以使用
+//为兼容所以type与weight都换成了smallint，但mysql则可以支持tinyint，
 @Entity('menu')
 export class Menu {
   @PrimaryGeneratedColumn({ type: 'smallint' })
