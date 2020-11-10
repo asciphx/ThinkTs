@@ -11,7 +11,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={}
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache[User.name].findOne({account:"admin"});
     if (EXIST) {console.error("董事长已存在!");return;} else
-    return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","base64",28)} as User))
+    return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","latin1",40)} as User))
       .then(user => {console.log("User has been saved: ", user);
     })
   });Conf.DATABASE = conn.driver.database;Conf.TYPE=conn.driver.options.type;

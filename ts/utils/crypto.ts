@@ -3,13 +3,13 @@ const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 type T = "md5"|"sha1"|"shake128"|"shake256"|"sha256"|"sha224"|"sha512"|"sha384"|"sm3"|"whirlpool"|"ripemd";
 type H = "latin1"|"hex"|"base64";
 /**
- * 加密登录密码,digest只有"hex"|"base64"支持utf8，而latin1只支持utf8mb4,下面初始值只是一个例子
+ * 加密登录密码,digest只有"hex"|"base64"支持utf8，而latin1在mysql里面是utf8mb4，postgres是utf8
  * outputLength:加密后的密码长度=latin1，*1.25~1.45=base64，*2=hex
  * 28的outputLength使用latin1输出的长度是28，base64是40，hex则56
  * 对于outputLength输出,shake支持任意长度,ripemd只支持20,其他一般是16的倍数
  * @param pwd 登录密码
  */
-const encrypt = (pwd: string,type:T='shake256',digest:H='latin1',length:number=40): string => {
+const encrypt = (pwd: string,type:T='shake128',digest:H='base64',length:number=28): string => {
   return createHash(type, { outputLength: length }).update(pwd).digest(digest);
 }
 /**

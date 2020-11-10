@@ -2,6 +2,7 @@ import { Class, Post, Middle, Inject, Put, B, P } from "../think/decorator";
 import { UserService } from "../service/UserService";
 import { Controller } from '../think/controller';
 import { U, W } from '../weblogic';
+import { Conf } from "../config";
 
 @Class("user",["del", "info", "page"])
 class UserController extends Controller {
@@ -10,7 +11,7 @@ class UserController extends Controller {
   @Middle(W.Log,W.V_B("account#3~10|1","pwd#6~23|1","name#1~15"))
   @Post("register")
   register(@B b) {
-    return this.u_.register(b).then(r=>r.code?r.message:`第${r.raw.insertId}位注册成功`)
+    return this.u_.register(b).then(r=>r.code?r.message:`第${Conf.TYPE==="postgres"?r.raw[0].id:r.raw.insertId}位注册成功`)
   }
   @Middle(W.Log,W.V_B("pwd#6~23|1","account|1#3~10"))
   @Post("login")

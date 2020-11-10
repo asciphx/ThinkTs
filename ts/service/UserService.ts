@@ -7,7 +7,7 @@ import * as jwt from "jsonwebtoken"
 import { Conf, Cache } from "../config";
 import { Role } from '../entity/Role';
 
-const type:T = "shake256", digest:H = "base64", length=28;
+const type:T = "shake256", digest:H = "latin1", length=40;
 export class UserService extends Service implements UserFace {
   constructor(
     private user:Repository<User>=Cache["User"],
@@ -29,7 +29,7 @@ export class UserService extends Service implements UserFace {
   async register(user: User):Promise<any>{
     const exist = await this.user.findOne({account:user.account});
     if (exist) return { code: 409, message: "账户已存在" };
-    user.pwd=encrypt(user.pwd,type,digest,length)
+    user.pwd=encrypt(user.pwd,type,digest,length);
     return this.user.insert(new User(user));
   }
   async login(account:string,pwd:string) {

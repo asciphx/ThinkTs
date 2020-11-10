@@ -91,7 +91,7 @@ export interface UserFace{
 > 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`.因本人用win10，暂`npm run pm2`不支持linux或者Mac
 > 新增redis，为了每个线程上的服务可同步缓存,在ts/config.js下设置synchronize，默认6秒，redis密码在config配置，默认6543210
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database。
-
+> sql文件可直接在查询窗口里面粘贴进去执行，即可重置所有数据为sql内部的数据（相当于导入功能），导入暂时还没测过，注意mysql必须使用utf8mb4编码。
 ## 目录结构
 1. ts:`后端文件入口`
 2. ts/controller:`控制层`
