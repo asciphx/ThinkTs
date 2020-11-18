@@ -103,7 +103,7 @@ CREATE TABLE `user` (
   `created` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建日期',
   `updated` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '修改日期',
   `account` VARCHAR(10) NOT NULL COMMENT '账户',
-  `pwd` VARCHAR(40) NOT NULL COMMENT '密码（select禁用）',
+  `pwd` VARCHAR(50) NOT NULL COMMENT '密码（select禁用）',
   `name` VARCHAR(15) NOT NULL COMMENT '昵称',
   `status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '默认状态：1，未禁用',
   `phone` VARCHAR(12) DEFAULT NULL COMMENT '电话',
@@ -115,7 +115,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-INSERT  INTO `user`(`id`,`created`,`updated`,`account`,`pwd`,`name`,`status`,`phone`,`photo`,`logged`) VALUES (1,'2020-09-23 00:13:34.795800','2020-09-23 00:13:34.795800','admin','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','admin',1,NULL,NULL,NULL),(2,'2020-09-23 00:15:05.662503','2020-09-23 00:15:05.662503','Asciphx','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','accp',1,NULL,NULL,NULL),(3,'2020-09-23 00:15:15.705353','2020-09-23 00:15:15.705353','Asp.net','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','asp.net',1,NULL,NULL,NULL),(4,'2020-09-23 00:15:30.421221','2020-09-23 00:15:30.421221','Jdk','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','jdk',1,NULL,NULL,NULL),(5,'2020-09-23 00:15:51.080007','2020-09-23 00:15:51.080007','hook','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','hook',1,NULL,NULL,NULL),(6,'2020-09-23 00:15:56.378298','2020-09-23 00:15:56.378298','accp','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','hooks',1,NULL,NULL,NULL);
+INSERT  INTO `user`(`id`,`created`,`updated`,`account`,`pwd`,`name`,`status`,`phone`,`photo`,`logged`) VALUES (1,'2020-09-23 00:13:34.795800','2020-09-23 00:13:34.795800','admin','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','admin',1,NULL,NULL,NULL),(2,'2020-09-23 00:15:05.662503','2020-09-23 00:15:05.662503','Asciphx','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','accp',1,NULL,NULL,NULL),(3,'2020-09-23 00:15:15.705353','2020-09-23 00:15:15.705353','Asp.net','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','asp.net',1,NULL,NULL,NULL),(4,'2020-09-23 00:15:30.421221','2020-09-23 00:15:30.421221','Jdk','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','jdk',1,NULL,NULL,NULL),(5,'2020-09-23 00:15:51.080007','2020-09-23 00:15:51.080007','hook','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','hook',1,NULL,NULL,NULL),(6,'2020-09-23 00:15:56.378298','2020-09-23 00:15:56.378298','accp','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','hooks',1,NULL,NULL,NULL);
 
 /*Table structure for table `user_role` */
 

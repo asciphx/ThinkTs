@@ -7,7 +7,7 @@ import * as jwt from "jsonwebtoken"
 import { Conf, Cache } from "../config";
 import { Role } from '../entity/Role';
 
-const type:T = "shake256", digest:H = "latin1", length=40;
+const type:T = "shake256", digest:H = "latin1", length=50;
 export class UserService extends Service implements UserFace {
   constructor(
     private user:Repository<User>=Cache["User"],

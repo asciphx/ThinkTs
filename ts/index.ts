@@ -11,11 +11,10 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={}
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache[User.name].findOne({account:"admin"});
     if (EXIST) {console.error("董事长已存在!");return;} else
-    return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","latin1",40)} as User))
+    return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","latin1",50)} as User))
       .then(user => {console.log("User has been saved: ", user);
     })
   });Conf.DATABASE = conn.driver.database;Conf.TYPE=conn.driver.options.type;
-  fs.readdir(__dirname + "/controller", (e, f) => {for (let i of f)require(__dirname+"/controller/"+i);cleanRoutes()});
   const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true})).use(koaStatic(path.join(__dirname,"../ts")))
@@ -60,4 +59,5 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={}
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
   APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>
     console.log(`ThinkTs run on http://localhost:${Conf.port}/test.html`))
+  fs.readdir(__dirname + "/controller", (e, f) => {for (let i of f)require(__dirname+"/controller/"+i);cleanRoutes()});
 })

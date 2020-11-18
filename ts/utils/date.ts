@@ -5,13 +5,13 @@ export default {
   */
   formateDate(time:number){
     if(!time) return '';let date = new Date(time)
-    let r = date.getFullYear()+'-'+(date.getMonth()+1).toString().padStart(2,'0')+'-'+date.getDate().toString().padStart(2,'0')+' '+date.getHours().toString().padStart(2,'0')+':'+date.getMinutes().toString().padStart(2,'0')+':'+date.getSeconds().toString().padStart(2,'0')
+    const r = date.getFullYear()+'-'+(date.getMonth()+1).toString().padStart(2,'0')+'-'+date.getDate().toString().padStart(2,'0')+' '+date.getHours().toString().padStart(2,'0')+':'+date.getMinutes().toString().padStart(2,'0')+':'+date.getSeconds().toString().padStart(2,'0')
     date = null;return r
   },
   /**
   * date2str("YYYY-MM-DD hh:mm:ss.S",new Date) => 2019-08-02 下午 08:09:04.423 
   * date2str("YYYY-MM-DD EE HH:mm:ss") => 2019-08-10 周六 20:09:04       
-  * @param f:其他格式 MM/DD/YYYY HH  MM/DD/YYYY @param date:Date
+  * @param f:其他格式 MM/DD/YYYY HH，MM/DD/YYYY @param date:Date
   */
   date2str(f:string="YYYY-MM-DD EEE hh:mm:ss",date:Date=new Date){
     let o = {"M+":date.getMonth()+1,"D+":date.getDate(),"h+":date.getHours()===12?12:date.getHours()%12,

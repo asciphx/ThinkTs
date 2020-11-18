@@ -112,7 +112,7 @@ CREATE TABLE public."user" (
     created timestamp without time zone DEFAULT now() NOT NULL,
     updated timestamp without time zone DEFAULT now() NOT NULL,
     account character varying(10) NOT NULL,
-    pwd character varying(40) NOT NULL,
+    pwd character varying(50) NOT NULL,
     name character varying(15) NOT NULL,
     status boolean DEFAULT true NOT NULL,
     phone character varying(12),
@@ -222,12 +222,12 @@ INSERT INTO public.parse (keyword,"keywordDESC","parameterName") VALUES ('BLOOD'
 -- Dumping data for table user
 --
 
-INSERT INTO public."user" (id,created,updated,account,pwd,name,status,phone,photo,logged) VALUES (1,'2020-09-23 00:13:34.795000','2020-10-26 14:00:33.000000','admin','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','萌新',true,'12345678912','','2020-11-07 23:29:46'),
-(2,'2020-09-23 00:15:05.662503','2020-09-23 00:15:05.662503','Asciphx','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','accp',true,NULL,NULL,NULL),
-(3,'2020-09-23 00:15:15.705353','2020-09-23 00:15:15.705353','Asp.net','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','asp.net',true,NULL,NULL,NULL),
-(4,'2020-09-23 00:15:30.421221','2020-09-23 00:15:30.421221','Jdk','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','jdk',true,NULL,NULL,NULL),
-(5,'2020-09-23 00:15:51.080007','2020-09-23 00:15:51.080007','hook','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','hook',true,NULL,NULL,NULL),
-(6,'2020-09-23 00:15:56.378298','2020-09-23 00:15:56.378298','accp','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E','hooks',true,NULL,NULL,NULL);
+INSERT INTO public."user" (id,created,updated,account,pwd,name,status,phone,photo,logged) VALUES (1,'2020-09-23 00:13:34.795000','2020-10-26 14:00:33.000000','admin','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','萌新',true,'12345678912','','2020-11-07 23:29:46'),
+(2,'2020-09-23 00:15:05.662503','2020-09-23 00:15:05.662503','Asciphx','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','accp',true,NULL,NULL,NULL),
+(3,'2020-09-23 00:15:15.705353','2020-09-23 00:15:15.705353','Asp.net','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','asp.net',true,NULL,NULL,NULL),
+(4,'2020-09-23 00:15:30.421221','2020-09-23 00:15:30.421221','Jdk','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','jdk',true,NULL,NULL,NULL),
+(5,'2020-09-23 00:15:51.080007','2020-09-23 00:15:51.080007','hook','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','hook',true,NULL,NULL,NULL),
+(6,'2020-09-23 00:15:56.378298','2020-09-23 00:15:56.378298','accp','·\C]·DwÐ;âÚÐa"«m2mýP»:Òª¿Èÿ¯E¬ñl)ïúõ>','hooks',true,NULL,NULL,NULL);
 
 --
 -- Dumping data for table user_role

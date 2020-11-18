@@ -12,7 +12,7 @@ export class Menu {
   name: string;
   @Column({ type: "smallint", comment: "类型（0：目录、1：路由[后端]、2：按钮）",default:1 })
   type: number;
-  @Column({ type: "smallint", comment: "权重（0-99）",default:99 })
+  @Column({ type: "smallint", comment: "权重（0-99）",default:0 })
   weight: number;
   @Column({ comment: "前端标识", length: 15,default:"" })
   perm: string;
