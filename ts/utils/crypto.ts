@@ -9,7 +9,7 @@ type H = "latin1"|"hex"|"base64";
  * 对于outputLength输出,shake支持任意长度,ripemd只支持20,其他一般是16的倍数
  * @param pwd 登录密码
  */
-const encrypt = (pwd: string,type:T='shake128',digest:H='hex',length:number=30): string => {
+const encrypt = (pwd: string,type:T='shake128',digest:H='hex',length:number=25): string => {
   return createHash(type, { outputLength: length }).update(pwd).digest(digest);
 }
 /**
