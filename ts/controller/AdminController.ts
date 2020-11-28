@@ -1,4 +1,4 @@
-import { Class, app, Inject, Get, Q, Middle, Id } from "../think/decorator";
+import { Class, app, Inject, Q, Middle, Id } from "../think/decorator";
 import { AdminService } from "../service/AdminService";
 import { Controller } from '../think/controller';
 import { Context } from "koa";import { html } from "../utils/tool";
@@ -9,13 +9,13 @@ import { Tag } from "../utils/tag";import { W } from "../weblogic";
 class AdminController extends Controller {
   @Inject(AdminService) readonly adm_: AdminService
   
-  @app.get("sql")//可以直接引入app，为方便调用和减少代码量
+  @app.get("sql")//可直接引入app，为像python那样，并且最上面import也能方便少写
   sql(@Q q){
     return this.adm_.sql(q);
   }
 
   @Middle(W.Log)
-  @Get("index.html")//也可以用@Get，允许后端模板渲染Tag。
+  @app.get("index.html")//允许后端模板渲染Tag。
   async index(ctx:Context){
     return html(ctx,{path:"admin",STATUS:await Tag.h("0","selected","STATUS",0,"input-text"),
         ID_TYPE:await Tag.h("0","checked","ID_TYPE",1,"input-radius"),
