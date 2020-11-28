@@ -19,15 +19,14 @@ class AdminController extends Controller{
   @Inject(UserService) readonly userSvc:UserService
 
   @Middle(W.Log,W.V_B("pwd#6~23|1","account|1#3~10"))
-  @Post("login")
+  @app.post("login")
   login(@B body) {
     return this.userSvc.login(body.account,body.pwd)
   }
 }
 /** Here's how to show EJS template rendering */
 class View{
-  @Get()
-  @Get("index.html")
+  @Get() @Get("index.html")
   index(ctx:Context){
     html(ctx,{test:"test",author:"asciphx"})
   }
