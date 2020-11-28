@@ -1,4 +1,4 @@
-import { Class, Post, Inject, Put, Middle, B, P } from "../think/decorator";
+import { Class, app, Inject, Middle, B, P } from "../think/decorator";
 import { MenuService } from '../service/MenuService';
 import { Controller } from '../think/controller';
 import { W } from "../weblogic";
@@ -7,12 +7,12 @@ import { W } from "../weblogic";
 class MenuController extends Controller {
   @Inject(MenuService) readonly menu: MenuService
 
-  @Post()
+  @app.post()
   add(@B b){
     return this.menu.add(b);
   }
   @Middle(W.Log)
-  @Put(":id")
+  @app.put(":id(\\d+)")
   fix(@P p,@B b){
     return this.menu.fix(p.id,b);
   }

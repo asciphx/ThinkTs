@@ -1,18 +1,19 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null;const ROUTER = new Router();
+let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null;const ROUTER=new Router();
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
-const Class=(v:string | Array<string>="" ,t?:string[])=>_=>{let a=[]
+const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
+  t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{let a=[]
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
   t.forEach(v=>{
     switch (v) {
       case "add":Routes.push({a:"_add",m:"post",r:""});break;
-      case "del":Routes.push({a:"_del",m:"delete",r:"/:id"});break;
-      case "fix":Routes.push({a:"_fix",m:"put",r:"/:id"});break;
-      case "info":Routes.push({a:"_info",m:"get",r:"/:id"});break;
+      case "del":Routes.push({a:"_del",m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "fix":Routes.push({a:"_fix",m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "info":Routes.push({a:"_info",m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
       case "page":Routes.push({a:"_page",m:"get",r:""});break;
-      default:console.error("Wrong entry!");break;
+      default:throw new Error("Wrong entry!");
     }
   });
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
@@ -36,6 +37,13 @@ const Class=(v:string | Array<string>="" ,t?:string[])=>_=>{let a=[]
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null
   }else a=_=$=null;
+}
+const Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
+const app = {
+  get:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
+  post:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
+  put:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
+  del:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 }
 const Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 const Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
@@ -90,9 +98,9 @@ const param=(m:Function,d)=>{
         }:async function(ctx,next:Function){
           return await m.call(this,ctx[m[0]],ctx[m[1]],ctx[m[2]],ctx.request.body,next);
         };break
-      default:console.error("Wrong parameter!");break;
+      default:throw new Error("Wrong parameter!");
     }
   }o=d=null;
 }
 let cleanRoutes=()=>{/*console.log(Routes);*/Routes=cleanRoutes=null;}
-export {ROUTER,Class,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,cleanRoutes};
+export {ROUTER,Class,Id,app,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,cleanRoutes};

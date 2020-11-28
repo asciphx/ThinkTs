@@ -2,7 +2,7 @@ import { Context } from "koa";
 
 export abstract class Controller {
   [x: string]: any;
- 
+  
   private _add(ctx: Context) {
     return this._save(ctx.request.body);
   }
