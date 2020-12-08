@@ -11,10 +11,11 @@ const W = {
   pic(field:string):Middleware {
     return async (ctx: any, next) => {
       if (ctx.request.file) {let {request}=ctx,path=Conf.upload+'/'+request.file.filename;
-        let newpath=Conf.upload+"/"+createHash("md5").update(fs.readFileSync(path)).digest("hex")+(request.file.size/19|0)+"."+request.file.mimetype.split('/')[1];
+        let newpath=Conf.upload+"/"+createHash("md5").update(fs.readFileSync(path)).digest("hex")
+          +(request.file.size/19|0)+"."+request.file.mimetype.split('/')[1];
         if(!fs.existsSync(newpath)){fs.rename(path,newpath,e=>{return e});}else fs.unlinkSync(path)
         request.body[field]=newpath.slice(String(Conf.upload).length + 1);request=null;
-      }else ctx.request.body[field]&&delete ctx.request.body[field]
+      }else ctx.request.body[field]!==undefined&&delete ctx.request.body[field]
       await next();
     }
   },

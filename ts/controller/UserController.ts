@@ -3,7 +3,7 @@ import { UserService } from "../service/UserService";
 import { Controller } from '../think/controller';
 import { U, W } from '../weblogic';
 import { Conf } from "../config";
-let pwdCheck = "pwd#6~25";//侦测密码长度为6-25
+let pwdCheck = "pwd#6~25";
 @Class("user",["del", "info", "page"])
 class UserController extends Controller {
   @Inject(UserService) readonly u_: UserService
