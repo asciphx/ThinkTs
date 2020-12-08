@@ -1,9 +1,9 @@
 import "reflect-metadata";import { createConnection, getRepository, Repository } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as koaStatic from "koa-static";import { ROUTER, cleanRoutes } from "./think/decorator";
-import * as path from "path";import Tag from "./utils/tag";import { User } from './entity/User';
-import { Conf, Cache, Maps, Redis } from './config';import { encrypt, NTo10, TenToN } from "./utils/crypto";
-import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import "./view";
+import { Conf, Cache, Maps, Redis } from './config';import { encrypt, NTo10 } from "./utils/crypto";
+import Tag from "./utils/tag";import * as Jwt from "jsonwebtoken";import * as path from "path";
+import * as views from "koa-views";import { User } from './entity/User';import "./view";
 
 createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={};
   fs.readdir(__dirname + "/entity", async (e, f) => {
