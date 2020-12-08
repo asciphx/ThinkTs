@@ -2,7 +2,7 @@ import { Class, app, Inject, Q, Middle } from "../think/decorator";
 import { AdminService } from "../service/AdminService";
 import { Controller } from '../think/controller';
 import { Context } from "koa";import { html } from "../utils/tool";
-import { Tag } from "../utils/tag";import { W } from "../weblogic";
+import Tag from "../utils/tag";import { W } from "../weblogic";
 
 @Class(["add", "del", "info", "fix", "page"])
 class AdminController extends Controller {

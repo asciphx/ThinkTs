@@ -16,7 +16,7 @@ const Suffix = (name: string) => name.replace(/().*(?=)\./, '\.')
  */
 const J2T = (json: string) => json.replace(/(\\|\\'|\"|\n)/g, "\\\$1")
 /**
- * 数据库内模糊查询支持反斜杠，并且不被截断
+ * 数据库内模糊查询支持反斜杠，并且不被截断(mysql会把导入的\\变\)
  * @param str
  */
 const Backslash = (str: string) => {

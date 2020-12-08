@@ -42,8 +42,8 @@ export class UserService extends Service implements UserFace {
     .leftJoin("r.users","user").where("user.id =:u",{u:user.id}).getMany();
     roles.forEach((e,i,l) => {(l[i] as any)=e.name});
     return {role:roles,token:jwt.sign(Object.defineProperty({},account,{enumerable:true,value:roles}),
-      NTo10(account,62).toString(Conf.cipher),{expiresIn:Conf.expiresIn,algorithm:'HS256'}),
-    secret:NTo10(account,62).toString(Conf.secret)+`#${(Conf.secret*0x4F).toString(16)}`}
+      String(NTo10(account+Conf.staticKey,66)),{expiresIn:Conf.expiresIn,algorithm:'HS256'}),
+    secret:NTo10(account+Conf.staticKey,66).toString(Conf.secret)+`#${(Conf.secret*Conf.cipher).toString(16)}`}
   }
   async fix(id: number, user: User) {
     user.pwd!==undefined&&(user.pwd=encrypt(user.pwd,type,digest,length));

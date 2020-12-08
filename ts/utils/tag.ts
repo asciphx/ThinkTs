@@ -1,5 +1,5 @@
 import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
-export class Tag {
+export default class {
   private static Map: Object; private static Time: number = 10000;//默认缓存10秒，减少sql访问
   private static Repository: any;
   static Init(name:string, time?:number) {

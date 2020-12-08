@@ -1,5 +1,5 @@
-import { createHash } from 'crypto';
-const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+import { createHash } from 'crypto';//常量c中不好区分的后四位字符，在下面的注释中
+const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZياخش'; //"ي", "ا", "خ", "ش"
 type T = "md5"|"sha1"|"shake128"|"shake256"|"sha256"|"sha224"|"sha512"|"sha384"|"sm3"|"whirlpool"|"ripemd";
 type H = "latin1"|"hex"|"base64";
 /**
@@ -85,7 +85,7 @@ const IntTo62 = (n: number) => {
  * @param n 几进制
  */
 const TenToN=(v:number,n:number):string=>{
-  if(n>62||n<2||v>9007199254740991)return;
+  if(n>66||n<2||v>9007199254740991)return;
   let num="",mod
   for(let i=1;i<54;i++){mod=v%n;v=Math.floor(v/n);
     if(v>0){num=c.charAt(mod)+num
@@ -97,10 +97,10 @@ const TenToN=(v:number,n:number):string=>{
  * @param v 任意进制字符串
  * @param n 表示v是多少进制
  */
-const NTo10=(v:string,n:number):number=>{if(n>62||n<2)return;if(n<37)v=v.toLowerCase();
+const NTo10=(v:string,n:number):number=>{if(n>66||n<2)return;if(n<37)v=v.toLowerCase();
   let addNumber=0,l=v.length
   for(let i=0;i<l;i++){if(c.indexOf(v.charAt(i))===-1)return
-    for(let h=0;h<62;h++){
+    for(let h=0;h<66;h++){
       if(v.charAt(l-i-1)===c.charAt(h)){
         addNumber=addNumber+h*Math.pow(n,i);
       }

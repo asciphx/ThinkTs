@@ -1,17 +1,16 @@
 import "reflect-metadata";import { createConnection, getRepository, Repository } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as koaStatic from "koa-static";import { ROUTER, cleanRoutes } from "./think/decorator";
-import * as path from "path";import { Conf, Cache, Maps, Redis } from './config';import "./view";
-import * as Jwt from "jsonwebtoken";import * as views from "koa-views";
-import { User } from './entity/User';import { Menu } from "./entity/Menu";
-import { encrypt, NTo10 } from "./utils/crypto";import { Tag } from "./utils/tag";
+import * as path from "path";import Tag from "./utils/tag";import { User } from './entity/User';
+import { Conf, Cache, Maps, Redis } from './config';import { encrypt, NTo10, TenToN } from "./utils/crypto";
+import * as views from "koa-views";import * as Jwt from "jsonwebtoken";import "./view";
 
 createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={};
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
-    const EXIST = await Cache[User.name].findOne({account:"admin"});
+    const EXIST = await Cache["User"].findOne({account:"admin"});
     if (EXIST) {console.error('\x1B[34;1m%s\x1B[22m', "董事长已存在!");return;} else
-    return Cache[User.name].save(new User({account:"admin",pwd:encrypt("654321","shake256","latin1",50)} as User))
+    return Cache["User"].save(new User({account:"admin",pwd:encrypt("654321","shake256","latin1",50)} as User))
       .then(user => {console.log("User has been saved: ", user);
     })
   });Conf.DATABASE = conn.driver.database;Conf.TYPE=conn.driver.options.type;
@@ -30,7 +29,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={}
     if(TOKEN&&S){
       try {
         let {payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
-          NTo10(S[0],Number("0x"+S[1])/0x4F).toString(Conf.cipher),{complete:true}) as any;
+          String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;
         let ll:Array<any>=Object.entries(payload)[0],l:Array<string>=ll[1];
         const PATH=ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1")
         for (let i = 0; i < l.length; i++) {const ROLE:string=l[i];
@@ -42,7 +41,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={}
               const IDEX=Maps[ROLE].findIndex(v=>v===PATH);IDEX>-1&&Maps[ROLE].splice(IDEX,1);continue;
             }
           }
-          let m=await (Cache[Menu.name]as Repository<Menu>).createQueryBuilder("m").leftJoin("m.roles","role")
+          let m=await (Cache["Menu"]as Repository<any>).createQueryBuilder("m").leftJoin("m.roles","role")
           .select("m.path").where(`role.name ='${ROLE}'`).getMany();
           if(m.length>0){m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[ROLE]=m;Redis.set(ROLE,m.toString());}
           if((m as any).includes(PATH)){await next();m=null;return}m=null;

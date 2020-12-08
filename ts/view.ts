@@ -1,5 +1,5 @@
-import { html, getFilesPath } from "./utils/tool";import { Tag } from "./utils/tag";import * as fs from "fs"
-import { Class, Get, Q } from "./think/decorator"; import { Maps } from "./config";import { Context } from "koa"
+import { html, getFilesPath } from "./utils/tool";import Tag from "./utils/tag";import { Context } from "koa"
+import { Class, Get, Q } from "./think/decorator"; import { Maps } from "./config";import * as fs from "fs"
 
 @Class()
 class View {
