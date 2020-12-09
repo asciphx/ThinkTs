@@ -31,7 +31,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={}
         let {payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
           String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;
         let ll:Array<any>=Object.entries(payload)[0],l:Array<string>=ll[1];
-        const PATH=ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1")
+        const PATH=ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1")
         for (let i = 0; i < l.length; i++) {const ROLE:string=l[i];
           if(Maps.hasOwnProperty(ROLE)){
             if(Date.now()-(fristTime[ROLE]||0)>Conf.synchronize){fristTime[ROLE]=Date.now()}else{

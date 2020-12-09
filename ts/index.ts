@@ -29,7 +29,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
     if(TOKEN&&S){
       try {
         Jwt.verify(TOKEN.replace(/^Bearer /,""),String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:false});await next();
-        // console.log(ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1"));
+        // console.log(ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1"));
       } catch (e) {
         if(String(e).includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
