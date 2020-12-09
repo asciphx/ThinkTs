@@ -1,7 +1,7 @@
 import { html, getFilesPath } from "./utils/tool";
 import Tag from "./utils/tag";
 import { Class, Get, Q } from "./think/decorator";
-import socket  from "./utils/socketIo";
+import socket from "./utils/socketIo";
 
 @Class()
 class View {
