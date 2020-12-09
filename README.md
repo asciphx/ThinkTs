@@ -118,6 +118,7 @@ If an object is returned, the request status code must be 200, so only the impor
 11. upload: `the storage directory of the uploaded file`
 12. dist: `package back end to formal environment directory`
 13. log: `PM2 output log directory`
+14. Example: `save the template of permission management, as well as the common template`
 
 ### Other
 > Built by the world's No.1 man, Asciphx  

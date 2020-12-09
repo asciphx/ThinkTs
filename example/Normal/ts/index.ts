@@ -2,8 +2,8 @@ import "reflect-metadata";import { createConnection, getRepository, Repository }
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as koaStatic from "koa-static";import { ROUTER, cleanRoutes } from "./think/decorator";
 import Tag from "./utils/tag";import * as Jwt from "jsonwebtoken";import * as path from "path";
-import { Conf, Cache, socket } from './config';import { encrypt, NTo10 } from "./utils/crypto";
 import * as views from "koa-views";import { User } from './entity/User';import "./view";
+import { Conf, Cache } from './config';import { encrypt, NTo10 } from "./utils/crypto";
 
 createConnection().then(async conn => {Tag.Init(conn.name,9000);
   fs.readdir(__dirname + "/entity", async (e, f) => {
@@ -29,7 +29,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
     if(TOKEN&&S){
       try {
         Jwt.verify(TOKEN.replace(/^Bearer /,""),String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:false});await next();
-        // console.log(ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1"));
+        console.log(ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1"));
       } catch (e) {
         if(String(e).includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
@@ -38,10 +38,8 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
     }else{ctx.status=401;ctx.body="Headers Error";}
   });
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
-  const SocketIo=require('http').createServer(APP.callback());socket.init(SocketIo);
-  SocketIo.listen(Conf.port,()=>{console.log(`listening on *:${Conf.port}`);});
   APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>{
-    console.log('\x1B[35;47m%s\x1B[49m', "loading router……")});
+    console.log('\x1B[35;47m%s\x1B[49m', "loading router……")})
   fs.readdir(__dirname+"/controller",(e, f)=>{for(let i of f)require(__dirname+"/controller/"+i);
     console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`);cleanRoutes()});
 })

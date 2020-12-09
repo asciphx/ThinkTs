@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="./static/css/App.css">
-  <style>span{border: 1px solid #acacac;margin: 1px;}</style>
-  <script src="./static/js/jquery.min.js"></script>
+  <style>span{border: 1px solid #acacac;margin: 1px;}</style><script src="./static/js/socket-web.js"></script>
+  <script src="./static/js/jquery.min.js"></script><script>var so=io('ws://'+document.location.host);
+    so.on("connect",function(){
+      console.log("已连接")
+    });
+  </script>
 </head>
 <body style="text-align: center;">
   <script>function _P_(v,a,n,t,c){$.ajax({url:"/static/tag",type:"GET",async:false,data:{v:v,a:a,n:n,t:t,c:c}}).done(function(r){document.write(r)})}

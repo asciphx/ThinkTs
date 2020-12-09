@@ -1,4 +1,4 @@
-import socket from "./utils/socketIo";
+import IORedis=require ("ioredis");
 const Conf={
   printRoute:true,//打印路由routes
   port:8080,
@@ -12,7 +12,16 @@ const Conf={
   secret:19+Math.random()*17|0,//2~36,动态私钥，配置无效
   unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/test.html|\/favicon.ico/,
   jsonLimit:"1mb",
-  view:'../views'
+  view:'../views',
+  synchronize:6000//同步间隔毫秒,也就是说一个就等于6个redis，不过延迟6秒(这里是打比方)
 } 
 const Cache:Object={}
-export {Conf,Cache,socket}
+const Maps:Object={}
+const Redis=new IORedis({
+    port: 6379,
+    host: "127.0.0.1",
+    family: 4,
+    password: "6543210",
+    db:0
+  });
+export {Conf,Cache,Maps,Redis}

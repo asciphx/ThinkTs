@@ -12,6 +12,6 @@ module.exports = {
     extra: {
         max: 9,
         connectionTimeoutMillis: 2000
-    }
-    // logging: [ "query", "error" ]
+    },
+    logging: [ "query", "error" ]
 };

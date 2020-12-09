@@ -1,4 +1,3 @@
-import socket from "./utils/socketIo";
 const Conf={
   printRoute:true,//打印路由routes
   port:8080,
@@ -15,4 +14,4 @@ const Conf={
   view:'../views'
 } 
 const Cache:Object={}
-export {Conf,Cache,socket}
+export {Conf,Cache}

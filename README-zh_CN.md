@@ -9,7 +9,7 @@
 - 字段级别的rbac，加上可插拔的中间件装饰器，组装功能具有无限的可能
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
 - 可以用各种typeORM允许的关系型数据库，目前先提供mysql，postgres
-- ……
+- 增加socketIo版，现阶段还在完善，另外普通版跟管理版已经放到了example目录
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript
@@ -73,7 +73,7 @@ export interface UserFace{
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
 - [x] 自动扫描entity目录，载入到Cache，相当于一个容器,可以避免entity被多次实例化
 - [x] 自动扫描controller目录，并且配置Routes路由
-- [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去ts/config.js下更改printRoute为false
+- [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去ts/config.ts下更改printRoute为false
 - [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
 - [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页
@@ -88,9 +88,10 @@ export interface UserFace{
 > ```
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜。
 > 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`.因本人用win10，暂`npm run pm2`不支持linux或者Mac
-> 新增redis，为了每个线程上的服务可同步缓存,在ts/config.js下设置synchronize，默认6秒，redis密码在config配置，默认6543210
+> 新增redis，为了每个线程上的服务可同步缓存,在ts/config.ts下设置synchronize，默认6秒，redis密码在config配置，默认6543210
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database。
 > 若启动时出现QueryFailedError请用对应sql文件在查询窗口/工具 内粘贴进去执行（即相当于导入功能），导入暂时还没测，注意mysql必须用utf8mb4编码。
+> 由于一般情况下不需要使用redis，所以推出此经典socketIo版，管理版和普通版放到了example目录下，如需使用请覆盖到顶级目录即可
 ## 目录结构
 1. ts:`后端文件入口`
 2. ts/controller:`控制层`
@@ -105,8 +106,10 @@ export interface UserFace{
 11. upload:`上传文件的存储目录`
 12. dist:`打包后端到正式环境的目录`
 13. log:`pm2输出日志目录`
+14. example:`存放权限管理的模板，还有普通的模板`
 
-## 权限管理
+## 权限管理（现已移动到example目录）
+[example/Management目录下面直接覆盖到顶层目录即可]
 PATH路径，自动生成的（匹配规则）  
 增加：POST/admin  
 删除：DELETE/admin/  
@@ -125,7 +128,7 @@ restful规范中的返回值实际太费带宽，而我认为前端只需判断�
 该项目离serverless又更近了一步，其实我的目标是serverless！
 
 ## **请赞助本项目**
-如你觉有收获，请务必给我打赏
+如你觉有收获，请给我打赏
 
 ![微信打赏](http://www.91huanwei.com/1.jpg)
 ![支付宝打赏](http://www.91huanwei.com/0.jpg)

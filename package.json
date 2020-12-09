@@ -1,7 +1,16 @@
 {
    "name": "think-ts",
-   "version": "2.0.9",
+   "version": "2.1.0-RC",
    "description": "TypeORM+KOA",
+   "scripts": {
+      "dev": "nodemon",
+      "tsc": "rm -rf ./dist && tsc",
+      "build": "rm -rf ./dist && gulp build",
+      "start": "ts-node ts/index.ts",
+      "prod": "export NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
+      "pro": "set NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
+      "pm2": "pm2 start .json"
+   },
    "devDependencies": {
       "@types/ioredis": "^4.17.6",
       "@types/jsonwebtoken": "^8.5.0",
@@ -35,15 +44,8 @@
       "mysql": "^2.18.1",
       "pg": "^8.4.2",
       "reflect-metadata": "^0.1.13",
-      "typeorm": "^0.2.25"
-   },
-   "scripts": {
-      "dev": "nodemon",
-      "tsc": "rm -rf ./dist && tsc",
-      "build": "rm -rf ./dist && gulp build",
-      "start": "ts-node ts/index.ts",
-      "prod": "export NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
-      "pro": "set NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
-      "pm2": "pm2 start .json"
+      "socket.io": "^3.0.4",
+      "typeorm": "^0.2.25",
+      "underscore": "^1.12.0"
    }
 }

@@ -9,10 +9,6 @@ export class User extends Orm {
   pwd: string
   @Column({ comment: "昵称", length: 15 })
   name: string
-  @Column({ default: true, comment: '默认状态：1，未禁用' })
-  status: boolean
-  @Column({ comment: "电话", length: 12, nullable: true })
-  phone: string;
   @Column({ comment: "头像", length: 50, name: "photo", nullable: true })
   photo: string
   @Column({ comment: "登录时间", nullable: true })

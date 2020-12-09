@@ -1,11 +1,11 @@
 import "reflect-metadata";import { createConnection, getRepository, Repository } from "typeorm";
 import * as Koa from "koa";import * as bodyParser from "koa-bodyparser";import * as fs from "fs";
 import * as koaStatic from "koa-static";import { ROUTER, cleanRoutes } from "./think/decorator";
+import { Conf, Cache, Maps, Redis } from './config';import { encrypt, NTo10 } from "./utils/crypto";
 import Tag from "./utils/tag";import * as Jwt from "jsonwebtoken";import * as path from "path";
-import { Conf, Cache, socket } from './config';import { encrypt, NTo10 } from "./utils/crypto";
 import * as views from "koa-views";import { User } from './entity/User';import "./view";
 
-createConnection().then(async conn => {Tag.Init(conn.name,9000);
+createConnection().then(async conn => {Tag.Init(conn.name,9000);let fristTime={};
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;}
     const EXIST = await Cache["User"].findOne({account:"admin"});
@@ -28,8 +28,26 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
     const TOKEN:string=ctx.headers.a,S:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
     if(TOKEN&&S){
       try {
-        Jwt.verify(TOKEN.replace(/^Bearer /,""),String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:false});await next();
-        // console.log(ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1"));
+        let {payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
+          String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;
+        let ll:Array<any>=Object.entries(payload)[0],l:Array<string>=ll[1];
+        const PATH=ctx.method+ctx.url.replace(/\d+|(\w+)\?.+$/,"$1")
+        for (let i = 0; i < l.length; i++) {const ROLE:string=l[i];
+          if(Maps.hasOwnProperty(ROLE)){
+            if(Date.now()-(fristTime[ROLE]||0)>Conf.synchronize){fristTime[ROLE]=Date.now()}else{
+              if(Maps[ROLE].includes(PATH)){await next();return}continue
+            };const URL=await Redis.get(ROLE)
+            if(URL.match(PATH)){Maps[ROLE]=URL.split(",");await next();return}else{
+              const IDEX=Maps[ROLE].findIndex(v=>v===PATH);IDEX>-1&&Maps[ROLE].splice(IDEX,1);continue;
+            }
+          }
+          let m=await (Cache["Menu"]as Repository<any>).createQueryBuilder("m").leftJoin("m.roles","role")
+          .select("m.path").where(`role.name ='${ROLE}'`).getMany();
+          if(m.length>0){m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[ROLE]=m;Redis.set(ROLE,m.toString());}
+          if((m as any).includes(PATH)){await next();m=null;return}m=null;
+        }
+        if(ll[0]==="admin"){await next();return}l=ll=payload=null;
+        ctx.status=403;ctx.body=`'${PATH}' request is not authorized`;
       } catch (e) {
         if(String(e).includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
@@ -38,10 +56,8 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
     }else{ctx.status=401;ctx.body="Headers Error";}
   });
   setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
-  const SocketIo=require('http').createServer(APP.callback());socket.init(SocketIo);
-  SocketIo.listen(Conf.port,()=>{console.log(`listening on *:${Conf.port}`);});
   APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>{
-    console.log('\x1B[35;47m%s\x1B[49m', "loading router……")});
+    console.log('\x1B[35;47m%s\x1B[49m', "loading router……")})
   fs.readdir(__dirname+"/controller",(e, f)=>{for(let i of f)require(__dirname+"/controller/"+i);
     console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`);cleanRoutes()});
 })
