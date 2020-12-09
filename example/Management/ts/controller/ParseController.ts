@@ -3,7 +3,7 @@ import { Controller } from '../think/controller';
 import { ParseService } from "../service/ParseService";
 
 @Class(["add", "del", "fix", "info", "page"])
-@Id("([a-z]{1,9})")
+@Id("([A-Z_]{1,9})")
 class ParseController extends Controller {
   @Inject(ParseService) readonly parse_: ParseService
 }
