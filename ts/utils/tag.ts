@@ -1,7 +1,7 @@
-import { Parse } from "../entity/Parse";import { getConnection } from 'typeorm';
+import { Parse } from "../entity/Parse";import { Repository, getConnection } from 'typeorm';
 export default class {
   private static Map: Object; private static Time: number = 10000;//默认缓存10秒，减少sql访问
-  private static Repository: any;
+  private static Repository: Repository<Parse>;
   static Init(name:string, time?:number) {
     this.Map = new Object(); this.Repository = getConnection(name).getRepository(Parse);time&&(this.Time = time);
   }
