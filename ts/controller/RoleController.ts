@@ -11,7 +11,7 @@ class RoleController extends Controller {
   fix(@P p,@B b){
     return this.role_.fix(p.id,b);
   }
-  @Middle(W.Log,W.V_Q("roles#25|1"))
+  @Middle(W.Log,W.V_.q("roles#25|1"))
   @app.get("/perm")//http://localhost:8080/role/perm?roles=admin,super,……
   perm(@R r:Request){
     return this.role_.perm(r.query.roles);

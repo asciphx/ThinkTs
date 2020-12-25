@@ -9,7 +9,7 @@
 - 字段级别的rbac，加上可插拔的中间件装饰器，组装功能具有无限的可能
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
 - 可以用各种typeORM允许的关系型数据库，目前先提供mysql，postgres
-- 增加socketIo版[默认为此版]，现阶段还在完善，另外普通版跟管理版已放到example目录
+- 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript

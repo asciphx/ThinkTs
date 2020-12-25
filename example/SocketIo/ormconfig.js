@@ -4,7 +4,7 @@ module.exports = {
     host: "127.0.0.1",
     synchronize: true,
     password: "",
-    database: "spring",
+    database: "test",
     entities: [`${process.env.NODE_ENV==='production'?'dist':'ts'}/entity/*{.ts,.js}`],
     cache: {
         type: "database",duration: 2000

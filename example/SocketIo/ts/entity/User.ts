@@ -1,6 +1,5 @@
-import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column } from "typeorm";
 import { Orm } from '../think/orm';
-import { Role } from "./Role";
 
 @Entity()
 export class User extends Orm {
@@ -18,13 +17,6 @@ export class User extends Orm {
   photo: string
   @Column({ comment: "登录时间", nullable: true })
   logged : Date;
-  @ManyToMany(_ => Role, v => v.users, { cascade: ['insert', 'remove'] })
-  @JoinTable({
-    name: 'user_role',
-    joinColumn: { name: 'user_id' },
-    inverseJoinColumn: { name: 'role_id' },
-  })
-  roles: Role[]
   constructor(e?: User) {
     super();
     if(e){
