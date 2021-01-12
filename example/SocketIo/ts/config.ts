@@ -14,5 +14,5 @@ const Conf={
   jsonLimit:"1mb",
   view:'../views'
 } 
-const Cache:Object={}
-export {Conf,Cache,socket}
+const Cache:Object={},vType:Object={};
+export {Conf,Cache,vType,socket}

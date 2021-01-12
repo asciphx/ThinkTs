@@ -23,21 +23,21 @@ export abstract class Service{
     return await this[this.$].findOne(id);
   }
   private async _list(query) {
-    let { size = 10, current = 1 } = query;
+    let size=Number(query.size)||10,page=Number(query.page)||1;
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
-      .take(size).skip(current*size-size);
+      .take(size).skip(page*size-size);
     if(this._){
       if(this._.leftJoin){v.leftJoin(this._.leftJoin.e,this._.leftJoin.a,this._.leftJoin.c,this._.leftJoin.p);}
       if(this._.addLeftJoin){v.leftJoin(this._.addLeftJoin.e,this._.addLeftJoin.a,this._.addLeftJoin.c,this._.addLeftJoin.p);}
       if(this._.select){v.select(this._.select)}
       if(this._.addSelect){v.addSelect(this._.addSelect)}
       if(this._.where){v.where(this._.where(query))}
-      if(Object.keys(this._.orderBy).length!==0){
+      if(this._.orderBy&&Object.getOwnPropertyNames(this._.orderBy).toString()!==""){
         for (const key in this._.orderBy) {v.addOrderBy(key,this._.orderBy[key].toUpperCase()) }
       }
       if(this._.groupBy){v.groupBy(this._.groupBy)}
     }
     const [list,count]=await v.cache(true).getManyAndCount()
-    return {list:list,page:new Page(current,size,count).get()};
+    return {list:list,page:new Page(page,size,count).get()};
   }
 }

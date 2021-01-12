@@ -46,7 +46,8 @@ export class UserService extends Service implements UserFace {
     secret:NTo10(account+Conf.staticKey,66).toString(Conf.secret)+`#${(Conf.secret*Conf.cipher).toString(16)}`}
   }
   async fix(id: number, user: User) {
-    user.pwd!==undefined&&(user.pwd=encrypt(user.pwd,type,digest,length));
+    user.pwd!==undefined&&(user.pwd=encrypt(user.pwd,type,digest,length));//@ts-ignore
+    (user.status==1||user.status==="true")&&(user.status=true);
     return this.user.update(id, user)
   }
 }

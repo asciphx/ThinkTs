@@ -12,8 +12,7 @@ export class ParseService extends Service {
         return new Brackets(qb => {
           if (query.keyword) qb.where(`keyword like '%${query.keyword}%'`)
         });
-      },
-      orderBy: { "keyword": "desc" }
+      }
     });
   }
 }
