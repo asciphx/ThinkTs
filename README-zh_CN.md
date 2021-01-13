@@ -92,7 +92,7 @@ export interface UserFace{
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database。
 > 若启动时出现QueryFailedError请用对应sql文件在查询窗口/工具 内粘贴进去执行（即相当于导入功能），导入暂时还没测，注意mysql必须用utf8mb4编码。
 > 由于一般情况下不需要使用redis，所以推出此经典socketIo版，管理版和普通版放到了example目录下，如需使用请覆盖到顶级目录即可
-> 注意：布尔类型字段，尽量用json的格式传输
+> 注意：布尔类型字段，尽量用application/json的格式传输,这样后台就不用对这样的字段处理了
 
 ## 目录结构
 1. ts:`后端文件入口`
