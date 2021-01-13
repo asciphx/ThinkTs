@@ -1,4 +1,4 @@
-import { Page } from "../utils/page";import { Repository, ObjectLiteral } from "typeorm";
+import { Page } from "../utils/page";import { Repository, ObjectLiteral } from "typeorm";import { vType } from "../config";
 interface _{orderBy?:{};groupBy?:string;leftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};where?:Function;
 addLeftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};select?:string|string[]|any;addSelect?:string|string[]|any}
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入
@@ -6,7 +6,7 @@ export abstract class Service{
   private $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
   private _: _;
   constructor(_?:_,$?:string){
-    this._=_;if($)this.$=$;
+    this._=_;if($){vType[$]=vType[this.$];delete vType[this.$];this.$=$;}
   }
   private async _save(obj) {
     return await this[this.$].save(obj);

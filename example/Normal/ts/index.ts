@@ -9,7 +9,7 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
   fs.readdir(__dirname + "/entity", async (e, f) => {
     for (let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;
       let res=(Cache[key] as Repository<ObjectLiteral>).metadata.ownColumns;key=key.toLocaleLowerCase();vType[key]={};
-      res.forEach(r=>{let t=r.type;Object.defineProperty(vType[key],r.propertyName,{enumerable:true,//@ts-ignore
+      res.forEach(r=>{let t=r.type;Object.defineProperty(vType[key],r.propertyName,{enumerable:true,writable:true,//@ts-ignore
       value:t==="datetime"?26:t.name==="Number"?10:t.name==="Boolean"?5:t==="tinyint"?3:t==="smallint"?5:
       t==="mediumint"?7:t==="bigint"?19:r.length===""?255:Number(r.length)});});//稳定版，富含参数校验
      }
