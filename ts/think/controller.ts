@@ -12,7 +12,7 @@ export abstract class Controller {
           ctx.status=422;ctx.body=`The length of the field[${p}] is 0 to ${vType[this.$][p]}`;b=O=body=null;return ctx.body
         }
         ++i;
-      }else if(b[i]===undefined)++i;++l
+      }else if(b[i]===undefined)++i;
     }b=O=null;
     return this._save(body);
   }
@@ -29,7 +29,7 @@ export abstract class Controller {
           ctx.status=422;ctx.body=`The length of the field[${p}] is 0 to ${vType[this.$][p]}`;b=O=body=null;return ctx.body
         }
         ++i;
-      }else if(b[i]===undefined)++i;++l
+      }else if(b[i]===undefined)++i;
     }b=O=null;
     return this._update(ctx.params.id, body);
   }
@@ -39,14 +39,14 @@ export abstract class Controller {
     return v;
   }
   private _page(ctx: Context) {
-    let {query}=ctx,l=0,b=Object.keys(query).sort(),i=0;
+    let {query}=ctx,b=Object.keys(query).sort(),i=0;
     for (let p of pageField){
       if(p===b[i]){
         if(query[p].length>vType[this.$][p]){
           ctx.status=422;ctx.body=`The length of the field[${p}] is 0 to ${vType[this.$][p]}`;b=query=null;return ctx.body
         }
         ++i;
-      }else if(b[i]===undefined)++i;++l
+      }else if(b[i]===undefined)++i;
     }b=null;
     return this._list(ctx.query);
   }
