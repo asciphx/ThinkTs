@@ -21,6 +21,7 @@ const Redis=new IORedis({
     host: "127.0.0.1",
     family: 4,
     password: "6543210",
-    db:0
+    db:0,
+    retryStrategy(){return null}
   });
 export {Conf,Cache,Maps,Redis,vType}
