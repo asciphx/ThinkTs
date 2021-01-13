@@ -40,8 +40,7 @@ export abstract class Controller {
     return v;
   }
   private _page(ctx: Context) {
-    let {query}=ctx,l=0,b=Object.keys(query).filter(v=>pageField.includes(v)?true:l=1),i=0;
-    if(l===0)b=b.sort();else{ctx.status=422;ctx.body=`Invalid field!`;b=query=null;return ctx.body};
+    let {query}=ctx,l=0,b=Object.keys(query).sort(),i=0;
     for (let p of pageField){
       if(p===b[i]){
         if(query[p].length>vType[this.$][p]){
