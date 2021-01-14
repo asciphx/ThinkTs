@@ -56,7 +56,8 @@ createConnection().then(async conn=>{Tag.Init(conn.name,9000);let fristTime={};
       }catch(e){
           if(String(e).includes('TokenExpiredError')){ctx.status=401;ctx.body="Jwt Expired";
         }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
-        }else{console.error(e);ctx.status=401;ctx.body="Authentication Error";}
+        }else{console.error(e);if(String(e)==="Error: Connection is closed."){Redis.connect();}
+        ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{ctx.status=401;ctx.body="Headers Error";}
   });
