@@ -38,7 +38,7 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
     }_=$=null
   }else a=_=$=null;
 }
-const Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}//默认是数字(\\d+)
+const Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
 const app = {
   get:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
   post:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
