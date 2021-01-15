@@ -6,7 +6,10 @@
 - MVC, API, websocket, microservice and other systems are constructed fastest, good and most fiercely
 - The configuration is greater than the code, and priority is given to automatically implement five methods, such as adding, deleting, modifying and querying, and pagination, to facilitate the establishment of authority background system
 - With the field level RBAC and pluggable middleware decorator, the assembly function has unlimited possibilities
+- Support for serverless, the introduction of router in the controller method, you can easily change the background page, or even write to a file
 - Multiple databases are allowed, as long as it is a relational database allowed by typeorm. Currently, MySQL and Postgres have been provided
+- Add the example directory of socketio demo[the default is management Version (the default password of Redis is 6543210)]
+- Method override can be used to replace the curdp method generated automatically, so that there is no need to worry about whether there is redundancy in the routing
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)

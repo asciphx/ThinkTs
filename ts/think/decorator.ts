@@ -1,28 +1,30 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null;const ROUTER=new Router();
+let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null,$Override=[];const ROUTER=new Router();
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
   t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{let a=[]
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
-  if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}if(t!==undefined)
-  t.forEach(v=>{
-    switch (v) {
-      case "add":Routes.push({a:"_add",m:"post",r:""});break;
-      case "del":Routes.push({a:"_del",m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "fix":Routes.push({a:"_fix",m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "info":Routes.push({a:"_info",m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "page":Routes.push({a:"_page",m:"get",r:""});break;
+  if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}
+  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
+  v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
+    if(typeof _.prototype[k]==="function")$Override.push(k);
+  });
+  if(t!==undefined)t.forEach(p=>{
+    switch (p) {
+      case "add":!$Override.includes(p)&&Routes.push({a:"add",m:"post",r:""});break;
+      case "del":!$Override.includes(p)&&Routes.push({a:"del",m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "fix":!$Override.includes(p)&&Routes.push({a:"fix",m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "info":!$Override.includes(p)&&Routes.push({a:"info",m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "page":!$Override.includes(p)&&Routes.push({a:"page",m:"get",r:""});break;
       default:throw new Error("Wrong entry!");
     }
   });
-  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
   for (let r=i,l=Routes.length;r<l;r++){
     Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);let A
     const M=Routes[r].m,W=Routes[r].w?[Routes[r].r,Routes[r].w]:[Routes[r].r]
-    if(["_add","_del","_fix","_info","_page"].indexOf(Routes[r].a)>-1)
-      A=_.prototype[Routes[r].a].bind($[_.prototype["#"]])
-    else A=_.prototype[Routes[r].a].bind($);
+    if($Override.indexOf(Routes[r].a)>-1)A=_.prototype[Routes[r].a].bind($);else 
+    A=_.prototype[Routes[r].a].bind(v===""?$:$[_.prototype["#"]]);
     ROUTER[M](...W,async(ctx,next)=>{ctx.body=await A(ctx,next)});++i;
   }
   if(Conf.printRoute){
@@ -35,8 +37,8 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
     if($b){
       fs.writeFile(path.resolve("./routes",`./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
-    }_=$=null
-  }else a=_=$=null;
+    }_=$=null;
+  }else a=_=$=null;$Override.length=0;
 }
 const Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
 const app = {

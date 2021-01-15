@@ -10,8 +10,8 @@ createConnection().then(async conn=>{Tag.Init(conn.name,9000);let fristTime={};
     for(let i of f){let en=require(__dirname+"/entity/"+i),key=Object.keys(en)[0];Cache[key]=getRepository(en[key]);en=null;
       let res=(Cache[key] as Repository<ObjectLiteral>).metadata.ownColumns;key=key.toLocaleLowerCase();vType[key]={};
       res.forEach(r=>{let t=r.type;Object.defineProperty(vType[key],r.propertyName,{enumerable:true,writable:true,//@ts-ignore
-      value:t==="datetime"?26:t.name==="Number"?9:t.name==="Boolean"?5:t==="tinyint"?2:t==="smallint"?4:
-      t==="mediumint"?6:t==="bigint"?18:r.length===""?255:Number(r.length)});});
+      value:t==="datetime"?26:t.name==="Number"?10:t.name==="Boolean"?5:t==="tinyint"?3:t==="smallint"?5:
+      t==="mediumint"?7:t==="bigint"?19:r.length===""?255:Number(r.length)});});
     }
     const EXIST=await Cache["User"].findOne({account:"admin"});
     if(EXIST){console.error('\x1B[34;1m%s\x1B[22m',"董事长已存在!",'\x1B[37m');return;}else

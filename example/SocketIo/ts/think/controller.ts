@@ -2,7 +2,8 @@ import { Context } from "koa";import { vType } from "../config";
 const pageField=["page","size"];
 export abstract class Controller {
   [x: string]: any;
-  private _add(ctx: Context) {
+  add(...arg):void;
+  add(ctx:Context) {
     let {body}=ctx.request;if(Object.getOwnPropertyNames(body).toString()==="")return;let O=Object.keys(vType[this.$]);
     let l=0,b=Object.keys(body).filter(v=>O.includes(v)?true:l=1),i=0;
     if(l===0)b=b.sort();else{ctx.status=422;b=O=body=null;return `Invalid field!`;}
@@ -14,12 +15,14 @@ export abstract class Controller {
         ++i;
       }else if(b[i]===undefined)++i;
     }b=O=null;
-    return this._save(body);
+    return this.save(body);
   }
-  private _del(ctx: Context) {
-    return this._remove(ctx.params.id);
+  del(...arg):void;
+  del(ctx:Context) {
+    return this.remove(ctx.params.id);
   }
-  private _fix(ctx: Context) {
+  fix(...arg):void;
+  fix(ctx:Context) {
     let {body}=ctx.request;if(Object.getOwnPropertyNames(body).toString()==="")return;let O=Object.keys(vType[this.$]);
     let l=0,b=Object.keys(body).filter(v=>O.includes(v)?true:l=1),i=0;
     if(l===0)b=b.sort();else{ctx.status=422;b=O=body=null;return `Invalid field!`};
@@ -31,14 +34,16 @@ export abstract class Controller {
         ++i;
       }else if(b[i]===undefined)++i;
     }b=O=null;
-    return this._update(ctx.params.id, body);
+    return this.update(ctx.params.id, body);
   }
-  private _info(ctx: Context) {
-    let v = this._findOne(ctx.params.id);
+  info(...arg):void;
+  info(ctx:Context) {
+    let v = this.findOne(ctx.params.id);
     if (!v) { ctx.status = 404; return "Not Found"; }
     return v;
   }
-  private _page(ctx: Context) {
+  page(...arg):void;
+  page(ctx:Context) {
     let {query}=ctx,b=Object.keys(query).sort(),i=0;
     for (let p of pageField){
       if(p===b[i]){
@@ -48,6 +53,6 @@ export abstract class Controller {
         ++i;
       }else if(b[i]===undefined)++i;
     }b=null;
-    return this._list(ctx.query);
+    return this.list(ctx.query);
   }
 }

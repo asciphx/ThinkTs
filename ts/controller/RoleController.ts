@@ -3,7 +3,7 @@ import { RoleService } from '../service/RoleService';
 import { Controller } from '../think/controller';
 import { W } from '../weblogic';import { Request } from "koa";
 
-@Class(["del", "info", "page", "add"])
+@Class(["add", "del", "info", "fix", "page"])
 class RoleController extends Controller {
   @Inject(RoleService) readonly role_: RoleService
 

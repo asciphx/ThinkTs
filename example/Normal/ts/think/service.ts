@@ -8,21 +8,21 @@ export abstract class Service{
   constructor(_?:_,$?:string){
     this._=_;if($){vType[$]=vType[this.$];delete vType[this.$];this.$=$;}
   }
-  private async _save(obj) {
+  private async save(obj) {
     return await this[this.$].save(obj);
   }
-  private async _update(id: number, obj) {
+  private async update(id: number, obj) {
     return await this[this.$].update(id, obj);
   }
-  private async _remove(id: number) {
+  private async remove(id: number) {
     let v = await this[this.$].findOne(id);
     if (!v) { return "Not Found"; }
     return await this[this.$].remove(v);
   }
-  private async _findOne(id: number) {
+  private async findOne(id: number) {
     return await this[this.$].findOne(id);
   }
-  private async _list(query) {
+  private async list(query) {
     let size=Number(query.size)||10,page=Number(query.page)||1;
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
       .take(size).skip(page*size-size);

@@ -10,10 +10,11 @@
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
 - 可以用各种typeORM允许的关系型数据库，目前先提供mysql，postgres
 - 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
+- 能够使用方法覆盖，来顶替自动生成的curdp方法，从而不用再担心路由是否存在冗余
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript
-@Class(["add","del","fix","info"])//or @Class("/admin",……)or @Class("admin",……)
+@Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController extends Controller{
   @Inject(AdminService) readonly adminSvc:AdminService
   @Inject(UserService) readonly userSvc:UserService
@@ -91,7 +92,7 @@ export interface UserFace{
 > 新增redis，为了每个线程上的服务可同步缓存,在ts/config.ts下设置synchronize，默认6秒，redis密码在config配置，默认6543210
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database。
 > 若启动时出现QueryFailedError请用对应sql文件在查询窗口/工具 内粘贴进去执行（即相当于导入功能），导入暂时还没测，注意mysql必须用utf8mb4编码。
-> 由于一般情况下不需要使用redis，所以推出此经典socketIo版，管理版和普通版放到了example目录下，如需使用请覆盖到顶级目录即可
+> 由于一般情况下不需要使用redis，所以推出此经典socketIo版，socketIo版和普通版放到了example目录下，如需使用请覆盖到顶级目录即可
 > 注意：布尔类型字段，尽量用application/json的格式传输,这样后台就不用对这样的字段处理了
 
 ## 目录结构
@@ -127,7 +128,7 @@ ormconfig.js注释中包含是否输出log或错误，取消注释即可使用�
 或，synchronize设置false，修改实体类重启服务则不同步 ，然后手动在数据库修改成与实体类一样的属性。
 restful规范中的返回值实际太费带宽，而我认为前端只需判断返回是字符串还是对象，如字符串就直接显示(前端弹窗就行)，
 如返回对象，请求状态码一定是200，所以只拿重要数据而不需code状态码和massage提示成功(那两东西完全是浪费流量)。  
-该项目离serverless又更近了一步，目前是发布版。自动生成的curd也附带了参数校验。
+该项目离serverless又更近了一步，目前是发布版,redis会自动重连。自动生成的curd也附带了参数校验。
 ## **请赞助本项目**
 如你觉有收获，请给我打赏
 
