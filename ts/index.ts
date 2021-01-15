@@ -53,10 +53,10 @@ createConnection().then(async conn=>{Tag.Init(conn.name,9000);let fristTime={};
         }
         if(ll[0]==="admin"){await next();return}l=ll=payload=null;
         ctx.status=403;ctx.body=`'${PATH}'request is not authorized`;
-      }catch(e){
-          if(String(e).includes('TokenExpiredError')){ctx.status=401;ctx.body="Jwt Expired";
-        }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
-        }else{console.error(e);if(String(e)==="Error: Connection is closed."){Redis.connect();}
+      }catch(e){const ERR=String(e);
+          if(ERR.includes('TokenExpiredError')){ctx.status=401;ctx.body="Jwt Expired";
+        }else if(ERR.includes('QueryFailedError')){ctx.status=406;ctx.body=e;
+        }else{console.error(e);if(ERR==="Error: Connection is closed."){Redis.connect();}
         ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{ctx.status=401;ctx.body="Headers Error";}

@@ -35,9 +35,9 @@ createConnection().then(async conn => {Tag.Init(conn.name,9000);
       try {
         Jwt.verify(TOKEN.replace(/^Bearer /,""),String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:false});await next();
         console.log(ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1"));//排除parse表中的全大写字段
-      } catch (e) {
-        if(String(e).includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
-        }else if(String(e).includes('QueryFailedError')){ctx.status=406;ctx.body=e;
+      } catch (e) {const ERR=String(e);
+        if(ERR.includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
+        }else if(ERR.includes('QueryFailedError')){ctx.status=406;ctx.body=e;
         }else{console.error(e);ctx.status=401;ctx.body="Authentication Error";}
       }
     }else{ctx.status=401;ctx.body="Headers Error";}
