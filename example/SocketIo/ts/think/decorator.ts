@@ -12,11 +12,11 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
   });
   if(t!==undefined)t.forEach(p=>{
     switch (p) {
-      case "add":!$Override.includes(p)&&Routes.push({a:"add",m:"post",r:""});break;
-      case "del":!$Override.includes(p)&&Routes.push({a:"del",m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "fix":!$Override.includes(p)&&Routes.push({a:"fix",m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "info":!$Override.includes(p)&&Routes.push({a:"info",m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "page":!$Override.includes(p)&&Routes.push({a:"page",m:"get",r:""});break;
+      case "add":!$Override.includes(p)&&Routes.push({a:p,m:"post",r:""});break;
+      case "del":!$Override.includes(p)&&Routes.push({a:p,m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "fix":!$Override.includes(p)&&Routes.push({a:p,m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "info":!$Override.includes(p)&&Routes.push({a:p,m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "page":!$Override.includes(p)&&Routes.push({a:p,m:"get",r:""});break;
       default:throw new Error("Wrong entry!");
     }
   });
