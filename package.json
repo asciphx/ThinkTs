@@ -45,7 +45,7 @@
       "pg": "^8.4.2",
       "reflect-metadata": "^0.1.13",
       "socket.io": "^3.0.4",
-      "typeorm": "^0.2.25",
+      "typeorm": "^0.2.30",
       "underscore": "^1.12.0"
    }
 }
