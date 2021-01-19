@@ -15,11 +15,11 @@ export abstract class Controller {
         ++i;
       }else if(b[i]===undefined)++i;
     }b=O=null;
-    return this.save(body);
+    return this.save(body).next().value;
   }
   del(...arg):void;
   del(ctx:Context) {
-    return this.remove(ctx.params.id);
+    return this.remove(ctx.params.id).next().then(r=>r.value);
   }
   fix(...arg):void;
   fix(ctx:Context) {
@@ -34,13 +34,11 @@ export abstract class Controller {
         ++i;
       }else if(b[i]===undefined)++i;
     }b=O=null;
-    return this.update(ctx.params.id, body);
+    return this.update(ctx.params.id, body).next().value;
   }
   info(...arg):void;
   info(ctx:Context) {
-    let v = this.findOne(ctx.params.id);
-    if (!v) { ctx.status = 404; return "Not Found"; }
-    return v;
+    return this.findOne(ctx.params.id).next().value;
   }
   page(...arg):void;
   page(ctx:Context) {
@@ -53,6 +51,6 @@ export abstract class Controller {
         ++i;
       }else if(b[i]===undefined)++i;
     }b=null;
-    return this.list(ctx.query);
+    return this.list(ctx.query).next().then(r=>r.value);
   }
 }

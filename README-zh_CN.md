@@ -10,19 +10,20 @@
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
 - 可以用各种typeORM允许的关系型数据库，目前先提供mysql，postgres
 - 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
-- 能够使用方法覆盖，来顶替自动生成的curdp方法，从而不用再担心路由是否存在冗余
+- 能够使用方法覆盖override，从而不用再担心路由是否存在冗余
+- 来自ES6魔法函数Generator生成器，再加全程异步让效率进一步提升，所以稳定、极速
 ## 使用**ThinkTs**让你的controller看起来像是:
 
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController extends Controller{
-  @Inject(AdminService) readonly adminSvc:AdminService
-  @Inject(UserService) readonly userSvc:UserService
+  @Inject(AdminService) readonly a_:AdminService
+  @Inject(UserService) readonly u_:UserService
 
-  @Middle(W.Log,W.V_B("pwd#6~23|1","account|1#3~10"))
-  @app.post("login")
-  login(@B body) {
-    return this.userSvc.login(body.account,body.pwd)
+  @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
+  @app.post("register")
+  add(@B body) {
+    return this.u_.register(body.account,body.pwd)
   }
 }
 /** Here's how to show EJS template rendering */
@@ -75,11 +76,12 @@ export interface UserFace{
 - [x] 自动扫描entity目录，载入到Cache，相当于一个容器,可以避免entity被多次实例化
 - [x] 自动扫描controller目录，并且配置Routes路由
 - [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去ts/config.ts下更改printRoute为false
-- [x] 有近似于nest.js架构的速度，还有java:SpringBoot框架的可维护性
+- [x] 有近似于nest.js+fastify架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
 - [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页
 - [x] 增加参数装饰器，更加便捷美观，并且不会影响到运行速度
 - [x] 装饰器可以横着放，并且，可以堆叠，顺序是从右往左依次执行
+- [x] 来自ES6的魔法生成器函数，加上node全程异步编程特征，让速度得到飞跃
 
 ## 新版自定义JWT鉴权说明
 > Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里并由后端额外提供动态secret，此项目只是个高度安全的案例，只要后端代码加强算法并不泄露，就难破解。

@@ -8,21 +8,21 @@ export abstract class Service{
   constructor(_?:_,$?:string){
     this._=_;if($){vType[$]=vType[this.$];delete vType[this.$];this.$=$;}
   }
-  private async save(obj) {
-    return await this[this.$].save(obj);
+  private*save(obj) {
+    yield this[this.$].save(obj);
   }
-  private async update(id: number, obj) {
-    return await this[this.$].update(id, obj);
+  private*update(id: number, obj) {
+    yield this[this.$].update(id, obj);
   }
-  private async remove(id: number) {
+  private async*remove(id: number) {
     let v = await this[this.$].findOne(id);
-    if (!v) { return "Not Found"; }
-    return await this[this.$].remove(v);
+    if (!v) { yield "Not Found"; }
+    yield this[this.$].remove(v);
   }
-  private async findOne(id: number) {
-    return await this[this.$].findOne(id);
+  private*findOne(id: number) {
+    yield this[this.$].findOne(id);
   }
-  private async list(query) {
+  private async*list(query) {
     let size=Number(query.size)||10,page=Number(query.page)||1;
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
       .take(size).skip(page*size-size);
@@ -38,6 +38,6 @@ export abstract class Service{
       if(this._.groupBy){v.groupBy(this._.groupBy)}
     }
     const [list,count]=await v.cache(true).getManyAndCount()
-    return {list:list,page:new Page(page,size,count).get()};
+    yield {list:list,page:new Page(page,size,count).get()};
   }
 }

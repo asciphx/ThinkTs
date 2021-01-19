@@ -1,4 +1,4 @@
-import { createHash } from 'crypto';//常量c中不好区分的后四位字符，在下面的注释中
+import { createHash, BinaryToTextEncoding } from 'crypto';//常量c中不好区分的后四位字符，在下面的注释中
 const c = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZياخش'; //"ي", "ا", "خ", "ش"
 type T = "md5"|"sha1"|"shake128"|"shake256"|"sha256"|"sha224"|"sha512"|"sha384"|"sm3"|"whirlpool"|"ripemd";
 type H = "latin1"|"hex"|"base64";
@@ -10,7 +10,7 @@ type H = "latin1"|"hex"|"base64";
  * @param pwd 登录密码
  */
 const encrypt = (pwd: string,type:T='shake128',digest:H='hex',length:number=25): string => {
-  return createHash(type, { outputLength: length }).update(pwd).digest(digest);
+  return createHash(type, { outputLength: length }).update(pwd).digest(digest as BinaryToTextEncoding);
 }
 /**
  * 检查登录密码是否正确

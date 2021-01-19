@@ -14,6 +14,6 @@ class RoleController extends Controller {
   @Middle(W.Log,W.V_.q("roles#25|1"))
   @app.get("/perm")//http://localhost:8080/role/perm?roles=admin,super,……
   perm(@R r:Request){
-    return this.role_.perm(r.query.roles);
+    return this.role_.perm(r.query.roles).next().value;
   }
 }

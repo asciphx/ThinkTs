@@ -19,14 +19,14 @@ export class AdminService extends Service {
     },"adm");
   }
   async sql(query:any){
-    const { size = 10, current = 1 } = query;let sql,count
+    const { size = 10, page = 1 } = query;let sql,count
     if(Conf.TYPE==="postgres"){
-      sql=`select id,name,label from public.admin limit ${size} offset ${current*size-size}`;
+      sql=`select id,name,label from public.admin limit ${size} offset ${page*size-size}`;
       count=await this.adm.query(`select count(*) from public.admin`);
     }else{
-      sql=`select id,name,label from ${Conf.DATABASE}.admin limit ${current*size-size},${size}`;
+      sql=`select id,name,label from ${Conf.DATABASE}.admin limit ${page*size-size},${size}`;
       count=await this.adm.query(`select count(*) as count from ${Conf.DATABASE}.admin`)
     }
-    return {list:await this.adm.query(sql),page:new Page(current,size,count[0].count)}
+    return {list:await this.adm.query(sql),page:new Page(page,size,count[0].count)}
   }
 }
