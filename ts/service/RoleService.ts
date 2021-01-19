@@ -29,7 +29,7 @@ export class RoleService extends Service {
     return await this.role.update(id,role)
   }
   *perm(roles:string) {
-    yield this.menu.createQueryBuilder("m").select(["m.type","m.path"])
+    return this.menu.createQueryBuilder("m").select(["m.type","m.path"])
     .leftJoin("m.roles","role").where(`role.name IN (${roles.replace(/([^,]+)/g,"'$1'")})`).getMany();
   }
 }

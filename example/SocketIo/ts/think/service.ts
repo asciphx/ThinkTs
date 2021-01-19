@@ -9,18 +9,18 @@ export abstract class Service{
     this._=_;if($){vType[$]=vType[this.$];delete vType[this.$];this.$=$;}
   }
   private*save(obj) {
-    yield this[this.$].save(obj);
+    return this[this.$].save(obj);
   }
   private*update(id: number, obj) {
-    yield this[this.$].update(id, obj);
+    return this[this.$].update(id, obj);
   }
   private async*remove(id: number) {
     let v = await this[this.$].findOne(id);
-    if (!v) { yield "Not Found"; }
-    yield this[this.$].remove(v);
+    if (!v) { return "Not Found"; }
+    return this[this.$].remove(v);
   }
   private*findOne(id: number) {
-    yield this[this.$].findOne(id);
+    return this[this.$].findOne(id);
   }
   private async*list(query) {
     let size=Number(query.size)||10,page=Number(query.page)||1;
@@ -38,6 +38,6 @@ export abstract class Service{
       if(this._.groupBy){v.groupBy(this._.groupBy)}
     }
     const [list,count]=await v.cache(true).getManyAndCount()
-    yield {list:list,page:new Page(page,size,count).get()};
+    return {list:list,page:new Page(page,size,count).get()};
   }
 }
