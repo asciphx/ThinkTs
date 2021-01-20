@@ -14,7 +14,7 @@ createConnection().then(async conn=>{Tag.Init(conn.name,9000);let fristTime={};
       t==="mediumint"?6:t==="bigint"?18:r.length===""?255:Number(r.length)});});
     }
     const EXIST=await Cache["User"].findOne({account:"admin"});
-    if(EXIST){console.error('\x1B[34;1m%s\x1B[22m',"董事长已存在!",'\x1B[37m');return;}else
+    if(EXIST){console.error('\x1B[33;1m%s\x1B[22m',"董事长已存在!\x1B[37m");return;}else
     return Cache["User"].save(new User({account:"admin",pwd:encrypt("654321","shake256","latin1",50)}as User))
       .then(user=>{console.log("User has been saved:",user);
     })
