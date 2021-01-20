@@ -1,5 +1,5 @@
 import { html, getFilesPath, getfiles } from "./utils/tool";import Tag from "./utils/tag";
-import { Class, Get, Q } from "./think/decorator";import * as fs from "fs"
+import { Class, Get, Q } from "./think/decorator";
 
 @Class()
 class View {
