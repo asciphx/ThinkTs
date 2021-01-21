@@ -9,11 +9,11 @@ export default class {
     if (type === 1 || type === 2) void 0; else type = 0;
     let html: string = await this.getInputHtml(name, type, className);
     if (value !== "" && type !== 2)
-      html = await html.replace("value='" + value + "'", "value='" + value + "' " + attr);
+      html = html.replace("value='" + value + "'", "value='" + value + "' " + attr);
     else if(value !== ""){
       let sss: Array<string> = value.split(",");
       for (let i in sss) {
-        html = await html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
+        html = html.replace("value='" + sss[i] + "'", "value='" + sss[i] + "' " + attr);
       }
     } return html;
   }
