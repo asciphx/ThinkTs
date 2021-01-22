@@ -1,7 +1,6 @@
 import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
 import { Orm } from '../think/orm';
 import { Role } from "./Role";
-
 @Entity()
 export class User extends Orm {
   @Column({ comment: "账户（3-10）", length: 10 })

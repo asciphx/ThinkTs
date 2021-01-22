@@ -28,11 +28,11 @@ class AdminController extends Controller{
 class View{
   @Get() @Get("index.html")
   index(ctx:Context){
-    html(ctx,{test:"test",author:"asciphx"})
+    html(ctx,{test:"test",author:"asciphx"}).next().value
   }
   @Get("login.html")
   login(ctx:Context){
-    html(ctx,{test:"test",author:"Login"})
+    html(ctx,{test:"test",author:"Login"}).next().value
   }
 }
 ```

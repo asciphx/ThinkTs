@@ -1,7 +1,6 @@
 import { Entity, Column, Index, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany } from 'typeorm';
 import { Menu } from './Menu';
 import { User } from './User';
-
 @Entity()
 export class Role {
   @PrimaryGeneratedColumn({ type: 'smallint' })

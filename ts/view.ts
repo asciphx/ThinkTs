@@ -1,4 +1,4 @@
-import { html, getFilesPath, getfiles } from "./utils/tool";import Tag from "./utils/tag";import { Context } from "koa"
+import { html, getFilesAsync, getfiles } from "./utils/tool";import Tag from "./utils/tag";import { Context } from "koa"
 import { Class, Get, Q } from "./think/decorator"; import { Maps } from "./config";
 
 @Class()
@@ -17,6 +17,6 @@ class View {
   @Get("static/ts")//localhost:8080/static/ts?./ts
   ts(ctx: Context) {const STR=ctx.querystring;
     if(STR.includes(":")||STR.includes("..")||STR.length<3)return "Not Allowed";
-    return getFilesPath(STR);
+    return getFilesAsync(STR);
   }
 }

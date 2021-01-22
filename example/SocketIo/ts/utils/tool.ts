@@ -30,17 +30,17 @@ const getfiles:Function = async (str: string) => {
   return filesList;
 }
 const promise:Function=F=>(...a)=>new Promise((s,f)=>{F.call(this,...a,(e,d)=>{if(e){f(e)}else{s(d)}})});
-const getFilesPath:Function = async dir => {
+const getFilesAsync:Function = async dir => {
     let files:any = await promise(fs.readdir)(dir);
     return Promise.all(files.map(file => {
         let filePath = path.join(dir, file);
         return promise(fs.stat)(filePath).then(stat => {
             if ((stat as fs.StatsBase<any>).isDirectory()) {
-                return getFilesPath(filePath);
+                return getFilesAsync(filePath);
             } else {
                 return filePath.replace("ts\\","");
             }
         });
     }));
 };
-export { html, deleteAll, deleteOne, getfiles, promise, getFilesPath }
+export { html, deleteAll, deleteOne, getfiles, promise, getFilesAsync }
