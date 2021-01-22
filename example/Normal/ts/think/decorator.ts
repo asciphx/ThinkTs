@@ -78,7 +78,7 @@ const param=(m:Function,d)=>{
         }:num===0?async function(ctx,next:Function){
           return await m.call(this,ctx.request.body,ctx[m[1]],next);
         }:async function(ctx,next:Function){
-          return await m.call(this,ctx[m[0],ctx.request.body],next);
+          return await m.call(this,ctx[m[0]],ctx.request.body,next);
         };break
       case 3:d.value=num===-1?async function(ctx,next:Function){
           return await m.call(this,ctx[m[0]],ctx[m[1]],ctx[m[2]],next);
