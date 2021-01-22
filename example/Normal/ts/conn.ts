@@ -12,7 +12,7 @@ createConnection().then(async conn=>{Tag.Init(conn.name,9000);
   }));
   Promise.all((await promise(fs.readdir)(__dirname+"/controller")).map(i => {require(__dirname+"/controller/"+i);}));
   Conf.DATABASE=conn.driver.database;Conf.TYPE=conn.driver.options.type;
-  console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`);cleanRoutes();
+  console.log('\x1B[35;47m%s\x1B[49m',"loading router……");cleanRoutes();
 
   const EXIST=await Cache["User"].findOne({account:"admin"});
   if(EXIST){console.error('\x1B[33;1m%s\x1B[22m',"董事长已存在!\x1B[37m");return;}else

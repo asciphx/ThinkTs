@@ -48,4 +48,4 @@ const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",tex
 });
 setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
 APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>{
-  console.log('\x1B[35;47m%s\x1B[49m',"loading router……")})
+  console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`)});

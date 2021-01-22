@@ -18,7 +18,7 @@ const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3m
     if(TOKEN&&S){
       try {
         Jwt.verify(TOKEN.replace(/^Bearer /,""),String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:false});await next();
-        console.log(ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1"));//排除parse表中的全大写字段
+        // console.log(ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1"));//排除parse表中的大写字符主键id
       } catch (e) {const ERR=String(e);
         if(ERR.includes('TokenExpiredError')){ ctx.status=401;ctx.body="Jwt Expired";
         }else if(ERR.includes('QueryFailedError')){ctx.status=406;ctx.body=e;
@@ -28,4 +28,4 @@ const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3m
 });
 setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
 APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>{
-  console.log('\x1B[35;47m%s\x1B[49m', "loading router……")})
+  console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`)});
