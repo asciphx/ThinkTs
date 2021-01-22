@@ -1,7 +1,7 @@
 import socket from "./utils/socketIo";
 const Conf={
   printRoute:true,//打印路由routes
-  port:8080,
+  port:process.env.PORT!=="3002"?Number(process.env.PORT):8080,
   DATABASE:"",//启动时匹配ormconfig.js中的database
   TYPE:"",//启动时匹配ormconfig.js中的type
   upload:"upload",//上传文件夹路径

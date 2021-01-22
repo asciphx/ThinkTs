@@ -33,7 +33,7 @@ const promise:Function=F=>(...a)=>new Promise((s,f)=>{F.call(this,...a,(e,d)=>{i
 const getFilesAsync:Function = async dir => {
     let files:any = await promise(fs.readdir)(dir);
     return Promise.all(files.map(file => {
-        let filePath = path.join(dir, file);
+        let filePath = path.join(dir, file);console.log(filePath)
         return promise(fs.stat)(filePath).then(stat => {
             if ((stat as fs.StatsBase<any>).isDirectory())
               return getFilesAsync(filePath);

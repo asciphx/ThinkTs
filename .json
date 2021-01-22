@@ -11,6 +11,9 @@
       "routes",
       ".vscode"
     ],
+    "env": {
+        "PORT":80,"NODE_ENV": "development"
+    },
     "exec_interpreter": "C:/nodejs/ts-node",
     "instances": "max",
     "min_uptime": "60s",

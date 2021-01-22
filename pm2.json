@@ -6,7 +6,7 @@
       "script": "dist/index.js",
       "args":"-r tsconfig-paths/register",
       "env": {
-          "NODE_ENV": "production"
+          "PORT":80,"NODE_ENV": "production"
       },
       "log_date_format"  : "YYYY-MM-DD HH:mm Z",
       "ignore_watch": [

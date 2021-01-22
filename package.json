@@ -1,6 +1,6 @@
 {
    "name": "think-ts",
-   "version": "2.2.3-RVL",
+   "version": "2.2.4-RVL",
    "description": "TypeORM+KOA",
    "scripts": {
       "dev": "nodemon",
