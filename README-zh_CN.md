@@ -90,7 +90,8 @@ export interface UserFace{
 > s:`${secret}`
 > ```
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜
-> 在正式环境下启动的指令，windows使用的是`npm run pro`,而Mac或者Linux是`npm run prod`.因本人用win10，暂`npm run pm2`不支持linux或者Mac
+> 在正式环境下启动的指令，windows使用的是`npm run pro`,正式环境下请使用`npm run pm2`开启多核心，配置文件在./pm2.json
+> Mac或者Linux是`npm run prod`.因本人用win10，测试环境的`npm run pm2-ts`指令不支持linux或者Mac，该配置文件在./.json
 > 新增redis，为了每个线程上的服务可同步缓存,在ts/config.ts下设置synchronize，默认6秒，redis密码在config配置，默认6543210
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database
 > 若启动时出现QueryFailedError请用对应sql文件在查询窗口/工具 内粘贴进去执行（即相当于导入功能），导入暂时还没测，注意mysql必须用utf8mb4编码

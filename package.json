@@ -9,7 +9,8 @@
       "start": "ts-node ts/index.ts",
       "prod": "export NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
       "pro": "set NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
-      "pm2": "pm2 start .json"
+      "pm2": "pm2 start pm2.json",
+      "pm2-ts": "pm2 start .json"
    },
    "devDependencies": {
       "@types/ioredis": "^4.17.6",

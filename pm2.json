@@ -1,0 +1,30 @@
+{
+    "apps":
+    {
+      "name": "ThinkTs",
+      "cwd": "./",
+      "script": "dist/index.js",
+      "args":"-r tsconfig-paths/register",
+      "env": {
+          "NODE_ENV": "production"
+      },
+      "log_date_format"  : "YYYY-MM-DD HH:mm Z",
+      "ignore_watch": [
+        "[\\/\\\\]\\./",
+        "node_modules",
+        ".vscode",
+        "ts",
+        "log",
+        "routes",
+        "lib"
+      ],
+      "instances": "max",
+      "min_uptime": "30s",
+      "max_restarts": 30,
+      "exec_mode" : "cluster_mode",
+      "error_file" : "./log/test-err.log",
+      "out_file": "./log/test-out.log",
+      "pid_file": "./log/test.pid",
+      "watch": false
+    }
+  }
