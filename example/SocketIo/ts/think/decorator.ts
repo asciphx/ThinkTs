@@ -10,13 +10,13 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
   v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
     if(typeof _.prototype[k]==="function")$Override.push(k);
   });
-  if(t!==undefined)t.forEach(p=>{
+  if(t!==undefined)t.filter(p=>!$Override.includes(p)).forEach(p=>{
     switch (p) {
-      case "add":!$Override.includes(p)&&Routes.push({a:p,m:"post",r:""});break;
-      case "del":!$Override.includes(p)&&Routes.push({a:p,m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "fix":!$Override.includes(p)&&Routes.push({a:p,m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "info":!$Override.includes(p)&&Routes.push({a:p,m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
-      case "page":!$Override.includes(p)&&Routes.push({a:p,m:"get",r:""});break;
+      case "add":Routes.push({a:p,m:"post",r:""});break;
+      case "del":Routes.push({a:p,m:"delete",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "fix":Routes.push({a:p,m:"put",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "info":Routes.push({a:p,m:"get",r:"/:id"+(_["##"]||"(\\d+)")});break;
+      case "page":Routes.push({a:p,m:"get",r:""});break;
       default:throw new Error("Wrong entry!");
     }
   });
