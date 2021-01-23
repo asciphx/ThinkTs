@@ -7,7 +7,7 @@ module.exports = {
     database: "spring",
     entities: [`${process.env.NODE_ENV==='production'?'dist':'ts'}/entity/*{.ts,.js}`],
     cache: {
-        type: "database",duration: 2000
+        type: "database",duration: 2300
     },
     extra: {
         max: 9,
