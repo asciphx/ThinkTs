@@ -12,8 +12,8 @@
 - 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
 - 能够使用方法覆盖override，从而不用再担心路由是否存在冗余
 - 来自ES6魔法函数Generator生成器，再加全程异步让效率提升，所以稳定、极速
+# [ThinkTs讨论区](http://www.91huanwei.com/)
 ## 使用**ThinkTs**让你的controller看起来像是:
-
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
 class AdminController extends Controller{
