@@ -21,7 +21,7 @@ const J2T = (json: string) => json.replace(/(\\|\\'|\"|\n)/g, "\\\$1")
  */
 const Backslash = (str: string) => {
   let stri = str.split("\\", -1), b: string = "\\";
-  for (let a = 0; a < stri.length; a++) {
+  for (let a = 0; a < stri.length; ++a) {
     if (stri[a] !== "") {
       if (a !== 0) b = b + "\\\\" + stri[a]; else b = b + stri[a];
     } else { if (a > 1 || stri[0] !== "") b = b + "\\\\"; else b = b + "\\"; }
@@ -34,7 +34,7 @@ const Backslash = (str: string) => {
 const hextoString=(hex:string)=>{
   let arr = hex.split("")
   let out = ""
-  for (let i = 0; i < arr.length / 2; i++) {
+  for (let i = 0; i < arr.length / 2; ++i) {
     let tmp = "0x" + arr[i * 2] + arr[i * 2 + 1]
     let charValue = String.fromCharCode(tmp as any);
     out += charValue
@@ -48,7 +48,7 @@ const hextoString=(hex:string)=>{
 const strToBytes=(str:string)=>{
   let bytes = new Array(),len, z;
   len = str.length;
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < len; ++i) {
     z = str.charCodeAt(i);
     if (z >= 0x010000 && z <= 0x10FFFF) {
       bytes.push(((z >> 18) & 0x07) | 0xF0);
@@ -77,13 +77,13 @@ const bytesToStr=(arr:Array<number>)=>{
     return arr;
   }
   let str = '',_arr = arr;
-  for (let i = 0; i < _arr.length; i++) {
+  for (let i = 0; i < _arr.length; ++i) {
     let one = _arr[i].toString(2),
         v = one.match(/^1+?(?=0)/);
     if (v && one.length === 8) {
       let bytesLength = v[0].length;
       let store = _arr[i].toString(2).slice(7 - bytesLength);
-      for (let st = 1; st < bytesLength; st++) {
+      for (let st = 1; st < bytesLength; ++st) {
         store += _arr[st + i].toString(2).slice(2);
       }
       str += String.fromCharCode(parseInt(store, 2));

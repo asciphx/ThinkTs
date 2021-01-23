@@ -28,7 +28,7 @@ const checkPwd = (pwd: string, encryptedPwd,type:T,digest:H,length:number): bool
 const utf8_encode = (string: string) => {
   string = string.replace(/\r\n/g, "\n");
   var utftext = "";
-  for (var n = 0; n < string.length; n++) {
+  for (var n = 0; n < string.length; ++n) {
     var z = string.charCodeAt(n);
     if (z < 128) {
       utftext += String.fromCharCode(z);
@@ -87,7 +87,7 @@ const IntTo62 = (n: number) => {
 const TenToN=(v:number,n:number):string=>{
   if(n>66||n<2||v>9007199254740991)return;
   let num="",mod
-  for(let i=1;i<54;i++){mod=v%n;v=Math.floor(v/n);
+  for(let i=1;i<54;++i){mod=v%n;v=Math.floor(v/n);
     if(v>0){num=c.charAt(mod)+num
     }else return c.charAt(mod)+num;
   }
@@ -99,8 +99,8 @@ const TenToN=(v:number,n:number):string=>{
  */
 const NTo10=(v:string,n:number):number=>{if(n>66||n<2)return;if(n<37)v=v.toLowerCase();
   let addNumber=0,l=v.length
-  for(let i=0;i<l;i++){if(c.indexOf(v.charAt(i))===-1)return
-    for(let h=0;h<66;h++){
+  for(let i=0;i<l;++i){if(c.indexOf(v.charAt(i))===-1)return
+    for(let h=0;h<66;++h){
       if(v.charAt(l-i-1)===c.charAt(h)){
         addNumber=addNumber+h*Math.pow(n,i);
       }

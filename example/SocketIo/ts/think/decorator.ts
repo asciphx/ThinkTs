@@ -1,6 +1,6 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
-let Routes:Array<any>=[],$b=true,i=0,$once=true,$=null,$Override=[];const ROUTER=new Router();
+let Routes:Array<any>=[],$b=true,$once=true,$=null,$Override=[];const ROUTER=new Router();
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
   t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{let a=[]
@@ -20,12 +20,12 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
       default:throw new Error("Wrong entry!");
     }
   });
-  for (let r=i,l=Routes.length;r<l;r++){
+  for (let r=0,l=Routes.length;r<l;++r){
     Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);let A
     const M=Routes[r].m,W=Routes[r].w?[Routes[r].r,Routes[r].w]:[Routes[r].r]
     if($Override.indexOf(Routes[r].a)>-1)A=_.prototype[Routes[r].a].bind($);else 
     A=_.prototype[Routes[r].a].bind(v===""?$:$[_.prototype["#"]]);
-    ROUTER[M](...W,async(ctx,next)=>{ctx.body=await A(ctx,next)});++i;
+    ROUTER[M](...W,async(ctx,next)=>{ctx.body=await A(ctx,next)});
   }
   if(Conf.printRoute){
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
@@ -38,7 +38,7 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
       fs.writeFile(path.resolve("./routes",`./${v===""?"$Controller":_.name}.json`),
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null;
-  }else a=_=$=null;$Override.length=0;
+  }else a=_=$=null;$Override.length=Routes.length=0;
 }
 const Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
 const app = {
@@ -104,5 +104,5 @@ const param=(m:Function,d)=>{
     }
   }o=d=null;
 }
-let cleanRoutes=()=>{/*console.log(Routes);*/Routes=cleanRoutes=null;}
+let cleanRoutes=()=>{Routes=$Override=cleanRoutes=null;}
 export {ROUTER,Class,Id,app,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,cleanRoutes};

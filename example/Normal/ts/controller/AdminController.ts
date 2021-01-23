@@ -8,8 +8,8 @@ import Tag from "../utils/tag";import { W } from "../weblogic";
 class AdminController extends Controller {
   @Inject(AdminService) readonly adm_: AdminService
   
-  @app.get()
-  page(@Q q){
+  @app.get("sql")
+  sql(@Q q){
     return this.adm_.sql(q);
   }
 
