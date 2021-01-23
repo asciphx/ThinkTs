@@ -1,5 +1,4 @@
 import { Context } from "koa";import { vType } from "../config";
-const pageField=["page","size"];
 export abstract class Controller {
   [x: string]: any;
   add(...arg):void;
@@ -42,15 +41,6 @@ export abstract class Controller {
   }
   page(...arg):void;
   page(ctx:Context) {
-    let {query}=ctx,b=Object.keys(query).sort(),i=0;
-    for (let p of pageField){
-      if(p===b[i]){
-        if(query[p].length>vType[this.$][p]){
-          ctx.status=422;b=query=null;return `The length of the field[${p}] is 0 to ${vType[this.$][p]}`;
-        }
-        ++i;
-      }else if(b[i]===undefined)++i;
-    }b=null;
     return this.list(ctx.query).next().then(r=>r.value);
   }
 }

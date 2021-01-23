@@ -1,8 +1,8 @@
 interface Pagination {
-  page?: number;// 当前页
+  page?: number;// 当前页[参数]
+  size?: number;// 每页多少条[参数]
   count?: number;// 条数
   total?: number;// 总页数
-  size?: number;// 每页多少条
 }
 export class Page {
 	private page:number=1;private total:number;private count:number;private size:number=10;
