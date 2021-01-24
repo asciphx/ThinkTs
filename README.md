@@ -95,6 +95,9 @@ export interface UserFace{
 2. Setup database settings inside `ormconfig.json` file
 3. Run `npm start` command
 
+## [Microservice](https://docs.nestjs.cn/7/microservices?id=kafka)
+Please refer to nestjs's microservice pattern document, which can be basically implemented
+
 ## Authority management
 menu path,automatically generated(Matching rule)
 

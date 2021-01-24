@@ -114,7 +114,8 @@ export interface UserFace{
 12. dist:`打包后端到正式环境的目录`
 13. log:`pm2输出日志目录`
 14. example:`存放SocketIo的模板，还有普通的模板`
-
+## [微服务](https://docs.nestjs.cn/7/microservices?id=kafka)
+请参考nestjs的微服务模式文档，基本上可以实现
 ## 权限管理（如需其他版本请看example目录）
 [example目录下面其他版本直接覆盖到顶层目录即可替换]
 PATH路径，自动生成的（匹配规则）  
