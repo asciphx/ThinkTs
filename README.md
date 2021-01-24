@@ -88,7 +88,6 @@ export interface UserFace{
 > ```
 > In particular, localhost:8080/index.html It is the postman interface. Remember to record token and sercet after login and use it as above. The front-end is still in implementation. Let's use postman for a while.
 > For instructions started in a formal environment, windows uses NPM run pro, while MAC or Linux uses NPM run prod
-> Because I use windows 10, PM2 does not support Linux or Mac temporarily. If you need to use it, please rewrite it and test it yourself
 ### Steps to run this project:
 
 1. Run `npm i` command
