@@ -137,5 +137,5 @@ restful规范中的返回值实际太费带宽，而我认为前端只需判断�
 ## **请赞助本项目**
 如你觉有收获，请给我打赏
 
-![微信打赏](http://www.91huanwei.com/1.jpg)
-![支付宝打赏](http://www.91huanwei.com/0.jpg)
+![微信打赏](http://www.91huanwei.com:8080/1.jpg)
+![支付宝打赏](http://www.91huanwei.com:8080/0.jpg)
