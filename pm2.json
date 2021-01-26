@@ -16,6 +16,9 @@
         "ts",
         "log",
         "routes",
+        "example",
+        "upload",
+        "views",
         "lib"
       ],
       "instances": "max",
