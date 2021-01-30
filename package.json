@@ -21,7 +21,7 @@
       "@types/koa-views": "^2.0.4",
       "@types/node": "^14.0.27",
       "gulp": "^4.0.2",
-      "gulp-terser": "^1.4.0",
+      "gulp-terser": "^2.0.1",
       "gulp-typescript": "^6.0.0-alpha.1",
       "nodemon": "^2.0.4",
       "ts-node": "^9.0.0",
