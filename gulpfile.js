@@ -16,7 +16,9 @@ gulp.task('build', () =>
       properties:false,
       toplevel: true,
       keep_classnames:true,
-      keep_fnames:false
+      keep_fnames:false,
+      inline:true,
+      drop_console:true
     }
   }))
   .pipe(gulp.dest('dist'))
