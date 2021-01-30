@@ -18,7 +18,9 @@ gulp.task('build', () =>
       keep_classnames:true,
       keep_fnames:false,
       inline:true,
-      drop_console:true
+      drop_console:false,
+      drop_debugger:true,
+      dead_code:true
     }
   }))
   .pipe(gulp.dest('dist'))
