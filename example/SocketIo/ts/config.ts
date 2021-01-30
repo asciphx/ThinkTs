@@ -1,7 +1,7 @@
-import socket from "./utils/socketIo";
+import socket from "./utils/socketIo";const $port=Number(process.env.PORT)||3002;
 const Conf={
   printRoute:true,//打印路由routes
-  port:process.env.PORT!=="3002"?Number(process.env.PORT):8080,
+  port:$port!==3002?$port:8080,//3002是nodemon的默认端口,需判断
   DATABASE:"",//启动时匹配ormconfig.js中的database
   TYPE:"",//启动时匹配ormconfig.js中的type
   upload:"upload",//上传文件夹路径
