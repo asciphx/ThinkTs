@@ -11,6 +11,8 @@
 - Add the example directory of socketio demo[the default is management Version (the default password of Redis is 6543210)]
 - Method override can be used to replace the curdp method generated automatically, so that there is no need to worry about whether there is redundancy in the routing
 - From the ES6 magic function generator generator, plus the whole asynchronous to further improve efficiency, so stable, extremely fast
+# [ThinkTs](http://www.91huanwei.com/)
+Thinkts refers to the implementation of [ThinkPHP + Nestjs + SpringBoot]. Of course, the purpose is also for product managers…
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
@@ -18,7 +20,7 @@ class AdminController extends Controller{
   @Inject(AdminService) readonly a_:AdminService
   @Inject(UserService) readonly u_:UserService
 
-  @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
+  @Middle(W.Log,W.V_.b("account|1#3~10","pwd#6~23|1"))
   @app.post("register")
   add(@B body) {
     return this.u_.register(body.account,body.pwd)
