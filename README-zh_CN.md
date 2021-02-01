@@ -24,9 +24,9 @@ class AdminController extends Controller{
 
   @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
   @app.post("register")
-  add(@B body,@R r:Response) {
+  add(@B b,@R r:Response) {
     r.status=202;//设置状态码
-    return this.u_.register(body.account,body.pwd)
+    return this.u_.register(b.account,b.pwd)
   }
 }
 /** Here's how to show EJS template rendering */
