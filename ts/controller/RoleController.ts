@@ -1,7 +1,7 @@
-import { Class, Inject, app, B, R, P, Middle } from "../think/decorator";
+import { Class, Inject, app, B, Q, P, Middle } from "../think/decorator";
 import { RoleService } from '../service/RoleService';
 import { Controller } from '../think/controller';
-import { W } from '../weblogic';import { Request } from "koa";
+import { W } from '../weblogic';
 
 @Class(["add", "del", "info", "fix", "page"])
 class RoleController extends Controller {
@@ -11,9 +11,9 @@ class RoleController extends Controller {
   fix(@P p,@B b){
     return this.role_.fix(p.id,b);
   }
-  @Middle(W.Log,W.V_.q("roles#25|1"))
+  @Middle(W.Log,W.V_Q("roles#25|1"))
   @app.get("/perm")//http://localhost:8080/role/perm?roles=admin,super,……
-  perm(@R r:Request){
-    return this.role_.perm(r.query.roles).next().value;
+  perm(@Q q){
+    return this.role_.perm(q.roles).next().value;
   }
 }

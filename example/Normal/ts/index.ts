@@ -8,8 +8,8 @@ const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3m
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
   .use(async (ctx, next) => {
-    ctx.set('Access-Control-Allow-Origin',ctx.headers.origin);
-    ctx.set('Access-Control-Allow-Headers','content-type');
+    ctx.set('Access-Control-Allow-Origin','*');
+    ctx.set('Access-Control-Allow-Headers','content-type,cache-control');
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
     ctx.set('Access-Control-Allow-Credentials',"true");
     if (ctx.method === 'OPTIONS') { ctx.body=200; }

@@ -60,10 +60,11 @@ const Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const B:Function=(t,k,i:number)=>{t[k][i]="$"}
-const P:Function=(t,k,i:number)=>{t[k][i]="params"}
-const Q:Function=(t,k,i:number)=>{t[k][i]="query"}
-const R:Function=(t,k,i:number)=>{t[k][i]="request"}
+const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
+const P:Function=(t,k,i:number)=>{t[k][i]="params"}//ctx.params
+const Q:Function=(t,k,i:number)=>{t[k][i]="query"}//ctx.query
+const R:Function=(t,k,i:number)=>{t[k][i]="response"}//ctx.response
+const S:Function=(t,k,i:number)=>{t[k][i]="querystring"}//ctx.querystring
 const param=(m:Function,d)=>{
   let o=Object.keys(m),num=-1;for (let p in m)m[p]==="$"&&(num=Number(p));
   if(o.length){
@@ -105,4 +106,4 @@ const param=(m:Function,d)=>{
   }o=d=null;
 }
 let cleanRoutes=()=>{Routes=$Override=cleanRoutes=null;}
-export {ROUTER,Class,Id,app,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,cleanRoutes};
+export {ROUTER,Class,Id,app,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,S,cleanRoutes};

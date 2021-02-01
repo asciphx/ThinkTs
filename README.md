@@ -20,7 +20,7 @@ class AdminController extends Controller{
   @Inject(AdminService) readonly a_:AdminService
   @Inject(UserService) readonly u_:UserService
 
-  @Middle(W.Log,W.V_.b("account|1#3~10","pwd#6~23|1"))
+  @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
   @app.post("register")
   add(@B body) {
     return this.u_.register(body.account,body.pwd)
