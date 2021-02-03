@@ -5,7 +5,7 @@ const U = multer({dest:Conf.upload,limits:{fieldNameSize:100,fieldSize:524288,fi
 const W = {
   async Log(ctx: Context, next){
     const start = Date.now();await next();
-    console.log(`\x1B[34;1;4m${ctx.method}\x1B[0;96m${ctx.url} \x1B[95mused ${Date.now() - start}ms ->\x1B[92m${date.date2str()}`);
+    console.log(`\x1B[34;1;4m${ctx.method}\x1B[0;96m${ctx.url} \x1B[95m${Date.now() - start}ms -> \x1B[92m${date.date2str()}`);
   },
   //先使用U.single中间件，然后使用W.pic把实体类中对应的字段补充上文件路径
   pic(field:string):Middleware {
