@@ -1,6 +1,6 @@
 {
    "name": "think-ts",
-   "version": "2.2.9-RTW",
+   "version": "2.3.0-OEM",
    "description": "TypeORM+KOA",
    "scripts": {
       "dev": "nodemon",
@@ -12,14 +12,14 @@
       "pm2": "pm2 start pm2.json"
    },
    "devDependencies": {
-      "@types/ioredis": "^4.17.6",
+      "@types/ioredis": "^4.19.3",
       "@types/jsonwebtoken": "^8.5.0",
-      "@types/koa": "^2.11.4",
+      "@types/koa": "^2.11.7",
       "@types/koa-bodyparser": "^4.3.0",
       "@types/koa-router": "^7.4.1",
       "@types/koa-static": "^4.0.1",
       "@types/koa-views": "^2.0.4",
-      "@types/node": "^14.0.27",
+      "@types/node": "^14.14.22",
       "gulp": "^4.0.2",
       "gulp-terser": "^2.0.1",
       "gulp-typescript": "^6.0.0-alpha.1",
@@ -37,9 +37,9 @@
       "koa": "^2.13.0",
       "koa-bodyparser": "^4.3.0",
       "koa-compose": "^4.1.0",
-      "koa-router": "^9.4.0",
+      "koa-router": "^10.0.0",
       "koa-static": "^5.0.0",
-      "koa-views": "^6.3.0",
+      "koa-views": "^7.0.0",
       "multer": "^1.4.2",
       "mysql": "^2.18.1",
       "pg": "^8.4.2",
