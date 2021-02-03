@@ -1,10 +1,20 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
-let Routes:Array<any>=[],$b=true,$once=true,$=null,$Override=[];const ROUTER=new Router();
+const ROUTER=new Router();let Routes:Array<any>=[],$b=true,$once=true,$=null,$Override=[];
+const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
+const P:Function=(t,k,i:number)=>{t[k][i]="params"}//ctx.params
+const Q:Function=(t,k,i:number)=>{t[k][i]="query"}//ctx.query
+const R:Function=(t,k,i:number)=>{t[k][i]="response"}//ctx.response
+const S:Function=(t,k,i:number)=>{t[k][i]="querystring"}//ctx.querystring
+const app = {
+  get:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
+  post:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
+  put:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
+  del:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+}
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
-const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
-  t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{let a=[]
-  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
+let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
+  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let a=[]
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}
   v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
   v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
@@ -40,32 +50,21 @@ const Class=(v:string | Array<"add"|"del"|"fix"|"info"|"page">="",
     }_=$=null;
   }else a=_=$=null;$Override.length=Routes.length=0;
 }
-const Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
-const app = {
-  get:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
-  post:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
-  put:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
-  del:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
-}
-const Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
-const Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
-const Put=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
-const Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
-const Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
+let Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
+let Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+let Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+let Put=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+let Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
+let Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
   let f=Routes[Routes.length-1];if(f.a!==k){
     throw new Error(t.constructor.name+":"+k+" use @Middle has to be on the top!");
   }else if(f.w){f.w=_([...f.w,...r])}else{f.w=r.length===1?r[0]:_(r)}f=null
 }
-const Inject=v=>(t,k)=>{
+let Inject=v=>(t,k)=>{
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
-const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
-const P:Function=(t,k,i:number)=>{t[k][i]="params"}//ctx.params
-const Q:Function=(t,k,i:number)=>{t[k][i]="query"}//ctx.query
-const R:Function=(t,k,i:number)=>{t[k][i]="response"}//ctx.response
-const S:Function=(t,k,i:number)=>{t[k][i]="querystring"}//ctx.querystring
-const param=(m:Function,d)=>{
+let param=(m:Function,d)=>{
   let o=Object.keys(m),num=-1;for (let p in m)m[p]==="$"&&(num=Number(p));
   if(o.length){
     switch (o.length) {
@@ -105,5 +104,5 @@ const param=(m:Function,d)=>{
     }
   }o=d=null;
 }
-let cleanRoutes=()=>{Routes=$Override=cleanRoutes=null;}
-export {ROUTER,Class,Id,app,Get,Post,Put,Del,Middle,Inject,B,P,Q,R,S,cleanRoutes};
+let cleanAll=()=>{Routes=$Override=cleanAll=Class=Id=param=Get=Post=Put=Del=Middle=Inject=null;}
+export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
