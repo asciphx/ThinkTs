@@ -5,7 +5,7 @@ import*as views from"koa-views";import{NTo10}from"./utils/crypto";import"./conn"
 import{Repository}from "typeorm";import{Conf,Cache,Maps,Redis}from'./config';let fristTime={};
 
 const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:"2mb"}))
-  .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}}))
+  .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware)
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
   .use(async(ctx,next)=>{let {origin}=ctx.request.header;origin!==undefined&&ctx.set

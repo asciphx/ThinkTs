@@ -2,9 +2,10 @@ import "reflect-metadata";import * as Koa from "koa";import * as bodyParser from
 import * as Jwt from "jsonwebtoken";import * as path from "path";import * as views from "koa-views";
 import * as koaStatic from "koa-static";import { ROUTER } from "./think/decorator";import "./view";
 import { Conf } from './config';import { NTo10 } from "./utils/crypto";import"./conn";
+import compose from "koa-compose";
 
 const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
-  .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension: 'html',map: { html: "ejs" }}))
+  .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware)
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
   .use(async (ctx, next) => {let {origin}=ctx.request.header;origin!==undefined&&ctx.set
