@@ -1,6 +1,6 @@
 {
    "name": "think-ts",
-   "version": "2.3.1-OEM",
+   "version": "2.3.2-OEM",
    "description": "TypeORM+KOA",
    "scripts": {
       "dev": "nodemon",

@@ -15,7 +15,7 @@ export abstract class Service{
     return this[this.$].update(id, obj);
   }
   private async*remove(id: number) {
-    let v = await this[this.$].findOne(id);
+    const v = await this[this.$].findOne(id);
     if (!v) { return "Not Found"; }
     return this[this.$].remove(v);
   }
@@ -23,7 +23,7 @@ export abstract class Service{
     return this[this.$].findOne(id);
   }
   private async*list(query) {
-    let size=Number(query.size)||10,page=Number(query.page)||1;
+    const size=Number(query.size)||10,page=Number(query.page)||1;
     let v=(this[this.$]as Repository<ObjectLiteral>).createQueryBuilder(this.$)
       .take(size).skip(page*size-size);
     if(this._){
@@ -37,7 +37,7 @@ export abstract class Service{
       }
       if(this._.groupBy){v.groupBy(this._.groupBy)}
     }
-    const [list,count]=await v.cache(true).getManyAndCount()
+    const [list,count]=await v.cache(true).getManyAndCount();v=null;
     return {list:list,page:new Page(page,size,count).get()};
   }
 }
