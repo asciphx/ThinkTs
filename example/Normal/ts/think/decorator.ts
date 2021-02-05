@@ -41,11 +41,11 @@ let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"de
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
-      fs.writeFile(path.resolve("./routes",`./${v===""?"$Controller":_.name}.json`),
+      fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.json`),
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null
     });
     if($b){
-      fs.writeFile(path.resolve("./routes",`./${v===""?"$Controller":_.name}.json`),
+      fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.json`),
       JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null;
   }else a=_=$=null;$Override.length=Routes.length=0;
