@@ -1,4 +1,4 @@
-import * as fs from "fs";import * as path from "path";import {Conf, vType} from "../config";
+import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
 const ROUTER=new Router();let Routes:Array<any>=[],$b=true,$once=true,$=null,$Override=[];
 const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
@@ -12,6 +12,7 @@ const app = {
   put:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
   del:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 }
+export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let a=[]
@@ -105,4 +106,3 @@ let param=(m:Function,d)=>{
   }o=d=null;
 }
 let cleanAll=()=>{Routes=$Override=cleanAll=Class=Id=param=Get=Post=Put=Del=Middle=Inject=null;}
-export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
