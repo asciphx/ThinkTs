@@ -3,7 +3,7 @@ import { Class, Get, Q, S } from "./think/decorator"; import { Maps } from "./co
 
 @Class()
 class View {
-  @Get() @Get("index.html") @Get("login.html")
+  @Get() @Get("index.html")
   html(ctx: Context) { return html(ctx, { test: "For ", author: "anyone" }).next().value; }
   @Get("_")
   _() { return Maps; }

@@ -42,11 +42,11 @@ let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"de
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
       fs.writeFile(path.resolve("./routes",`./${v}.json`),
-      JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null
+      JSON.stringify(a,['r','m','a'],"  "),'utf8',e=>{if(e)console.error(e)});a=null
     });
     if($b){
       fs.writeFile(path.resolve("./routes",`./${v}.json`),
-      JSON.stringify(a,['r','m'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
+      JSON.stringify(a,['r','m','a'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
     }_=$=null;
   }else a=_=$=null;$Override.length=Routes.length=0;
 }

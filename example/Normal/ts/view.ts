@@ -3,7 +3,7 @@ import { Class, Get, Q, S } from "./think/decorator";
 
 @Class()
 class View {
-  @Get() @Get("index.html") @Get("login.html")
+  @Get() @Get("index.html")
   html(ctx) { return html(ctx, { test: "For ", author: "anyone" }).next().value; }
   @Get("_")
   _() { return ""; }

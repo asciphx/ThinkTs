@@ -5,7 +5,7 @@ import socket from "./utils/socketIo";
 
 @Class()
 class View {
-  @Get() @Get("index.html") @Get("login.html")
+  @Get() @Get("index.html")
   html(ctx) { return html(ctx, { test: "For ", author: "anyone" }).next().value; }
   @Get("static/tag")
   $(@Q q){ return Tag.h(q.v, q.a, q.n, Number(q.t) as 0, q.c) };
