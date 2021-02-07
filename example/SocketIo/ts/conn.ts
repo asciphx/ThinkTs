@@ -1,4 +1,4 @@
-import{createConnection,getRepository,Repository,ObjectLiteral}from"typeorm";import*as fs from"fs";import"./view";
+import{createConnection,getRepository,Repository,ObjectLiteral}from"typeorm";import * as fs from"fs";import"./view";
 import{encrypt}from"./utils/crypto";import{cleanAll}from"./think/decorator";import{promise}from"./utils/tool";
 import{User}from'./entity/User';import Tag from"./utils/tag";import{Conf,Cache,vType}from'./config';
 

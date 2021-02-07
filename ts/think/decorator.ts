@@ -1,6 +1,6 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
-const ROUTER=new Router();let Routes:Array<any>=[],$b=true,$once=true,$=null,$Override=[];
+const ROUTER=new Router();let Routes=[],$b=true,$once=true,$=null,$Override=[];
 const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
 const P:Function=(t,k,i:number)=>{t[k][i]="params"}//ctx.params
 const Q:Function=(t,k,i:number)=>{t[k][i]="query"}//ctx.query
@@ -15,9 +15,10 @@ const app = {
 export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
-  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let a=[]
-  if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;}
-  v=v??_.name.replace(/(\w*)[A-Z]\w*/,"/$1").toLowerCase();if(v==="/"){v="";}
+  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
+  let $a:Array<{r:string,m,a,f:number}>=[];
+  const V=_.name.replace(/(\w*)[A-Z]\w*/,"$1");v=v??V.toLowerCase();
+  if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;if(v==="/"){v="";}}
   v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
     if(typeof _.prototype[k]==="function")$Override.push(k);
   });
@@ -32,24 +33,58 @@ let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"de
     }
   });
   for (let r=0,l=Routes.length;r<l;++r){
-    Routes[r].r=v+Routes[r].r;if(Conf.printRoute)a.push(Routes[r]);let A
+    Routes[r].r=v+Routes[r].r;if(Conf.printRoute)$a.push(Routes[r]);let A
     const M=Routes[r].m,W=Routes[r].w?[Routes[r].r,Routes[r].w]:[Routes[r].r]
     if($Override.indexOf(Routes[r].a)>-1)A=_.prototype[Routes[r].a].bind($);else 
     A=_.prototype[Routes[r].a].bind(v===""?$:$[_.prototype["#"]]);
     ROUTER[M](...W,async(ctx,next)=>{ctx.body=await A(ctx,next)});
   }
-  if(Conf.printRoute){
+  if(Conf.printRoute){let VA:string="",ID:string,FIELD:string;
     if($once){$b=fs.existsSync("./routes/");$once=false}else $b=true
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
-      fs.writeFile(path.resolve("./routes",`./${v}.json`),
-      JSON.stringify(a,['r','m','a'],"  "),'utf8',e=>{if(e)console.error(e)});a=null
+      fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.ts`),`//@ts-ignore
+import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)void 0;else{
+  switch (v.a) {
+    case "add":ID="";FIELD="params";break;
+    case "del":ID="id";FIELD="";break;
+    case "fix":ID="id";FIELD="params";break;
+    case "info":ID="id";FIELD="";break;
+    case "page":ID="params";FIELD="";break;
+    default:switch (v.m) {
+      case "post":ID="";FIELD="params";break;
+      case "put":ID="id";FIELD="params";break;
+      case "delete":ID="id";FIELD="";break;
+      default:ID=v.f===1?"params":"";FIELD="";break;
+    }break;
+  }
+  VA=v.a;return `\n  ${v.a+V}(${ID}${ID===""?FIELD:FIELD===""?"":", "+FIELD}){
+    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params"?
+    "',{ params }":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
+  },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     });
     if($b){
-      fs.writeFile(path.resolve("./routes",`./${v}.json`),
-      JSON.stringify(a,['r','m','a'],"  "),'utf8',e=>{if(e)console.error(e)});a=null;
+      fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.ts`),`//@ts-ignore
+import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)void 0;else{
+  switch (v.a) {
+    case "add":ID="";FIELD="params";break;
+    case "del":ID="id";FIELD="";break;
+    case "fix":ID="id";FIELD="params";break;
+    case "info":ID="id";FIELD="";break;
+    case "page":ID="params";FIELD="";break;
+    default:switch (v.m) {
+      case "post":ID="";FIELD="params";break;
+      case "put":ID="id";FIELD="params";break;
+      case "delete":ID="id";FIELD="";break;
+      default:ID=v.f===1?"params":"";FIELD="";break;
+    }break;
+  }
+  VA=v.a;return `\n  ${v.a+V}(${ID}${ID===""?FIELD:FIELD===""?"":", "+FIELD}){
+    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params"?
+    "',{ params }":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
+  },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     }_=$=null;
-  }else a=_=$=null;$Override.length=Routes.length=0;
+  }else $a=_=$=null;$Override.length=Routes.length=0;
 }
 let Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
 let Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
@@ -66,7 +101,14 @@ let Inject=v=>(t,k)=>{
   if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
 let param=(m:Function,d)=>{
-  let o=Object.keys(m),num=-1;for (let p in m)m[p]==="$"&&(num=Number(p));
+  let o=Object.keys(m),num=-1;for (let p in m){
+    switch (m[p]) {
+      case "$":num=Number(p);break;
+      case "query":Routes[Routes.length-1].f=1;break;
+      case "querystring":Routes[Routes.length-1].f=1;break;
+      default:break;
+    }
+  };
   if(o.length){
     switch (o.length) {
       case 1:d.value=num===-1?async function(ctx,next:Function){

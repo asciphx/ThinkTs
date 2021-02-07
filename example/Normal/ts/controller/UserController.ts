@@ -15,7 +15,7 @@ class UserController extends Controller {
   }
   @Middle(W.Log,W.V_B(pwdCheck+"|1","account|1#3~10"))
   @app.post("login")
-  $login(@B b) {
+  login(@B b) {
     return this.u_.login(b.account,b.pwd)
   }
   @Middle(U.single("avatar"),W.pic("photo"),

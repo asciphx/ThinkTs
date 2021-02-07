@@ -15,7 +15,7 @@ class AdminController extends Controller {
   }
   @Middle(W.Log)
   @app.get("index.html")
-  async $index(ctx:Context){
+  async index(ctx:Context){
     return html(ctx,{path:"admin",STATUS:await Tag.h("0","selected","STATUS",0,"input-text"),
         ID_TYPE:await Tag.h("0","checked","ID_TYPE",1,"input-radius"),
         USER_TYPE:await Tag.h("0,P,T","checked","USER_TYPE",2,"input-text")}).next().value;

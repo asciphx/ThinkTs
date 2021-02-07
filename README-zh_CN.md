@@ -12,6 +12,7 @@
 - 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
 - 能够使用方法覆盖override，从而不用再担心路由是否存在冗余
 - 来自ES6魔法函数Generator生成器，再加全程异步让效率提升，所以稳定、极速
+- 由大拿本人的打印生成路由文件到./routes，让前端不再手写axios路由，真正拿来即用
 # [ThinkTs讨论区](http://www.91huanwei.com/)
 ThinkTs是参考了[ThinkPHP+Nestjs+SpringBoot]这三种的实现，当然目的也是为产品经理打造的……
 
@@ -111,7 +112,7 @@ export interface UserFace{
 7. ts/utils:`工具层`
 8. views:`后台ejs模板渲染文件夹`
 9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
-10. routes:`输出查看的路由文件，每个controller会创建一个`
+10. routes:`提供前端的路由文件，每个controller会创建一个`
 11. upload:`上传文件的存储目录`
 12. dist:`打包后端到正式环境的目录`
 13. log:`pm2输出日志目录`
