@@ -4,22 +4,23 @@ import * as Jwt from"jsonwebtoken";import * as bodyParser from"koa-bodyparser";
 import * as views from"koa-views";import{NTo10}from"./utils/crypto";import"./conn";
 import{Repository}from "typeorm";import{Conf,Cache,Maps,Redis}from'./config';let fristTime={};
 
+const {unless}=Conf,{noJwt}=Conf,CORS=['null','http://127.0.0.1:3000'];
 const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:"2mb"}))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware)
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
   .use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
-  .use(async(ctx,next)=>{const {origin}=ctx.request.header;origin!==undefined&&ctx.set
-      ('Access-Control-Allow-Origin',origin.match(/null|127.0.0.1:3000/)?origin:"");//cors
+  .use(async(ctx,next)=>{const {originalUrl}=ctx,{origin}=ctx.request.header;ctx.vary('Origin');
+    origin!==undefined&&ctx.set('Access-Control-Allow-Origin',CORS.includes(origin)?origin:"");
     ctx.set('Access-Control-Allow-Headers','content-type,cache-control,x-requested-with,token');
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
     ctx.set('Access-Control-Allow-Credentials',"true");
     if(ctx.method==='OPTIONS'){ctx.body=200;}
-    if(ctx.url.match(Conf.unless)||Conf.noJwt){await next();return}
-    const TOKEN:string=ctx.headers.a,S:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
+    if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
+    const TOKEN:string=ctx.headers.a;let S:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
     if(TOKEN&&S){
       try{
         let{payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
-          String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;
+          String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;S=null;
         let ll:Array<any>=Object.entries(payload)[0],l:Array<string>=ll[1];
         const PATH=ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1")
         for(let i=0; i<l.length; ++i){const ROLE:string=l[i];

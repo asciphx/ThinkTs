@@ -10,7 +10,7 @@ const Conf={
   staticKey:"اشيخ",//静态公钥，可配crypto.ts中常量c的内部字符
   cipher:0x4F,//秘钥，可配置范围0x25~0x5F
   secret:19+Math.random()*17|0,//2~36,动态私钥，配置无效
-  unless:/^\/static\/*|\/user\/register|\/user\/login|\/login.html|\/test.html|\/favicon.ico/,
+  unless:/\/user\/register|\/user\/login|\/login.html|\/test.html|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'../views'
 } 
