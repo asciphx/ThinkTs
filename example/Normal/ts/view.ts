@@ -10,13 +10,17 @@ class View {
   @Get("static/tag")
   $(@Q q){ return Tag.h(q.v, q.a, q.n, Number(q.t) as 0, q.c) };
   @Get("static/tsx")//localhost:8080/static/tsx?./ts
-  tsx(@S s) {
-    if(s.includes(":")||s.includes("..")||s.length<3)return "Not Allowed"
+  tsx(@S s,@R r) {
+    if(s.includes(":")||s.includes("..")||s.charAt(0)==="/"||s.length<3){
+      r.status=403;return 'Not Allowed';
+    }
     return getfiles(s);
   }
   @Get("static/ts")//localhost:8080/static/ts?./ts
-  ts(@S s) {
-    if(s.includes(":")||s.includes("..")||s.length<3)return "Not Allowed";
+  ts(@S s,@R r) {
+    if(s.includes(":")||s.includes("..")||s.charAt(0)==="/"||s.length<3){
+      r.status=403;return 'Not Allowed';
+    }
     return getFilesAsync(s);
   }
 } 

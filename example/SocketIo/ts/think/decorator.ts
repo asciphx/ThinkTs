@@ -15,8 +15,7 @@ const app = {
 export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
-  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}
-  let $a:Array<{r:string,m,a,f:number}>=[];
+  if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let $a:Array<{r:string,m,a,f:number}>=[];
   const V=_.name.replace(/(\w*)[A-Z]\w*/,"$1");v=v??V.toLowerCase();
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;if(v==="/"){v="";}}
   v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
@@ -55,12 +54,12 @@ import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)vo
       case "post":ID="";FIELD="params";break;
       case "put":ID="id";FIELD="params";break;
       case "delete":ID="id";FIELD="";break;
-      default:ID=v.f===1?"params":"";FIELD="";break;
+      default:ID=v.f===1?"params":v.f===2?"field":"";FIELD="";break;
     }break;
   }
   VA=v.a;return `\n  ${v.a+V}(${ID}${ID===""?FIELD:FIELD===""?"":", "+FIELD}){
     return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params"?
-    "',{ params }":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
+    "',{ params }":ID==="field"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
   },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     });
     if($b){
@@ -76,12 +75,12 @@ import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)vo
       case "post":ID="";FIELD="params";break;
       case "put":ID="id";FIELD="params";break;
       case "delete":ID="id";FIELD="";break;
-      default:ID=v.f===1?"params":"";FIELD="";break;
+      default:ID=v.f===1?"params":v.f===2?"field":"";FIELD="";break;
     }break;
   }
   VA=v.a;return `\n  ${v.a+V}(${ID}${ID===""?FIELD:FIELD===""?"":", "+FIELD}){
     return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params"?
-    "',{ params }":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
+    "',{ params }":ID==="field"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
   },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     }_=$=null;
   }else $a=_=$=null;$Override.length=Routes.length=0;
@@ -105,7 +104,7 @@ let param=(m:Function,d)=>{
     switch (m[p]) {
       case "$":num=Number(p);break;
       case "query":Routes[Routes.length-1].f=1;break;
-      case "querystring":Routes[Routes.length-1].f=1;break;
+      case "querystring":Routes[Routes.length-1].f=2;break;
       default:break;
     }
   };
