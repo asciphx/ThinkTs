@@ -86,7 +86,7 @@ export interface UserFace{
 
 > The header request header now has two parameters, and the original JWT does not change. Now add a secret. Secret is now provided by the back end. The algorithm is in the cryptoUtil.ts in
 > ```javascript
-> a:`${token}`
+> t:`${token}`
 > s:`${secret}`
 > ```
 > In particular, localhost:8080/index.html It is the postman interface. Remember to record token and sercet after login and use it as above. The front-end is still in implementation. Let's use postman for a while.

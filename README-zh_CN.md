@@ -90,7 +90,7 @@ export interface UserFace{
 ## 新版自定义JWT鉴权说明
 > Headers请求头现在为2个参数，原版jwt不变。现增加一个secret，算法是在cryptoUtil.ts里并由后端额外提供动态secret，此项目只是个高度安全的案例，只要后端代码加强算法并不泄露，就难破解。
 > ```javascript
-> a:`${token}`
+> t:`${token}`
 > s:`${secret}`
 > ```
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜

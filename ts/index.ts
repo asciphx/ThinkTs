@@ -11,12 +11,12 @@ const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",tex
   .use(koaStatic(path.join(__dirname,"../"+Conf.upload)))
   .use(async(ctx,next)=>{const {originalUrl}=ctx,{origin}=ctx.request.header;ctx.vary('Origin');
     origin!==undefined&&ctx.set('Access-Control-Allow-Origin',CORS.includes(origin)?origin:"");
-    ctx.set('Access-Control-Allow-Headers','content-type,cache-control,x-requested-with,token');
+    ctx.set('Access-Control-Allow-Headers','content-type,cache-control,x-requested-with,t,s');
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
     ctx.set('Access-Control-Allow-Credentials',"true");
     if(ctx.method==='OPTIONS'){ctx.body=200;}
     if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
-    const TOKEN:string=ctx.headers.a;let S:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
+    const TOKEN:string=ctx.headers.t;let S:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
     if(TOKEN&&S){
       try{
         let{payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
