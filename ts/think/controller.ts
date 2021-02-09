@@ -2,14 +2,14 @@ import { Context } from "koa";import { vType } from "../config";
 export abstract class Controller {
   [x: string]: any;
   add(...arg):void;
-  add(ctx:Context) {
-    let {body}=ctx.request;if(Object.getOwnPropertyNames(body).toString()==="")return;let O=Object.keys(vType[this.$]);
+  add(ctx:Context) {const {$}=this;
+    let {body}=ctx.request;if(Object.getOwnPropertyNames(body).toString()==="")return;let O=Object.keys(vType[$]);
     let l=0,b=Object.keys(body).filter(v=>O.includes(v)?true:l=1),i=0;
     if(l===0)b=b.sort();else{ctx.status=422;b=O=body=null;return `Invalid field!`;}
     for (let p of O){
       if(p===b[i]){
-        if(body[p].length>vType[this.$][p]){
-          ctx.status=422;b=O=body=null;return `The length of the field[${p}] is 0 to ${vType[this.$][p]}`;
+        if(body[p].length>vType[$][p]){
+          ctx.status=422;b=O=body=null;return `The length of the field[${p}] is 0 to ${vType[$][p]}`;
         }
         ++i;
       }else if(b[i]===undefined)++i;
@@ -21,14 +21,14 @@ export abstract class Controller {
     return this.remove(ctx.params.id).next().then(r=>r.value);
   }
   fix(...arg):void;
-  fix(ctx:Context) {
-    let {body}=ctx.request;if(Object.getOwnPropertyNames(body).toString()==="")return;let O=Object.keys(vType[this.$]);
+  fix(ctx:Context) {const {$}=this;
+    let {body}=ctx.request;if(Object.getOwnPropertyNames(body).toString()==="")return;let O=Object.keys(vType[$]);
     let l=0,b=Object.keys(body).filter(v=>O.includes(v)?true:l=1),i=0;
     if(l===0)b=b.sort();else{ctx.status=422;b=O=body=null;return `Invalid field!`};
     for (let p of O){
       if(p===b[i]){
-        if(body[p].length>vType[this.$][p]){
-          ctx.status=422;b=O=body=null;return `The length of the field[${p}] is 0 to ${vType[this.$][p]}`;
+        if(body[p].length>vType[$][p]){
+          ctx.status=422;b=O=body=null;return `The length of the field[${p}] is 0 to ${vType[$][p]}`;
         }
         ++i;
       }else if(b[i]===undefined)++i;
