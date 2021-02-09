@@ -3,7 +3,7 @@ import * as Jwt from "jsonwebtoken";import * as path from "path";import * as vie
 import * as koaStatic from "koa-static";import { ROUTER } from "./think/decorator";import "./view";
 import { Conf, socket } from './config';import { NTo10 } from "./utils/crypto";import"./conn";
 
-const {unless}=Conf,{noJwt}=Conf,CORS=['null','http://127.0.0.1:3000'];
+const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000';
 const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }))
   .use(views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware)
   .use(koaStatic(path.join(__dirname,Conf.view),{defer:true}))
