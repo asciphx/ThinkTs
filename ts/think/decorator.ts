@@ -43,8 +43,8 @@ let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"de
     !$b&&fs.mkdir("./routes/",function(err){
       if (err){return console.error(err);}
       fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.ts`),`//@ts-ignore
-import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)void 0;else{
-  switch (v.a) {
+import axios from '../utils/axios';\nexport default {${$a.map((v,i)=>{if(VA===v.a)VA=VA+i;else VA=v.a;
+  switch (VA) {
     case "add":ID="";FIELD="params";break;
     case "del":ID="id";FIELD="";break;
     case "fix":ID="id";FIELD="params";break;
@@ -57,15 +57,15 @@ import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)vo
       default:ID=v.f===1?"params:object":v.f===2?"field:string":"";FIELD="";break;
     }break;
   }
-  VA=v.a;return `\n  ${v.a+V}(${ID==="id"?_["##"]===undefined?"id:number":"id:string":ID}${ID===""?FIELD===""?"":FIELD+
+  return `\n  ${VA+V}(${ID==="id"?_["_#"]==="string"?"id:string":"id:number":ID}${ID===""?FIELD===""?"":FIELD+
   ":object":FIELD===""?"":", "+FIELD+":object"}){\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
     "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
-  },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
+  },`}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     });
     if($b){
       fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.ts`),`//@ts-ignore
-import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)void 0;else{
-  switch (v.a) {
+import axios from '../utils/axios';\nexport default {${$a.map((v,i)=>{if(VA===v.a)VA=VA+i;else VA=v.a;
+  switch (VA) {
     case "add":ID="";FIELD="params";break;
     case "del":ID="id";FIELD="";break;
     case "fix":ID="id";FIELD="params";break;
@@ -78,14 +78,14 @@ import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)vo
       default:ID=v.f===1?"params:object":v.f===2?"field:string":"";FIELD="";break;
     }break;
   }
-  VA=v.a;return `\n  ${v.a+V}(${ID==="id"?_["##"]===undefined?"id:number":"id:string":ID}${ID===""?FIELD===""?"":FIELD+
+  return `\n  ${VA+V}(${ID==="id"?_["_#"]==="string"?"id:string":"id:number":ID}${ID===""?FIELD===""?"":FIELD+
   ":object":FIELD===""?"":", "+FIELD+":object"}){\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
     "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
-  },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
+  },`}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     }_=$=null;
   }else $a=_=$=null;$Override.length=Routes.length=0;
-}
-let Id=v=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v}
+}/**@param v 正则匹配主键  @param t 匹配后的主键类型是：字符串、还是数字（默认字符串）*/
+let Id=(v,t:"string"|"number"="string")=>_=>{if($===null)throw new Error("@Class needs to be implemented later.");_["##"]=v;_["_#"]=t;}
 let Get=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 let Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 let Put=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
