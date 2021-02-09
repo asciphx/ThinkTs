@@ -16,7 +16,7 @@ const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",tex
     ctx.set('Access-Control-Allow-Credentials',"true");
     if(ctx.method==='OPTIONS'){ctx.body=200;}
     if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
-    const TOKEN:string=ctx.headers.t;let S:string=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
+    const TOKEN:string=ctx.headers.t;let S:string[]=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
     if(TOKEN&&S){
       try{
         let{payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
