@@ -49,17 +49,17 @@ import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)vo
     case "del":ID="id";FIELD="";break;
     case "fix":ID="id";FIELD="params";break;
     case "info":ID="id";FIELD="";break;
-    case "page":ID="params";FIELD="";break;
+    case "page":ID="params:object";FIELD="";break;
     default:switch (v.m) {
       case "post":ID="";FIELD="params";break;
       case "put":ID="id";FIELD="params";break;
       case "delete":ID="id";FIELD="";break;
-      default:ID=v.f===1?"params":v.f===2?"field":"";FIELD="";break;
+      default:ID=v.f===1?"params:object":v.f===2?"field:string":"";FIELD="";break;
     }break;
   }
-  VA=v.a;return `\n  ${v.a+V}(${ID}${ID===""?FIELD:FIELD===""?"":", "+FIELD}){
-    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params"?
-    "',{ params }":ID==="field"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
+  VA=v.a;return `\n  ${v.a+V}(${ID==="id"?_["##"]===undefined?"id:number":"id:string":ID}${ID===""?FIELD===""?"":FIELD+
+  ":object":FIELD===""?"":", "+FIELD+":object"}){\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
+    "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
   },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     });
     if($b){
@@ -70,17 +70,17 @@ import axios from '../utils/axios';\nexport default {${$a.map(v=>{if(VA===v.a)vo
     case "del":ID="id";FIELD="";break;
     case "fix":ID="id";FIELD="params";break;
     case "info":ID="id";FIELD="";break;
-    case "page":ID="params";FIELD="";break;
+    case "page":ID="params:object";FIELD="";break;
     default:switch (v.m) {
       case "post":ID="";FIELD="params";break;
       case "put":ID="id";FIELD="params";break;
       case "delete":ID="id";FIELD="";break;
-      default:ID=v.f===1?"params":v.f===2?"field":"";FIELD="";break;
+      default:ID=v.f===1?"params:object":v.f===2?"field:string":"";FIELD="";break;
     }break;
   }
-  VA=v.a;return `\n  ${v.a+V}(${ID}${ID===""?FIELD:FIELD===""?"":", "+FIELD}){
-    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params"?
-    "',{ params }":ID==="field"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
+  VA=v.a;return `\n  ${v.a+V}(${ID==="id"?_["##"]===undefined?"id:number":"id:string":ID}${ID===""?FIELD===""?"":FIELD+
+  ":object":FIELD===""?"":", "+FIELD+":object"}){\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
+    "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
   },`}}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     }_=$=null;
   }else $a=_=$=null;$Override.length=Routes.length=0;
