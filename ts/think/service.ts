@@ -1,7 +1,7 @@
 import { Page } from "../utils/page";import { Repository, ObjectLiteral } from "typeorm";import { vType } from "../config";
 interface _{orderBy?:{};groupBy?:string;leftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};where?:Function;
 addLeftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};select?:string|string[]|any;addSelect?:string|string[]|any}
-//基础服务类，$默认是实体类小写，如有变请在super第二个参数传入
+//基础服务类，$默认是实体类小写，如有变请在super第二个参数传入，直接return;此时默认的状态码是204，意思是No Content
 export abstract class Service{
   private $:string=this.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1").toLowerCase();
   private _: _;
@@ -16,7 +16,7 @@ export abstract class Service{
   }
   private async*remove(id: number) {
     const v = await this[this.$].findOne(id);
-    if (!v) { return "Not Found"; }
+    if (!v) { return; }
     return this[this.$].remove(v);
   }
   private*findOne(id: number) {
