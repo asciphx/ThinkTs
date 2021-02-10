@@ -58,7 +58,7 @@ import axios from '../utils/axios';\nexport default {${$a.map((v,i)=>{if(VA===v.
     }break;
   }
   return `\n  ${VA+V}(${ID==="id"?_["_#"]==="string"?"id:string":"id:number":ID}${ID===""?FIELD===""?"":FIELD+
-  ":object":FIELD===""?"":", "+FIELD+":object"}){\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
+  ":object":FIELD===""?"":", "+FIELD+":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
     "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
   },`}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     });
@@ -79,7 +79,7 @@ import axios from '../utils/axios';\nexport default {${$a.map((v,i)=>{if(VA===v.
     }break;
   }
   return `\n  ${VA+V}(${ID==="id"?_["_#"]==="string"?"id:string":"id:number":ID}${ID===""?FIELD===""?"":FIELD+
-  ":object":FIELD===""?"":", "+FIELD+":object"}){\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
+  ":object":FIELD===""?"":", "+FIELD+":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
     "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
   },`}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     }_=$=null;

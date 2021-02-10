@@ -15,6 +15,7 @@ export class UserService extends Service implements UserFace {
   ) {
     super({
       leftJoin:{e:"user.roles",a:'role'},
+      select:['user.id','user.name','user.account','user.photo'],
       addSelect:['role.id','role.name'],
       where: query => {
         return new Brackets(qb => {

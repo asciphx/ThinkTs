@@ -18,6 +18,7 @@ export class UserService extends Service implements UserFace {
           if (query.id) qb.andWhere(`id >'${query.id}'`)
         });
       },
+      select:['user.id','user.name','user.account','user.photo'],
       orderBy: { "user.id": "desc" }
     })
   }
