@@ -15,8 +15,10 @@ const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3m
     ctx.set('Access-Control-Allow-Credentials',"true");
     if (ctx.method === 'OPTIONS') { ctx.body=200; }
     if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
-    const TOKEN:string=ctx.headers.t;let S:string[]=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
-    if(TOKEN&&S){
+    const {s}=ctx.headers,TOKEN:string=ctx.headers.t;let S:string[]=s===undefined?void 0:s.match(/[^#]+/g);
+    if(TOKEN===undefined||S===void 0){
+      ctx.status=401;ctx.body="Headers Error";
+    }else{
       try {
         Jwt.verify(TOKEN.replace(/^Bearer /,""),String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:false});
         S=null;await next();// console.log(ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1"));
@@ -25,7 +27,7 @@ const APP = new Koa().use(bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3m
         }else if(ERR.includes('QueryFailedError')){ctx.status=406;ctx.body=e;
         }else{console.error(e);ctx.status=401;ctx.body="Authentication Error";}
       }
-    }else{ctx.status=401;ctx.body="Headers Error";}
+    }
 });
 setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
 const SocketIo=require('http').createServer(APP.callback());socket.init(SocketIo);

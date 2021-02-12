@@ -16,8 +16,10 @@ const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",tex
     ctx.set('Access-Control-Allow-Credentials',"true");
     if(ctx.method==='OPTIONS'){ctx.body=200;}
     if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
-    const TOKEN:string=ctx.headers.t;let S:string[]=ctx.headers.s?ctx.headers.s.match(/[^#]+/g):null;
-    if(TOKEN&&S){
+    const {s}=ctx.headers,TOKEN:string=ctx.headers.t;let S:string[]=s===undefined?void 0:s.match(/[^#]+/g);
+    if(TOKEN===undefined||S===void 0){
+      ctx.status=401;ctx.body="Headers Error";
+    }else{
       try{
         let{payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
           String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;S=null;
@@ -42,10 +44,11 @@ const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",tex
     }catch(e){const ERR=String(e);
         if(ERR.includes('TokenExpiredError')){ctx.status=401;ctx.body="Jwt Expired";
       }else if(ERR.includes('QueryFailedError')){ctx.status=406;ctx.body=e;
-      }else{console.error(e);if(ERR==="Error: Connection is closed."){Redis.connect();}
-      ctx.status=401;ctx.body="Authentication Error";}
+      }else{console.error(e);if(ERR==="Error: Connection is closed."){ctx.status=401;
+        ctx.body="Redis is reconnecting,please try again in a few seconds";Redis.connect();}
+        else{ctx.status=401;ctx.body="Authentication Error";}}
     }
-  }else{ctx.status=401;ctx.body="Headers Error";}
+  }
 });
 setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
 APP.use(ROUTER.routes()).use(ROUTER.allowedMethods()).listen(Conf.port,"0.0.0.0",()=>{

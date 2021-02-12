@@ -12,7 +12,7 @@
 - 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
 - 能够使用方法覆盖override，从而不用再担心路由是否存在冗余
 - 来自ES6魔法函数Generator生成器，再加全程异步让效率提升，所以稳定、极速
-- 由大拿本人的打印生成路由文件到./routes，让前端不再手写axios路由，真正拿来即用
+- 由大拿的方法生成路由文件到./routes，让前端不手写axios路由，真正拿来即用
 # [ThinkTs讨论区](http://www.91huanwei.com/)
 ThinkTs是参考了[ThinkPHP+Nestjs+SpringBoot]这三种的实现，当然目的也是为产品经理打造的……
 
