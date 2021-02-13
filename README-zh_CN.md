@@ -44,7 +44,7 @@ class View{
 ```
 ### 让你的service看起来像是:
 ```typescript
-export class User$ extends $ implements UserFace{
+export default class User$ extends $ implements F{
   constructor(
     private user:Repository<User>=Cache["User"],
     private role:Repository<Role>=Cache["Role"]
@@ -65,7 +65,7 @@ export class User$ extends $ implements UserFace{
 ```
 ### 让你的interface看起来像是:
 ```typescript
-export interface UserFace{
+export default interface UserFace{
   /** register one*/register(entity)
   /** login one*/login(entity)
   /** search all*/all()

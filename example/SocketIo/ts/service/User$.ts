@@ -1,13 +1,13 @@
 import { Brackets, Repository } from "typeorm"
 import { User } from "../entity/User"
-import { UserFace } from "../interface/UserFace"
+import F from "../interface/UserFace"
 import $ from "../think/service";
 import { T, H, encrypt, checkPwd, NTo10 } from "../utils/crypto"
 import * as jwt from "jsonwebtoken"
 import { Conf, Cache } from "../config";
 
 const type:T = "shake256", digest:H = "latin1", length=50;
-export default class User$ extends $ implements UserFace {
+export default class User$ extends $ implements F {
   constructor(
     private user:Repository<User>=Cache["User"]
   ) {

@@ -41,7 +41,7 @@ class View{
 ```
 #### And your service looks like this:
 ```typescript
-export class User$ extends $ implements UserFace{
+export default class User$ extends $ implements F{
   constructor(
     private user:Repository<User>=Cache["User"],
     private role:Repository<Role>=Cache["Role"]
@@ -62,7 +62,7 @@ export class User$ extends $ implements UserFace{
 ```
 #### And your interface looks like this:
 ```typescript
-export interface UserFace{
+export default interface UserFace{
   /** register one*/register(entity)
   /** login one*/login(entity)
 }
