@@ -16,7 +16,7 @@ export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let $a:Array<{r:string,m,a,f:number}>=[];
-  const V=_.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/,"$1");v=v??V.toLowerCase();
+  const V=_.name.replace(/([A-Z][a-z]+)[A-Z_]?\w*/,()=>(_.name==="View"?"":RegExp.$1));v=v??V.toLowerCase();
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;if(v==="/"){v="";}}
   v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
     if(typeof _.prototype[k]==="function")$Override.push(k);
