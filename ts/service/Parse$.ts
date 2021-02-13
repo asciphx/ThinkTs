@@ -1,9 +1,9 @@
 import { Brackets, Repository } from "typeorm"
 import { Parse } from "../entity/Parse";
-import { Service } from "../think/service";
+import $ from "../think/service";
 import { Cache } from "../config"
 
-export class ParseService extends Service {
+export default class Parse$ extends $ {
   constructor(
     private parse:Repository<Parse>=Cache["Parse"]
   ) {

@@ -14,14 +14,14 @@
 - 来自ES6魔法函数Generator生成器，再加全程异步让效率提升，所以稳定、极速
 - 由大拿的方法生成路由文件到./routes，让前端不手写axios路由，真正拿来即用
 # [ThinkTs讨论区](http://www.91huanwei.com/)
-ThinkTs是参考了[ThinkPHP+Nestjs+SpringBoot]这三种的实现，当然目的也是为产品经理打造的……
+ThinkTs是参考了[ThinkPHP+Nestjs+SpringBoot]这三种的实现，当然目的也是为产品经理打造的，理念是每一天都有可能实现一个小目标(项目)……
 
 ## 使用**ThinkTs**让你的controller看起来像是:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
-class AdminController extends Controller{
-  @Inject(AdminService) readonly a_:AdminService
-  @Inject(UserService) readonly u_:UserService
+class Admin extends Controller{
+  @Inject(Admin$) readonly a_:Admin$
+  @Inject(User$) readonly u_:User$
 
   @Middle(W.Log,W.V_B("account|1#3~10","pwd#6~23|1"))
   @app.post("register")
@@ -44,7 +44,7 @@ class View{
 ```
 ### 让你的service看起来像是:
 ```typescript
-export class UserService extends Service implements UserFace{
+export class User$ extends $ implements UserFace{
   constructor(
     private user:Repository<User>=Cache["User"],
     private role:Repository<Role>=Cache["Role"]

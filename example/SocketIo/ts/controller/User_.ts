@@ -1,12 +1,12 @@
 import { Class, app, Middle, Inject, B, P } from "../think/decorator";
-import { UserService } from "../service/UserService";
+import User$ from "../service/User$";
 import { Controller } from '../think/controller';
 import { U, W } from '../weblogic';
 import { Conf } from "../config";
 let pwdCheck = "pwd#6~25";
 @Class("user",["del", "info", "page"])
-class UserController extends Controller {
-  @Inject(UserService) readonly u_: UserService
+class User extends Controller {
+  @Inject(User$) readonly u_: User$
   
   @Middle(W.Log,W.V_B("account#3~10|1",pwdCheck+"|1","name#1~15"))
   @app.post("register")

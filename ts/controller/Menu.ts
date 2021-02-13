@@ -1,11 +1,11 @@
 import { Class, app, Inject, Middle, B, P } from "../think/decorator";
-import { MenuService } from '../service/MenuService';
+import Menu$ from '../service/Menu$';
 import { Controller } from '../think/controller';
 import { W } from "../weblogic";
 
 @Class(["del", "info", "page"])
-class MenuController extends Controller {
-  @Inject(MenuService) readonly menu: MenuService
+class Menu extends Controller {
+  @Inject(Menu$) readonly menu: Menu$
 
   @app.post()
   add(@B b){

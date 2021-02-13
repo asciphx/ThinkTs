@@ -1,10 +1,10 @@
 import { Brackets, Repository } from "typeorm"
 import { Role } from "../entity/Role"
-import { Service } from "../think/service";
+import $ from "../think/service";
 import { Cache, Maps, Redis } from "../config";
 import { Menu } from "../entity/Menu";
 
-export class RoleService extends Service {
+export default class Role$ extends $ {
   constructor(
     private role:Repository<Role>=Cache["Role"],
     private menu:Repository<Menu>=Cache["Menu"]

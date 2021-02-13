@@ -16,7 +16,7 @@ export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let $a:Array<{r:string,m,a,f:number}>=[];
-  const V=_.name.replace(/(\w*)[A-Z]\w*/,"$1");v=v??V.toLowerCase();
+  const V=_.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/,"$1");v=v??V.toLowerCase();
   if(typeof v==="string"){if(v.charAt(0)!=="/")v="/"+v;if(v==="/"){v="";}}
   v!==""&&Object.getOwnPropertyNames(_.prototype).forEach(k=>{
     if(typeof _.prototype[k]==="function")$Override.push(k);
@@ -96,8 +96,8 @@ let Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
   }else if(f.w){f.w=_([...f.w,...r])}else{f.w=r.length===1?r[0]:_(r)}f=null
 }
 let Inject=v=>(t,k)=>{
+  if(t.constructor.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/,"$1")===v.name.replace(/(\w*)[A-Z$]\w*/,"$1")){t["#"]=k;}
   if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
-  if(t.constructor.name.replace(/(\w*)[A-Z]\w*/,"$1Service")===v.name){t["#"]=k;}
 }
 let param=(m:Function,d)=>{
   let o=Object.keys(m),num=-1;for (let p in m){

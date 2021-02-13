@@ -1,9 +1,9 @@
 import { Brackets, Repository } from "typeorm"
 import { Menu } from '../entity/Menu';
-import { Service } from "../think/service";
+import $ from "../think/service";
 import { Cache, Maps, Redis } from "../config";
 
-export class MenuService extends Service {
+export default class Menu$ extends $ {
   constructor(
     private menu:Repository<Menu>=Cache["Menu"]
   ) {

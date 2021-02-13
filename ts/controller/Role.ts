@@ -1,11 +1,11 @@
 import { Class, Inject, app, B, Q, P, Middle } from "../think/decorator";
-import { RoleService } from '../service/RoleService';
+import Role$ from '../service/Role$';
 import { Controller } from '../think/controller';
 import { W } from '../weblogic';
 
 @Class(["add", "del", "info", "fix", "page"])
-class RoleController extends Controller {
-  @Inject(RoleService) readonly role_: RoleService
+class Role extends Controller {
+  @Inject(Role$) readonly role_: Role$
 
   @app.put(":id(\\d+)")
   fix(@P p,@B b){

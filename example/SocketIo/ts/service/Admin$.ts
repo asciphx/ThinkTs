@@ -1,10 +1,10 @@
 import { Brackets, Repository } from "typeorm"
 import { Admin } from "../entity/Admin"
-import { Service } from "../think/service";
+import $ from "../think/service";
 import { Page } from '../utils/page';
 import { Conf, Cache } from "../config";
 
-export class AdminService extends Service {
+export default class Admin$ extends $ {
   constructor(
     private adm:Repository<Admin>=Cache["Admin"]
   ) {
