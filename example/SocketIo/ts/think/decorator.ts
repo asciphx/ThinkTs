@@ -60,7 +60,7 @@ import axios from '../utils/axios';\nexport default {${$a.map((v,i)=>{if(VA===v.
   return `\n  ${VA+V}(${ID==="id"?_["_#"]==="string"?"id:string":"id:number":ID}${ID===""?FIELD===""?"":FIELD+
   ":object":FIELD===""?"":", "+FIELD+":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
     "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
-  },`}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
+  }`})}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     });
     if($b){
       fs.writeFile(path.resolve("./routes",`./${v===""?"$":v}.ts`),`//@ts-ignore
@@ -81,7 +81,7 @@ import axios from '../utils/axios';\nexport default {${$a.map((v,i)=>{if(VA===v.
   return `\n  ${VA+V}(${ID==="id"?_["_#"]==="string"?"id:string":"id:number":ID}${ID===""?FIELD===""?"":FIELD+
   ":object":FIELD===""?"":", "+FIELD+":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/,"/'+")}${ID==="params:object"?
     "',{ params }":ID==="field:string"?"?'+field":ID===""?"'":ID}${FIELD===""?"":", "+FIELD});
-  },`}).join("")}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
+  }`})}\n}`,'utf8',e=>{if(e)console.error(e)});$a=null
     }_=$=null;
   }else $a=_=$=null;$Override.length=Routes.length=0;
 }/**@param v 正则匹配主键  @param t 匹配后的主键类型是：字符串、还是数字（默认字符串）*/
