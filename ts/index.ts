@@ -1,7 +1,7 @@
 import"reflect-metadata";import * as Koa from"koa";import * as path from"path";
 import * as koaStatic from"koa-static";import{ROUTER}from"./think/decorator";
 import * as Jwt from"jsonwebtoken";import * as bodyParser from"koa-bodyparser";
-import * as views from"koa-views";import{NTo10}from"./utils/crypto";import"./conn";
+import * as views from"koa-views";import{NTo10}from"./utils/crypto";import"./think/base";
 import{Repository}from "typeorm";import{Conf,Cache,Maps,Redis}from'./config';let fristTime={};
 
 const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000';
@@ -17,7 +17,7 @@ const APP=new Koa().use(bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",tex
     if(ctx.method==='OPTIONS'){ctx.body=200;}
     if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
     const {s}=ctx.headers,TOKEN:string=ctx.headers.t;let S:string[]=s===undefined?void 0:s.match(/[^#]+/g);
-    if(TOKEN===undefined||S===void 0){
+    if(TOKEN===undefined||s===void 0){
       ctx.status=401;ctx.body="Headers Error";
     }else{
       try{
