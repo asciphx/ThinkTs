@@ -12,7 +12,7 @@
 - Method override can be used to replace the curdp method generated automatically, so that there is no need to worry about whether there is redundancy in the routing
 - From the ES6 magic function generator generator, plus the whole asynchronous to further improve efficiency, so stable, extremely fast
 # [ThinkTs](http://www.91huanwei.com/)
-Thinkts refers to the implementation of [ThinkPHP + Nestjs + SpringBoot]. Of course, the purpose is also for product managers. The idea is that it is possible to achieve a small goal (project) every day…
+Thinkts refers to the implementation of [ThinkPHP + Nestjs + SpringBoot + FastAPI]. Of course, the purpose is also for product managers. The idea is that it is possible to achieve a small goal (project) every day…
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
