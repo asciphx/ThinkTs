@@ -1,4 +1,4 @@
-import path = require("path");import * as fs from "fs";import * as url from "url";import { Context } from "koa"
+import path = require("path");import * as fs from "fs";import { Context } from "koa"
 type Y<T>=object;type P<T>=Y<T[keyof T]>;
 /**
  * 将ejs模板渲染到html
@@ -6,7 +6,7 @@ type Y<T>=object;type P<T>=Y<T[keyof T]>;
  * @param obj 展开的Object
  */
 function*html(ctx: Context, ...obj:Array<P<{K:{k:string}}>>){
-yield ctx.render(url.parse(ctx.url).path.replace(/^\//, '')||"index",...obj)}
+yield ctx.render(ctx.url.replace(/^\//, '')||"index",...obj)}
 const readFileList = (path, filesList) => {
   fs.readdirSync(path).forEach((itm) => {
     let stat = fs.statSync(path + itm);
