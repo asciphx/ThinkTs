@@ -13,6 +13,7 @@
 - From the ES6 magic function generator generator, plus the whole asynchronous to further improve efficiency, so stable, extremely fast
 # [ThinkTs](http://www.91huanwei.com/)
 Thinkts refers to the implementation of [ThinkPHP + Nestjs + SpringBoot + FastAPI]. Of course, the purpose is also for product managers. The idea is that it is possible to achieve a small goal (project) every day…
+## [Benchmarks](https://www.fastify.cn/benchmarks/)🚀
 ### With ThinkTs your controller look like this:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)

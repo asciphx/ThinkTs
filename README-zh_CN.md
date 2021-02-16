@@ -16,6 +16,8 @@
 # [ThinkTs讨论区](http://www.91huanwei.com/)
 ThinkTs是参考了[ThinkPHP+Nestjs+SpringBoot+FastAPI]这四种的实现，当然目的也是为产品经理打造的，理念是每一天都有可能实现一个小目标(项目)……
 
+## [Benchmarks](https://www.fastify.cn/benchmarks/)🚀
+
 ## 使用**ThinkTs**让你的controller看起来像是:
 ```typescript
 @Class(["add","del","fix","info","page"])//or @Class("/admin",……)or @Class("admin",……)
