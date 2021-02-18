@@ -81,7 +81,7 @@ export default interface UserFace{
 - [x] Class类装饰器默认值为 "/"+实体类名 ,当然也可以自定义
 - [x] 自动扫描entity目录，载入到Cache，相当于一个容器,可以避免entity被多次实例化
 - [x] 自动扫描controller目录，并且配置Routes路由
-- [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去ts/config.ts下更改printRoute为false
+- [x] 自动生成配置路由文件以便查阅，在routes目录下，也可删除，或者去app/config.ts下更改printRoute为false
 - [x] 有近似于nest.js+fastify架构的速度，还有java:SpringBoot框架的可维护性
 - [x] 如不采用typeORM库，也可以使用Sequelize，并重写entity类
 - [x] 现在增加基础控制器、服务层，控制器装饰器可以自定义自动实现增删改查以及分页
@@ -97,7 +97,7 @@ export default interface UserFace{
 > ```
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜
 > 在正式环境下启动的指令，windows使用的是`npm run pro`,Mac或者Linux是`npm run prod`.正式环境下请使用`npm run pm2`开启多核心。
-> 新增redis，为了每个线程上的服务可同步缓存,在ts/config.ts下设置synchronize，默认6秒，redis密码在config配置，默认6543210
+> 新增redis，为了每个线程上的服务可同步缓存,在app/config.ts下设置synchronize，默认6秒，redis密码在config配置，默认6543210
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database
 > 若启动时出现QueryFailedError请用对应sql文件在查询窗口/工具 内粘贴进去执行（即相当于导入功能），导入暂时还没测，注意mysql必须用utf8mb4编码
 > socketIo版和普通版放到了example目录下，如需使用请覆盖到顶级目录即可
@@ -105,18 +105,18 @@ export default interface UserFace{
 > 压测前请把pm2开启，并且使用cluster集群模式，instances最好是max，生产环境下多核测试性能方面相当于.net core的75%
 > ./.vscode目录下包含正式环境下压测图，本机是i5的6核心cpu，启动1分钟后，每个核心占用50M+内存，一共300M+[非常少]，rps大概在1350左右。
 ## 目录结构
-1. ts:`后端文件入口`
-2. ts/controller:`控制层`
-3. ts/entity:`实体层`
-4. ts/interface:`接口层`
-5. ts/service:`服务层`
-6. ts/think:`基础层`
-7. ts/utils:`工具层`
-8. views:`后台ejs模板渲染文件夹`
+1. app:`后端文件入口`
+2. app/controller:`控制层`
+3. app/entity:`实体层`
+4. app/interface:`接口层`
+5. app/service:`服务层`
+6. app/think:`基础层`
+7. app/utils:`工具层`
+8. dist:`后台ejs模板渲染文件夹/前端打包文件夹`
 9. lib:`windows用到linux的rm与cp指令程序，需放环境变量目录`
 10. routes:`提供前端的路由文件，每个controller会创建一个`
 11. upload:`上传文件的存储目录`
-12. dist:`打包后端到正式环境的目录`
+12. build:`后端打包到正式环境的目录`
 13. log:`pm2输出日志目录`
 14. example:`存放SocketIo的模板，还有普通的模板`
 ## [微服务](https://docs.nestjs.cn/7/microservices?id=kafka)

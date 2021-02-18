@@ -115,18 +115,18 @@ If an object is returned, the request status code must be 200, so only the impor
 
 
 ### Directory structure
-1. ts: `back end file entry`
-2. ts/controller: `control layer`
-3. ts/entity:`entity layer`
-4. ts/interface: `interface layer`
-5. ts/service: `service layer`
-6. ts/think: `base layer`
-7. ts/utils: `tool layer`
-8. views: `background EJS template rendering folder`
+1. app: `back end file entry`
+2. app/controller: `control layer`
+3. app/entity:`entity layer`
+4. app/interface: `interface layer`
+5. app/service: `service layer`
+6. app/think: `base layer`
+7. app/utils: `tool layer`
+8. dist: `background EJS template rendering folder/front end packaging folder`
 9. lib: `Windows uses the RM and CP instructions of Linux, and needs to put the environment variable directory`
 10. routes: `Provide front-end routing file. Each controller will create one`
 11. upload: `the storage directory of the uploaded file`
-12. dist: `package back end to formal environment directory`
+12. build: `package back end to formal environment directory`
 13. log: `PM2 output log directory`
 14. Example: `save the template of permission management, as well as the common template`
 
