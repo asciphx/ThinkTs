@@ -13,7 +13,7 @@ const Conf={
   unless:/\/user\/register|\/user\/login|\/login.html|\/test.html|\/favicon.ico/,
   CtrlSuf:"Ctrl",//控制器后半部分命名,大小驼峰或下划线开头等(若为空，则和实体类名一样）
   jsonLimit:"1mb",
-  view:'../views'//静态文件相对路径
+  view:'../dist',//静态文件相对路径,现方便前端打包拿来即用
 } 
 const Cache:Object={},vType:Object={};
 export {Conf,Cache,vType}

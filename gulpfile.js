@@ -23,5 +23,5 @@ gulp.task('build', () =>
       drop_console:true
     }
   }))
-  .pipe(gulp.dest('dist'))
-);//drop_console设置为true可以禁用log，提升速度
+  .pipe(gulp.dest('build'))
+);//drop_console设置为true可以禁用gulp打包的那些文件的console.log，小幅提升速度

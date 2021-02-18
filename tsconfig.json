@@ -14,9 +14,9 @@
     "sourceMap": false,
     "allowJs": true,
     "lib": ["es7","dom"],
-    "outDir": "./dist",
+    "outDir": "build",
     "baseUrl": "/",
-    "rootDir": "./ts"
+    "rootDir": "./app"
   },
-  "include": ["ts/**/*.ts"]
+  "include": ["app/**/*.ts"]
 }

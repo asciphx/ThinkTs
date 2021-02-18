@@ -5,7 +5,7 @@ module.exports = {
     synchronize: true,
     password: "",
     database: "spring",
-    entities: [`${process.env.NODE_ENV==='production'?'dist':'ts'}/entity/*{.ts,.js}`],
+    entities: [`${process.env.NODE_ENV==='production'?'build':'app'}/entity/*{.ts,.js}`],
     cache: {
         type: "database",duration: 2300
     },

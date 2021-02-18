@@ -4,11 +4,11 @@
    "description": "TypeORM+KOA",
    "scripts": {
       "dev": "nodemon",
-      "tsc": "rm -rf ./dist && tsc",
-      "build": "rm -rf ./dist && gulp build",
-      "start": "ts-node ts/index.ts",
-      "prod": "export NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
-      "pro": "set NODE_ENV=production&& node -r tsconfig-paths/register dist/index.js",
+      "tsc": "rm -rf ./build && tsc",
+      "build": "rm -rf ./build && gulp build",
+      "start": "ts-node app/index.ts",
+      "prod": "export NODE_ENV=production&& node -r tsconfig-paths/register build/index.js",
+      "pro": "set NODE_ENV=production&& node -r tsconfig-paths/register build/index.js",
       "pm2": "pm2 start pm2.json"
    },
    "devDependencies": {

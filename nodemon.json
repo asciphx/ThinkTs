@@ -1,13 +1,13 @@
 {
   "restartable": "rs",
-  "ignore": [".git", "node_modules/**", "dist"],
+  "ignore": [".git", "node_modules/**", "build"],
   "verbose": true,
   "execMap": {
     "": "node",
     "js": "node --harmony"
   },
   "ext": "js json ts tsx",
-  "watch": ["ts"],
+  "watch": ["app"],
   "env": {
     "NODE_ENV": "development",
     "PORT": "3002"

@@ -4,7 +4,7 @@ import * as Jwt from"jsonwebtoken";import * as bodyParser from"koa-bodyparser";
 import * as views from"koa-views";import{NTo10}from"./utils/crypto";import"./think/base";
 import{Repository}from "typeorm";import{Conf,Cache,Maps,Redis}from'./config';let fristTime={};
 
-const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000';
+const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000 http://localhost:8080';
 new Koa().use(_([bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:"2mb"}),
   views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware
   ,koaStatic(path.join(__dirname,Conf.view),{defer:true}),koaStatic(path.join(__dirname,"../"+Conf.upload)),
