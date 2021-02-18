@@ -12,7 +12,7 @@ const app = {
   put:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
   del:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 }
-export {ROUTER,B,P,Q,R,S,app,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
+export {ROUTER,B,P,Q,R,S,app,_,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let $a:Array<{r:string,m,a,f:number}>=[];
@@ -93,7 +93,7 @@ let Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===
 let Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
   let f=Routes[Routes.length-1];if(f.a!==k){
     throw new Error(t.constructor.name+":"+k+" use @Middle has to be on the top!");
-  }else if(f.w){f.w=_([...f.w,...r])}else{f.w=r.length===1?r[0]:_(r)}f=null
+  }else if(f.w){throw new Error("@Middle can only be used once!")}else{f.w=r.length===1?r[0]:_(r)}f=null
 }
 let Inject=v=>(t,k)=>{
   if(t.constructor.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/,"$1")===v.name.replace(/(\w*)[A-Z$]\w*/,"$1")){t["#"]=k;}
