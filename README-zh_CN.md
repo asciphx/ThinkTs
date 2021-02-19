@@ -9,7 +9,7 @@
 - 字段级别的rbac，加上可插拔的中间件装饰器，组装功能具有无限的可能
 - 支持serverless，在控制器方法引入ROUTER，即可让网页轻松改后台，甚至写入文件
 - 可以用各种typeORM允许的关系型数据库，目前先提供mysql，postgres
-- 增加socketIo版demo已放example目录[默认为管理版（需redis，默认密码6543210）]
+- 增加socketIo版demo已放example目录[默认为管理版（需redis）]
 - 能够使用方法覆盖override，从而不用再担心路由是否存在冗余
 - 来自ES6魔法函数Generator生成器，再加全程异步让效率提升，所以稳定、极速
 - 由大拿的方法生成路由文件到./routes，让前端不手写axios路由，真正拿来即用
@@ -97,7 +97,7 @@ export default interface UserFace{
 > ```
 > 特别地，localhost:8080/index.html是Postman界面，记住登陆后记录token和sercet，并像上面使用即可。前端目前还在实现中，先暂给大家用Postman尝鲜
 > 在正式环境下启动的指令，windows使用的是`npm run pro`,Mac或者Linux是`npm run prod`.正式环境下请使用`npm run pm2`开启多核心。
-> 新增redis，为了每个线程上的服务可同步缓存,在app/config.ts下设置synchronize，默认6秒，redis密码在config配置，默认6543210
+> 新增redis，为了每个线程上的服务可同步缓存,在app/config.ts下设置synchronize，默认6秒，redis密码在config配置
 > 允许使用postgres(在ormconfig.js中配置)，win用户得用登录win账户名，我是Asciphx（其他系统记得改下），并且也需在pgsql中创建spring这个database
 > 若启动时出现QueryFailedError请用对应sql文件在查询窗口/工具 内粘贴进去执行（即相当于导入功能），导入暂时还没测，注意mysql必须用utf8mb4编码
 > socketIo版和普通版放到了example目录下，如需使用请覆盖到顶级目录即可
