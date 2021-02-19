@@ -15,13 +15,13 @@ const Conf={
   view:'../dist',//静态文件相对路径,现方便前端打包拿来即用
   CtrlSuf:"",//控制器后半部分命名,大小驼峰或下划线开头等(若为空，则和实体类名一样）
   synchronize:6000//同步间隔毫秒,也就是说一个就等于6个redis，不过延迟6秒(这里是打比方)
-} 
+}//数据库的配置在ormconfig.js文件
 const Cache:Object={},Maps:Object={},vType:Object={};
 const Redis=new IORedis({
     port: 6379,
     host: "127.0.0.1",
     family: 4,
-    password: "6543210",
+    // password: "6543210",
     db:0,
     retryStrategy(){return null}
   });
