@@ -3,7 +3,7 @@ import * as Jwt from "jsonwebtoken";import * as path from "path";import * as vie
 import * as koaStatic from "koa-static";import { ROUTER,_ } from "./think/decorator";import "./view";
 import { Conf, socket } from './config';import { NTo10 } from "./utils/crypto";import"./think/base";
 
-const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000 http://localhost:8080';
+const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000';
 const APP = new Koa().use(_([bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }),
   views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware,
   koaStatic(path.join(__dirname,Conf.view),{defer:true}),koaStatic(path.join(__dirname,"../"+Conf.upload)),
@@ -31,4 +31,4 @@ const APP = new Koa().use(_([bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: 
 setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
 const SocketIo=require('http').createServer(APP.callback());socket.init(SocketIo);
 SocketIo.listen(Conf.port,()=>{console.log(`listening on *:${Conf.port}`);});
-APP.listen(Conf.port,"0.0.0.0",()=>{console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`)});
+APP.listen(Conf.port,"0.0.0.0",()=>{console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://127.0.0.1:${Conf.port}/test.html`)});

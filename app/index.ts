@@ -4,7 +4,7 @@ import * as Jwt from"jsonwebtoken";import * as bodyParser from"koa-bodyparser";
 import * as views from"koa-views";import{NTo10}from"./utils/crypto";import"./think/base";
 import{Repository}from "typeorm";import{Conf,Cache,Maps,Redis}from'./config';let fristTime={};
 
-const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000 http://localhost:8080';
+const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000';
 new Koa().use(_([bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:"2mb"}),
   views(path.join(__dirname,Conf.view),{autoRender:false,extension:'html',map:{html:"ejs"}})as Koa.Middleware
   ,koaStatic(path.join(__dirname,Conf.view),{defer:true}),koaStatic(path.join(__dirname,"../"+Conf.upload)),
@@ -49,5 +49,5 @@ new Koa().use(_([bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:
     }
   }
 },ROUTER.routes(),ROUTER.allowedMethods()])).listen(Conf.port,"0.0.0.0",()=>{
-  console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://localhost:${Conf.port}/test.html`)});
+  console.log('\x1B[36;1m%s\x1B[22m',`ThinkTs run on http://127.0.0.1:${Conf.port}/test.html`)});
 setInterval(()=>{Conf.secret=11+Math.random()*25|0;},1414);
