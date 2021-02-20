@@ -4,22 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <link rel="stylesheet" href="./static/css/App.css">
-  <style>span{border: 1px solid #acacac;margin: 1px;}</style><script src="./static/js/socket-web.js"></script>
-  <script src="./static/js/jquery.min.js"></script><script>var so=io('ws://'+document.location.host);
+  <link rel="stylesheet" href="./s/css/App.css">
+  <style>span{border: 1px solid #acacac;margin: 1px;}</style><script src="./s/js/socket-web.js"></script>
+  <script src="./s/js/jquery.min.js"></script><script>var so=io('ws://'+document.location.host);
     so.on("connect",function(){
       console.log("已连接")
     });
   </script>
 </head>
 <body style="text-align: center;">
-  <script>function _P_(v,a,n,t,c){$.ajax({url:"/static/tag",type:"GET",async:false,data:{v:v,a:a,n:n,t:t,c:c}}).done(function(r){document.write(r)})}
+  <script>function _P_(v,a,n,t,c){$.ajax({url:"/s/tag",type:"GET",async:false,data:{v:v,a:a,n:n,t:t,c:c}}).done(function(r){document.write(r)})}
   _P_("0","selected","BLOOD",0,"input-text");
   _P_("0,1","checked","EDUCATION",2,"input-textarea");
   _P_("P","checked","USER_TYPE",1,"input-text")//前端使用ajax请求来渲染Tag，这只是演示</script>
   <div className="App">
     <header className="App-header">
-      <img src="./static/logo192.png" className="App-logo" alt="logo" />
+      <img src="./s/logo192.png" className="App-logo" alt="logo" />
     </header>
   </div><br/>
   <input id="token" placeholder="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6WyJhZG1pbiIsImhvb2siLCJzdXBlciJdLCJpYXQiOjE2MDQyOTY2ODEsImV4cCI6MTYwNDMzMjY4MX0.qAbK4YIU4IKviEUV_DelLrJV7fyXVgz4w5FglVqc8nE"/>

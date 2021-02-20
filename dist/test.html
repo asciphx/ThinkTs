@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8"/>
     <title>Best in the world</title>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/custom-theme/jquery-ui-1.9.2.custom.min.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/bootstrap-modal.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/jquery.jscrollpane.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/codemirror/lib/codemirror.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/codemirror/theme/eclipse.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/fonts.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="static/pm/css/keyvalueeditor.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/custom-theme/jquery-ui-1.9.2.custom.min.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/bootstrap-modal.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/jquery.jscrollpane.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/codemirror/theme/eclipse.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="s/pm/css/keyvalueeditor.css"/>
 <style type="text/css">
 .button,.button::after{font-family:'Bebas Neue',cursive;background:linear-gradient(45deg,transparent 5%,#ff013c 5%);border:0;color:white;letter-spacing:3px;line-height:60px;box-shadow:6px 0px 0px #00E6F6;outline:transparent;position:absolute;}
 .button::after{--slice-1:inset(80% -6px 0 0);--slice-2:inset(50% -6px 30% 0);--slice-3:inset(10% -6px 85% 0);--slice-4:inset(40% -6px 43% 0);--slice-5:inset(80% -6px 5% 0);--slice-0:inset(50% 50% 50% 50%);content:'THINKTS';display:block;top:0px;left:0;right:0;bottom:0;
@@ -25,13 +25,13 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
 <div id="container" class="clearfix">
 <div class="v3-popover-wrapper"></div>
 <div id="sidebar-toggle">
-    <img src="static/pm/img/tri_arrow_left.png"/>
+    <img src="s/pm/img/tri_arrow_left.png"/>
 </div>
 <div id="sidebar">
     <div id="header" class="clearfix">
         <div id="logo">
             <a target="_blank">
-                <img src="static/pm/img/logo-grey.png" alt="Postman" height="15px"
+                <img src="s/pm/img/logo-grey.png" alt="Postman" height="15px"
                      width="100px"/>
             </a>
         </div>
@@ -39,17 +39,17 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
             <ul>
                 <li>
                     <a  rel="tooltip" data-placement="bottom" onclick="alert('can not!')"
-                        data-original-title="Download all data" id="download-all-data"><img src="static/pm/img/download.png"/>
+                        data-original-title="Download all data" id="download-all-data"><img src="s/pm/img/download.png"/>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:void(0)"
-                        target="_blank"><img src="static/pm/img/twitter.png"/>
+                        target="_blank"><img src="s/pm/img/twitter.png"/>
                     </a>
                 </li>
                 <li>
                     <a id="postman-wiki" href="javascript:void(0)"
-                       target="_blank"><img src="static/pm/img/question_mark.png"/>
+                       target="_blank"><img src="s/pm/img/question_mark.png"/>
                     </a>
                 </li>
             </ul>
@@ -61,26 +61,26 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
                     class="history-actions-delete" rel="tooltip"
                     data-placement="bottom"
                     data-original-title="Clear history">
-                <img src="static/pm/img/trash-empty.png" style="width:24px; height:24px; vertical-align: middle;"/>
+                <img src="s/pm/img/trash-empty.png" style="width:24px; height:24px; vertical-align: middle;"/>
             </a>
         </div>
         <div id="collections-options" class="section-options">
-            <a href="static/pm/#modal-new-collection" rel="tooltip" data-original-title="Add new collection"
+            <a href="s/pm/#modal-new-collection" rel="tooltip" data-original-title="Add new collection"
                data-toggle="modal"
                data-backdrop="static"
                data-placement="bottom"
-               data-keyboard="true"><img src="static/pm/img/folder_plus.png"
+               data-keyboard="true"><img src="s/pm/img/folder_plus.png"
                                          style="width:20px; height:20px; vertical-align: middle;"/></a>
-            <a href="static/pm/#modal-import-collection" rel="tooltip" data-original-title="Import collection"
+            <a href="s/pm/#modal-import-collection" rel="tooltip" data-original-title="Import collection"
                data-toggle="modal"
                data-backdrop="static"
                data-placement="bottom"
-               data-keyboard="true"><img src="static/pm/img/inbox_in.png"
+               data-keyboard="true"><img src="s/pm/img/inbox_in.png"
                                          style="width:20px; height:20px; vertical-align: middle;"/></a>
         </div>
         <ul id="sidebar-selectors" class="nav nav-pills">
-            <li class="active"><a href="static/pm/#sidebar-section-history" data-id="history" data-toggle="tab">History</a></li>
-            <li><a href="static/pm/#sidebar-section-collections" data-id="collections" data-toggle="tab">Collections</a></li>
+            <li class="active"><a href="s/pm/#sidebar-section-history" data-id="history" data-toggle="tab">History</a></li>
+            <li><a href="s/pm/#sidebar-section-collections" data-id="collections" data-toggle="tab">Collections</a></li>
         </ul>
         <div id="sidebar-section-data">
             <div class="tab-pane active" id="sidebar-section-history">
@@ -108,7 +108,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
             <div id="environment-selector-wrapper">
                 <div id="environment-quicklook-wrapper">
                     <a id="environment-quicklook">
-                        <img src="static/pm/img/eye.png"/>
+                        <img src="s/pm/img/eye.png"/>
                     </a>
                 </div>
                 <div id="environment-quicklook-content" class="clearfix">
@@ -137,13 +137,13 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
                 </ul>
             </div>
             <div class="preferences">
-                <a data-toggle="modal" href="static/pm/#modal-shortcuts"
+                <a data-toggle="modal" href="s/pm/#modal-shortcuts"
                    rel="tooltip" data-placement="bottom" data-original-title="Shortcuts">
-                    <img src="static/pm/img/keyboard_wireless.png" style="vertical-align: middle;"/></a>
-                <a href="static/pm/#modal-settings" data-toggle="modal"
+                    <img src="s/pm/img/keyboard_wireless.png" style="vertical-align: middle;"/></a>
+                <a href="s/pm/#modal-settings" data-toggle="modal"
                    rel="tooltip"
                    data-placement="bottom" data-original-title="Settings">
-                    <img src="static/pm/img/settings.png" style="vertical-align: middle;"/></a>
+                    <img src="s/pm/img/settings.png" style="vertical-align: middle;"/></a>
             </div>
         </div>
         <div id="request-helpers" class="clearfix">
@@ -382,7 +382,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
         <div id="request-meta">
             <div class="request-meta-actions">
                 <a class="request-meta-actions-togglesize" data-action="minimize">
-                    <img src="static/pm/img/circle_minus.png"/>
+                    <img src="s/pm/img/circle_minus.png"/>
                 </a>
             </div>
             <h5 id="request-name"></h5><span id="request-last-saved-time">Saved</span>
@@ -523,7 +523,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
         </button>
         <button class="btn"
                 id="add-to-collection"
-                href="static/pm/#modal-add-to-collection"
+                href="s/pm/#modal-add-to-collection"
                 data-toggle="modal" data-backdrop="static"
                 data-keyboard="true">Add to collection
         </button>
@@ -547,7 +547,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
             This seems to be like an error connecting to <span id="connection-error-url"></span>.
             The response status was 0.<br/>
             Check out the
-            <a href="static/pm/http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute" target="_blank">W3C XMLHttpRequest Level
+            <a href="s/pm/http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute" target="_blank">W3C XMLHttpRequest Level
                 2 spec</a>
             for more details about when this happens.
         </p>
@@ -586,7 +586,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
                            data-placement="bottom"
                            data-original-title="Toggle size"
                            id="response-body-toggle">
-                            <img src="static/pm/img/full-screen-alt-4.png"
+                            <img src="s/pm/img/full-screen-alt-4.png"
                                  style="width:16px; height:16px; vertical-align: middle;"/>
                         </a>
                     </div>
@@ -596,7 +596,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
                            data-placement="bottom"
                            data-original-title="Toggle wrapping"
                            id="response-body-line-wrapping">
-                            <img src="static/pm/img/right_indent.png"
+                            <img src="s/pm/img/right_indent.png"
                                  style="width:16px; height:16px; vertical-align: middle;"/>
                         </a>
 
@@ -1074,7 +1074,7 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
 
                     <p class="help-block">
                         See <a
-                            href="static/pm/https://github.com/a85/POSTMan-Chrome-Extension/wiki/Postman-Proxy">documentation</a>
+                            href="s/pm/https://github.com/a85/POSTMan-Chrome-Extension/wiki/Postman-Proxy">documentation</a>
                         for usage instructions.
                     </p>
                 </div>
@@ -1153,39 +1153,39 @@ background:linear-gradient(45deg,transparent 3%,#00E6F6 3%,#00E6F6 5%,#ff013c 5%
         </table>
     </div>
 </div>
-<script type="text/javascript" src="static/pm/js/jquery.min.js"></script>
-<script type="text/javascript" src="static/pm/js/underscore-min.js"></script>
-<script type="text/javascript" src="static/pm/js/jsonlint.js"></script>
+<script type="text/javascript" src="s/pm/js/jquery.min.js"></script>
+<script type="text/javascript" src="s/pm/js/underscore-min.js"></script>
+<script type="text/javascript" src="s/pm/js/jsonlint.js"></script>
 
-<script type="text/javascript" src="static/pm/js/noty/jquery.noty.js"></script>
-<script type="text/javascript" src="static/pm/js/noty/layouts/top.js"></script>
-<script type="text/javascript" src="static/pm/js/noty/layouts/topCenter.js"></script>
-<script type="text/javascript" src="static/pm/js/noty/layouts/topRight.js"></script>
-<script type="text/javascript" src="static/pm/js/noty/themes/default.js"></script>
+<script type="text/javascript" src="s/pm/js/noty/jquery.noty.js"></script>
+<script type="text/javascript" src="s/pm/js/noty/layouts/top.js"></script>
+<script type="text/javascript" src="s/pm/js/noty/layouts/topCenter.js"></script>
+<script type="text/javascript" src="s/pm/js/noty/layouts/topRight.js"></script>
+<script type="text/javascript" src="s/pm/js/noty/themes/default.js"></script>
 
 
-<script type="text/javascript" src="static/pm/js/jquery-ui-1.9.2.custom.min.js"></script>
-<script type="text/javascript" src="static/pm/js/dropbox/sha1.js"></script>
-<script type="text/javascript" src="static/pm/js/dropbox/oauth.js"></script>
-<script type="text/javascript" src="static/pm/js/util.js"></script>
-<script type="text/javascript" src="static/pm/js/httpstatuscodes.js"></script>
-<script type="text/javascript" src="static/pm/js/httpheaders.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/lib/codemirror.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/lib/util/formatting.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/lib/util/foldcode.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/mode/xmlpure/xmlpure.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/mode/javascript/javascript.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/mode/xml/xml.js"></script>
-<script type="text/javascript" src="static/pm/codemirror/mode/htmlmixed/htmlmixed.js"></script>
-<script type="text/javascript" src="static/pm/js/codemirror.overlayParser.js"></script>
-<script type="text/javascript" src="static/pm/js/vkbeautify.js"></script>
-<script type="text/javascript" src="static/pm/js/jquery.keyvalueeditor.js"></script>
-<script type="text/javascript" src="static/pm/js/jquery.hotkeys.js"></script>
-<script type="text/javascript" src="static/pm/js/jquery.mousewheel.js"></script>
-<script type="text/javascript" src="static/pm/js/jquery.jscrollpane.js"></script>
-<script type="text/javascript" src="static/pm/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="static/pm/js/bootstrap-modalmanager.js"></script>
-<script type="text/javascript" src="static/pm/js/bootstrap-modal.js"></script>
-<script type="text/javascript" src="static/pm/js/requester.js"></script>
+<script type="text/javascript" src="s/pm/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="s/pm/js/dropbox/sha1.js"></script>
+<script type="text/javascript" src="s/pm/js/dropbox/oauth.js"></script>
+<script type="text/javascript" src="s/pm/js/util.js"></script>
+<script type="text/javascript" src="s/pm/js/httpstatuscodes.js"></script>
+<script type="text/javascript" src="s/pm/js/httpheaders.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/lib/util/formatting.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/lib/util/foldcode.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/mode/xmlpure/xmlpure.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/mode/xml/xml.js"></script>
+<script type="text/javascript" src="s/pm/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script type="text/javascript" src="s/pm/js/codemirror.overlayParser.js"></script>
+<script type="text/javascript" src="s/pm/js/vkbeautify.js"></script>
+<script type="text/javascript" src="s/pm/js/jquery.keyvalueeditor.js"></script>
+<script type="text/javascript" src="s/pm/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="s/pm/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="s/pm/js/jquery.jscrollpane.js"></script>
+<script type="text/javascript" src="s/pm/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="s/pm/js/bootstrap-modalmanager.js"></script>
+<script type="text/javascript" src="s/pm/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="s/pm/js/requester.js"></script>
 </body>
 </html>

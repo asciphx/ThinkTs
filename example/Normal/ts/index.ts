@@ -13,7 +13,7 @@ new Koa().use(_([bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textL
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
     ctx.set('Access-Control-Allow-Credentials',"true");
     if (ctx.method === 'OPTIONS') { ctx.body=200; }
-    if(noJwt||originalUrl.substr(1,6)==="static"||!!unless.exec(originalUrl)){await next();return}
+    if(noJwt||originalUrl.substr(1,1)==="s"||!!unless.exec(originalUrl)){await next();return}
     const {s}=ctx.headers,TOKEN:string=ctx.headers.t;let S:string[]=s===undefined?void 0:s.match(/[^#]+/g);
     if(TOKEN===undefined||s===void 0){
       ctx.status=401;ctx.body="Headers Error";
