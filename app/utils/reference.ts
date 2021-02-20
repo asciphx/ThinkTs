@@ -23,7 +23,7 @@ const deepCopy = obj=>{
 /**
  * RGB颜色转html代码# @param r @param g @param b
  */
-const rgb2h = (r:number, g:number, b:number) =>`#${((r << 16) + (g << 8) + b).toString(16)}`;
+const rgb2h = (r:number, g:number, b:number) =>`#${((1<<24)+(r<<16)+(g<<8)+b).toString(16).substr(1)}`;
 /**
  * html代码颜色转RGB数组[r,g,b] @param hex
  */
