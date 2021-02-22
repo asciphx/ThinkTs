@@ -56,7 +56,7 @@ export default class User$ extends $ implements F{
       select:[ 'user.id','user.account', 'role.id','role.name', 'user.photo', 'user.status'],
       where: query => new Brackets(qb => {
         if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
-        if (query.id) qb.andWhere('id >:i', { i: query.id })
+        if (query.id) qb.andWhere('user.id >:i', { i: query.id })
       });,
       orderBy: { "user.id": "desc" }
     })
