@@ -13,11 +13,9 @@ export default class Role$ extends $ {
       leftJoin:{e:"role.menus",a:'menu'},
       addLeftJoin:{e:"role.users",a:'user'},
       addSelect:['user.id','user.name','menu.id','menu.name'],
-      where: (query:{name:string}) => {
-        return new Brackets(qb => {
-          if (query.name) qb.where(`name like '%${query.name}%'`)
-        });
-      },
+      where: (query:{name:string}) => new Brackets(qb => {
+        if (query.name) qb.where(`role.name like '%${query.name}%'`)
+      }),
       orderBy: { "role.id": "desc" }
     });
   }

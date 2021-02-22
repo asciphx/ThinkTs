@@ -10,7 +10,7 @@ class Admin extends Controller {
   
   @app.get("sql")
   sql(@Q q,@R r:Response){
-    r.status=202;//设置状态码
+    r.status=202;
     return this.adm_.sql(q);
   }
   @Middle(W.Log)

@@ -11,8 +11,8 @@ const APP = new Koa().use(_([bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: 
     origin!==undefined&&ctx.set('Access-Control-Allow-Origin',CORS.includes(origin)?origin:"");
     ctx.set('Access-Control-Allow-Headers',"content-type,cache-control,x-requested-with,t,s");
     ctx.set('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');ctx.set('X-Content-Type-Options',"nosniff");
-    ctx.set('Access-Control-Allow-Credentials',"true");ctx.set('cache-control',"max-age=179,immutable")
-    if (ctx.method === 'OPTIONS') { ctx.body=200; }
+    ctx.set('Access-Control-Allow-Credentials',"true");ctx.set('cache-control',"max-age=179,immutable");
+    if(ctx.method==='OPTIONS'){ctx.body = '';ctx.status = 204;}
     if(noJwt||originalUrl.substr(1,2)==="s/"||!!unless.exec(originalUrl)){await next();return}
     const {s}=ctx.headers,TOKEN:string=ctx.headers.t;let S:string[]=s===undefined?void 0:s.match(/[^#]+/g);
     if(TOKEN===undefined||s===undefined){

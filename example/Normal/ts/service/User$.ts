@@ -12,12 +12,10 @@ export default class User$ extends $ implements F {
     private user:Repository<User>=Cache["User"]
   ) {
     super({
-      where: query => {
-        return new Brackets(qb => {
-          if (query.account) qb.where(`account like '%${query.account}%'`)
-          if (query.id) qb.andWhere(`id >'${query.id}'`)
-        });
-      },
+      where: query => new Brackets(qb => {
+        if (query.account) qb.where(`account like '%${query.account}%'`)
+        if (query.id) qb.andWhere(`id >'${query.id}'`)
+      }),
       select:['user.id','user.name','user.account','user.photo'],
       orderBy: { "user.id": "desc" }
     })

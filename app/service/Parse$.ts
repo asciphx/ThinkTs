@@ -8,11 +8,9 @@ export default class Parse$ extends $ {
     private parse:Repository<Parse>=Cache["Parse"]
   ) {
     super({
-      where: (query:{keyword:string}) => {
-        return new Brackets(qb => {
-          if (query.keyword) qb.where(`keyword like '%${query.keyword}%'`)
-        });
-      }
+      where: (query:{keyword:string}) => new Brackets(qb => {
+        if (query.keyword) qb.where(`keyword like '%${query.keyword}%'`)
+      })
     });
   }
 }

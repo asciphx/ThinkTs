@@ -11,11 +11,9 @@ export default class Menu$ extends $ {
       leftJoin:{e:"menu.roles",a:'role'},
       select:[ 'menu.id', 'menu.name', 'menu.pic'],
       addSelect:['role.id','role.name'],
-      where: (query:{name:string}) => {
-        return new Brackets(qb => {
-          if (query.name) qb.where("name IN (:...arr)", { arr: query.name.match(/[^,]+/g) })
-        });
-      },
+      where: (query:{name:string}) => new Brackets(qb => {
+        if (query.name) qb.where("menu.name IN (:...arr)", { arr: query.name.match(/[^,]+/g) })
+      }),
       orderBy: { "menu.id": "desc" }
     });
   }

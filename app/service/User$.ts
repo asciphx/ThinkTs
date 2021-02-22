@@ -17,12 +17,10 @@ export default class User$ extends $ implements F {
       leftJoin:{e:"user.roles",a:'role'},
       select:['user.id','user.name','user.account','user.photo'],
       addSelect:['role.id','role.name'],
-      where: query => {
-        return new Brackets(qb => {
-          if (query.account) qb.where(`account like '%${query.account}%'`)
-          if (query.id) qb.andWhere(`id >'${query.id}'`)
-        });
-      },
+      where: query => new Brackets(qb => {
+        if (query.account) qb.where(`account like '%${query.account}%'`)
+        if (query.id) qb.andWhere(`user.id >'${query.id}'`)
+      }),
       orderBy: { "user.id": "desc" }
     })
   }

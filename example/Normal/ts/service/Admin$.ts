@@ -10,11 +10,9 @@ export default class Admin$ extends $ {
   ) {
     super({
       select:[ 'adm.id', 'adm.name', 'adm.label'],
-      where: (query:{name:string}) => {
-        return new Brackets(qb => {
-          if (query.name) qb.where(`name IN (${query.name.replace(/([^,]+)/g,"'$1'")})`)
-        });
-      },
+      where: (query:{name:string}) =>new Brackets(qb => {
+        if (query.name) qb.where(`name IN (${query.name.replace(/([^,]+)/g,"'$1'")})`)
+      }),
       orderBy: { "id": "desc" }
     },"adm");
   }
