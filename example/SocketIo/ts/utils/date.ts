@@ -29,7 +29,7 @@ export default {
   * @param date:dateAgo(new Date(2021,0,19))
   */
   dateAgo(date:Date){
-    let s = Math.round(Date.now() - date.getTime())/1000;date=null;
+    let s = Math.round((Date.now() - date.getTime())/1000);date=null;
     return s<60?`${Math.round(s)}秒前`:(s/=60)&&s<60?`${Math.round(s)}分钟前`:
       (s/=60)&&s<24?`${Math.round(s)}小时前`:(s/=24)&&s<30?`${Math.round(s)}天前`:
       (s/=30)&&s<12?`${Math.round(s)}月前`:`${Math.round(s/12)}年前`
