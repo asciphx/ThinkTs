@@ -54,12 +54,10 @@ export default class User$ extends $ implements F{
     super({
       leftJoin:{e:"user.roles",a:'role'},
       select:[ 'user.id','user.account', 'role.id','role.name', 'user.photo', 'user.status'],
-      where: query => {
-        return new Brackets(qb => {
-          if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
-          if (query.id) qb.andWhere('id >:i', { i: query.id })
-        });
-      },
+      where: query => new Brackets(qb => {
+        if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
+        if (query.id) qb.andWhere('id >:i', { i: query.id })
+      });,
       orderBy: { "user.id": "desc" }
     })
   }
