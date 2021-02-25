@@ -15,5 +15,5 @@ const Conf={
   jsonLimit:"1mb",
   view:'../dist',//静态文件相对路径,现方便前端打包拿来即用
 } 
-const Cache:Object={},vType:Object={};
-export {Conf,Cache,vType}
+const vType:Object={};
+export {Conf,vType}

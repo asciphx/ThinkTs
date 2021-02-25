@@ -2,7 +2,7 @@ import"reflect-metadata";import * as Koa from"koa";import * as path from"path";
 import * as koaStatic from"koa-static";import{ROUTER,_}from"./think/decorator";
 import * as Jwt from"jsonwebtoken";import * as bodyParser from"koa-bodyparser";
 import * as views from"koa-views";import{NTo10}from"./utils/crypto";import"./think/base";
-import{Repository}from "typeorm";import{Conf,Cache,Maps,Redis}from'./config';let fristTime={};
+import{Conf,Maps,Redis}from'./config';import Menu$ from './service/Menu$';let fristTime={};
 
 const {unless}=Conf,{noJwt}=Conf,CORS='null http://127.0.0.1:3000';
 new Koa().use(_([bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:"2mb"}),
@@ -33,7 +33,7 @@ new Koa().use(_([bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:
               const IDEX=Maps[ROLE].findIndex(v=>v===PATH);IDEX>-1&&Maps[ROLE].splice(IDEX,1);continue;
           }
         }
-        let m=await(Cache["Menu"]as Repository<any>).createQueryBuilder("m").leftJoin("m.roles","role")
+        let m=await Menu$.prototype.m.createQueryBuilder("m").leftJoin("m.roles","role")
         .select("m.path").where(`role.name='${ROLE}'`).getMany();
         if(m.length>0){m.forEach((e,i,l)=>{(l[i] as any)=e.path});Maps[ROLE]=m;Redis.set(ROLE,m.toString());}
         if((m as any).includes(PATH)){await next();m=null;return}m=null;

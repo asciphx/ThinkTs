@@ -48,18 +48,17 @@ class View{
 ```typescript
 export default class User$ extends $ implements F{
   constructor(
-    private user:Repository<User>=Cache["User"],
-    private role:Repository<Role>=Cache["Role"]
+    private user=Inject(User),private role=Inject(Role)
   ) {
     super({
-      leftJoin:{e:"user.roles",a:'role'},
-      select:[ 'user.id','user.account', 'role.id','role.name', 'user.photo', 'user.status'],
+      leftJoin:{e:"u.roles",a:'role'},
+      addSelect:['role.id','role.name'],
       where: query => new Brackets(qb => {
         if (query.account) qb.where('account like :v', { v: `%${query.account}%` })
-        if (query.id) qb.andWhere('user.id >:i', { i: query.id })
-      });,
-      orderBy: { "user.id": "desc" }
-    })
+        if (query.id) qb.andWhere('u.id >:i', { i: query.id })
+      }),
+      orderBy: { "u.id": "desc" }
+    },"u")
   }
 }
 ```

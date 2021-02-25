@@ -1,18 +1,19 @@
 import * as fs from "fs";import * as path from "path";import {Conf} from "../config";
 import * as _ from "koa-compose";import * as Router from "koa-router";
-const ROUTER=new Router();let Routes=[],$b=true,$once=true,$=null,$Override=[];
+const ROUTER=new Router(),Server={};let Routes=[],$b=true,$once=true,$=null,$Override=[];
 const B:Function=(t,k,i:number)=>{t[k][i]="$"}//ctx.request.body
 const P:Function=(t,k,i:number)=>{t[k][i]="params"}//ctx.params
 const Q:Function=(t,k,i:number)=>{t[k][i]="query"}//ctx.query
 const R:Function=(t,k,i:number)=>{t[k][i]="response"}//ctx.response
 const S:Function=(t,k,i:number)=>{t[k][i]="querystring"}//ctx.querystring
+const T:Function=(t,k,i:number)=>{t[k][i]="request"}//ctx.request
 const app = {
   get:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"get",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
   post:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
   put:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)},
   del:(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 }
-export {ROUTER,B,P,Q,R,S,app,_,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
+export {ROUTER,B,P,Q,R,S,T,app,_,Class,Id,Get,Post,Put,Del,Middle,Inject,cleanAll};
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class=(v:string|Array<"add"|"del"|"fix"|"info"|"page">="",t?:Array<"add"|"del"|"fix"|"info"|"page">)=>_=>{
   if(v==="")v=null;else if(typeof v!=="string"){t=v;v=null;}let $a:Array<{r:string,m,a,f:number}>=[];
@@ -91,13 +92,12 @@ let Post=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"post",r:r.charAt(0)==="/"?r:r==="
 let Put=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"put",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 let Del=(r="")=>(t,k,d)=>{Routes.push({a:k,m:"delete",r:r.charAt(0)==="/"?r:r===""?r:"/"+r});param(d.value,d)}
 let Middle=(...r:Array<_.Middleware<any>>)=>(t,k)=>{
-  let f=Routes[Routes.length-1];if(f.a!==k){
-    throw new Error(t.constructor.name+":"+k+" use @Middle has to be on the top!");
+  let f=Routes[Routes.length-1];if(f.a!==k){ throw new Error(t.constructor.name+":"+k+" use @Middle has to be on the top!");
   }else if(f.w){throw new Error("@Middle can only be used once!")}else{f.w=r.length===1?r[0]:_(r)}f=null
 }
 let Inject=v=>(t,k)=>{
   if(t.constructor.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/,"$1")===v.name.replace(/(\w*)[A-Z$]\w*/,"$1")){t["#"]=k;}
-  if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:new(v)})
+  if(Server[v.name]===undefined){Server[v.name]=new(v)}if($===null)$={};Object.defineProperty($,k,{enumerable:true,value:Server[v.name]})
 }
 let param=(m:Function,d)=>{
   let o=Object.keys(m),num=-1;for (let p in m){

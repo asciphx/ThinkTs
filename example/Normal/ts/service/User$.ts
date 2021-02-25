@@ -1,15 +1,15 @@
-import { Brackets, Repository } from "typeorm"
+import { Brackets } from "typeorm"
 import { User } from "../entity/User"
 import F from "../interface/UserFace"
-import $ from "../think/service";
+import $, { Inject } from "../think/service";
 import { T, H, encrypt, checkPwd, NTo10 } from "../utils/crypto"
 import * as jwt from "jsonwebtoken"
-import { Conf, Cache } from "../config";
+import { Conf } from "../config";
 
 const type:T = "shake256", digest:H = "latin1", length=50;
 export default class User$ extends $ implements F {
   constructor(
-    private user:Repository<User>=Cache["User"]
+    private user=Inject(User)
   ) {
     super({
       where: query => new Brackets(qb => {
@@ -19,6 +19,9 @@ export default class User$ extends $ implements F {
       select:['user.id','user.name','user.account','user.photo'],
       orderBy: { "user.id": "desc" }
     })
+    user.findOne({account:"admin"}).then(v=>{if(v===undefined){user.save(new User({
+      account:"admin",pwd:encrypt("654321","shake256","latin1",50)}as User)).then(user=>{console.log("User has been saved:",user);})}
+    else console.error('\x1B[33;1m%s\x1B[22m',"董事长已存在!\x1B[37m");return;})//创建默认账户admin
   }
 
   async register(user: User):Promise<any>{

@@ -12,7 +12,7 @@ class Role extends Controller {
     return this.role_.fix(p.id,b);
   }
   @Middle(W.Log,W.V_Q("roles#25|1"))
-  @app.get("/perm")//http://localhost:8080/role/perm?roles=admin,super,……
+  @app.get("/perm")//http://127.0.0.1:8080/role/perm?roles=admin,super,……
   perm(@Q q){
     return this.role_.perm(q.roles).next().value;
   }
