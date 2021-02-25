@@ -1,11 +1,11 @@
-import { Brackets } from "typeorm"
+import { Brackets, Repository } from "typeorm"
 import { Menu } from '../entity/Menu';
 import $, { Inject } from "../think/service";
 import { Maps, Redis } from "../config";
 
 export default class Menu$ extends $ {
   constructor(
-    public m=Inject(Menu)
+    public m:Repository<Menu>=Inject(Menu)
   ) {
     super({
       leftJoin:{e:"m.roles",a:'Role'},

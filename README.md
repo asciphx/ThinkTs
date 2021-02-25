@@ -44,7 +44,8 @@ class View{
 ```typescript
 export default class User$ extends $ implements F{
   constructor(
-    private user=Inject(User),private role=Inject(Role)
+    private u:Repository<User>=Inject(User),
+    private r:Repository<Role>=Inject(Role)
   ) {
     super({
       leftJoin:{e:"u.roles",a:'role'},

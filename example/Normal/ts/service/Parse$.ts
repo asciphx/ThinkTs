@@ -1,10 +1,10 @@
-import { Brackets } from "typeorm"
+import { Brackets, Repository } from "typeorm"
 import { Parse } from "../entity/Parse";
 import $, { Inject } from "../think/service";
 
 export default class Parse$ extends $ {
   constructor(
-    private parse=Inject(Parse)
+    private parse:Repository<Parse>=Inject(Parse)
   ) {
     super({
       where: (query:{keyword:string}) => new Brackets(qb => {

@@ -1,4 +1,4 @@
-import { Brackets } from "typeorm"
+import { Brackets, Repository } from "typeorm"
 import { User } from "../entity/User"
 import F from "../interface/UserFace"
 import $, { Inject } from "../think/service";
@@ -9,7 +9,7 @@ import { Conf } from "../config";
 const type:T = "shake256", digest:H = "latin1", length=50;
 export default class User$ extends $ implements F {
   constructor(
-    private user=Inject(User)
+    private user:Repository<User>=Inject(User)
   ) {
     super({
       where: query => new Brackets(qb => {
