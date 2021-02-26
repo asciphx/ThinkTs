@@ -1,11 +1,11 @@
-import P from "../utils/page";import { getRepository, ObjectLiteral,EntityTarget } from "typeorm";import { vType } from "../config";
+import P from "../utils/page";import { getRepository, ObjectLiteral, EntityTarget, Repository } from "typeorm";import { vType } from "../config";
 interface _{orderBy?:{};groupBy?:string;leftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};where?:Function;
 addLeftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};select?:string|string[]|any;addSelect?:string|string[]|any}
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入，直接return;此时默认的状态码是204，意思是No Content
-const Entity={};
+const Entity:{[x:string]:Repository<any>}={};
 export default abstract class Service{
   private _: _;
-  private $:string=this.constructor.name.replace(/(\w*)[A-Z$]\w*/,"$1").toLowerCase();
+  private $:string=this.constructor.name.replace(/(\w*)[A-Z$]\w*/,"$1");
   constructor(_?:_,$?:string){
     this._=_;if($){vType[$]=vType[this.$];delete vType[this.$];this.$=$;}
   }
@@ -39,7 +39,7 @@ export default abstract class Service{
     const [list,count]=await v.cache(true).getManyAndCount();v=null;return {list:list,page:new P(page,size,count).get()};
   }
 }
-export const Inject=(e:EntityTarget<any>&{name:string})=>{
+export function Inject<T>(e:EntityTarget<T>&{name:string}):Repository<T>{
   if(Entity[e.name]===undefined){Entity[e.name]=getRepository(e);vType[e.name]={};
     Entity[e.name].metadata.ownColumns.forEach(r=>{let t=r.type;
       Object.defineProperty(vType[e.name],r.propertyName,{enumerable:true,writable:true,//@ts-ignore

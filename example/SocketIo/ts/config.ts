@@ -13,7 +13,6 @@ const Conf={
   unless:/\/user\/register|\/user\/login|\/login.html|\/test.html|\/favicon.ico/,
   jsonLimit:"1mb",
   view:'../dist',//静态文件相对路径,现方便前端打包拿来即用
-  CtrlSuf:"_",//控制器后半部分命名,大小驼峰或下划线开头等(若为空，则和实体类名一样）
 } 
 const vType:Object={};
 export {Conf,vType,socket}

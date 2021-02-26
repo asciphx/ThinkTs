@@ -1,4 +1,4 @@
-import { Brackets, Repository } from "typeorm"
+import { Brackets } from "typeorm"
 import { User } from "../entity/User"
 import F from "../interface/UserFace"
 import $, { Inject } from "../think/service";
@@ -10,8 +10,7 @@ import { Role } from '../entity/Role';
 const type:T = "shake256", digest:H = "latin1", length=50;
 export default class User$ extends $ implements F {
   constructor(
-    private u:Repository<User>=Inject(User),
-    private r:Repository<Role>=Inject(Role)
+    private u=Inject(User),private r=Inject(Role)
   ) {
     super({
       leftJoin:{e:"u.roles",a:'Role'},

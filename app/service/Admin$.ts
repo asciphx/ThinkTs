@@ -1,11 +1,11 @@
-import { Brackets, Repository } from "typeorm"
+import { Brackets } from "typeorm"
 import { Admin } from "../entity/Admin"
 import $, { Inject } from "../think/service";
 import P from '../utils/page';
 import { Conf } from "../config";
 export default class Admin$ extends $ {
   constructor(
-    private a:Repository<Admin>=Inject(Admin)
+    private a=Inject(Admin)
   ) {
     super({
       select:[ 'a.id', 'a.name', 'a.label'],

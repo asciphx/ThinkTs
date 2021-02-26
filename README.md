@@ -44,8 +44,7 @@ class View{
 ```typescript
 export default class User$ extends $ implements F{
   constructor(
-    private u:Repository<User>=Inject(User),
-    private r:Repository<Role>=Inject(Role)
+    private u=Inject(User),private r=Inject(Role)
   ) {
     super({
       leftJoin:{e:"u.roles",a:'role'},
@@ -114,7 +113,7 @@ If an object is returned, the request status code must be 200, so only the impor
 
 ### Directory structure
 1. app: `back end file entry`
-2. app/controller: `control layer`
+2. app/controller: `control layer`-> /^[A-Z_]\w*/
 3. app/entity:`entity layer`
 4. app/interface: `interface layer`
 5. app/service: `service layer`
