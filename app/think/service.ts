@@ -4,27 +4,27 @@ addLeftJoin?:{e:Function|string,a:string,c?:string,p?:ObjectLiteral;};select?:st
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入，直接return;此时默认的状态码是204，意思是No Content
 const Entity:{[x:string]:Repository<any>}={};
 export default abstract class Service{
-  private _: _;
+  private _: _;private _$:string;
   private $:string=this.constructor.name.replace(/(\w*)[A-Z$]\w*/,"$1");
   constructor(_?:_,$?:string){
-    this._=_;if($){vType[$]=vType[this.$];delete vType[this.$];this.$=$;}
+    this._=_;if($){this._$=$;}
   }
   private*save(obj) {
-    return this[this.$].save(obj);
+    return Entity[this.$].save(obj);
   }
   private*update(id: number, obj) {
-    return this[this.$].update(id, obj);
+    return Entity[this.$].update(id, obj);
   }
   private async*remove(id: number) {
-    const v = await this[this.$].findOne(id);
-    if (!v) { return; } return this[this.$].remove(v);
+    const v = await Entity[this.$].findOne(id);
+    if (!v) { return; } return Entity[this.$].remove(v);
   }
   private*findOne(id: number) {
-    return this[this.$].findOne(id);
+    return Entity[this.$].findOne(id);
   }
   private async*list(query) {
     const size=Number(query.size)||10,page=Number(query.page)||1;
-    let v=this[this.$].createQueryBuilder(this.$).take(size).skip(page*size-size);
+    let v=Entity[this.$].createQueryBuilder(this._$).take(size).skip(page*size-size);
     if(this._!==undefined){
       if(this._.leftJoin!==undefined){v.leftJoin(this._.leftJoin.e,this._.leftJoin.a,this._.leftJoin.c,this._.leftJoin.p);}
       if(this._.addLeftJoin!==undefined){v.leftJoin(this._.addLeftJoin.e,this._.addLeftJoin.a,this._.addLeftJoin.c,this._.addLeftJoin.p);}
