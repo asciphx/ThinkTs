@@ -3,7 +3,7 @@
     {
       "name": "ThinkTs",
       "cwd": "./",
-      "script": "dist/index.js",
+      "script": "build/index.js",
       "args":"-r tsconfig-paths/register",
       "env": {
           "PORT":80,"NODE_ENV": "production"
