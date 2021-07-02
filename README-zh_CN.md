@@ -14,7 +14,7 @@
 - 来自ES6魔法函数Generator生成器，再加全程异步让效率提升，所以稳定、极速
 - 由大拿的方法生成路由文件到./routes，让前端不手写axios路由，真正拿来即用
 # [ThinkTs讨论区](http://www.91huanwei.com/)
-ThinkTs是参考了[ThinkPHP+Nestjs+SpringBoot+FastAPI]这四种的实现，当然目的也是为产品经理打造的，理念是每一天都有可能实现一个小目标(项目)……
+ThinkTs是参考了[ThinkPHP+Nestjs+FastAPI]这四种的实现，当然目的也是为产品经理打造的，理念是每一天都有可能实现一个小目标(项目)……
 
 ## [Benchmarks](https://www.fastify.cn/benchmarks/)🚀
 
