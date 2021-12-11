@@ -5,7 +5,7 @@ const _ = ts.createProject("tsconfig.json")
 gulp.task('build', () =>
   _.src().pipe(_()).js
   .pipe($({
-    ecma:2020,
+    ecma:6,
     mangle: {
       eval: false,
       keep_fnames: true,

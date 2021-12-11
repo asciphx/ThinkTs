@@ -13,7 +13,7 @@ class Menu extends Controller {
   }
   @Middle(W.Log)
   @app.put(":id(\\d+)")
-  fix(@P p,@B b){
+  fix(@P p, @B b) {
     return this.menu.fix(p.id,b);
   }
 }

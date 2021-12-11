@@ -20,7 +20,7 @@ export default class User$ extends $ implements F {
         if (query.account) qb.where(`account like '%${query.account}%'`)
         if (query.id) qb.andWhere(`u.id >'${query.id}'`)
       }),
-      orderBy: { "u.id": "desc" }
+      orderBy: { "u.id": "asc" }
     },"u");
     u.findOne({account:"admin"}).then(v=>{if(v===undefined){u.save(new User({
       account:"admin",pwd:encrypt("654321","shake256","latin1",50)}as User)).then(user=>{console.log("User has been saved:",user);})}

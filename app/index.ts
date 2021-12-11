@@ -15,12 +15,13 @@ new Koa().use(_([bodyParser({jsonLimit:Conf.jsonLimit,formLimit:"3mb",textLimit:
     ctx.set('Access-Control-Allow-Credentials',"true");ctx.set('cache-control',"max-age=179,immutable");
     if(ctx.method==='OPTIONS'){ctx.body = '';ctx.status = 204;}
     if(noJwt||originalUrl.substr(1,2)==="s/"||!!unless.exec(originalUrl)){await next();return}
-    const {s}=ctx.headers,TOKEN:string=ctx.headers.t;let S:string[]=s===undefined?void 0:s.match(/[^#]+/g);
+    const {s}=ctx.headers,TOKEN:string|string[]=ctx.headers.t;
+    let S:string[]=s===undefined?void 0:s.toString().match(/[^#]+/g);
     if(TOKEN===undefined||s===undefined){
       ctx.status=401;ctx.body="Headers Error";
     }else{
       try{
-        let{payload}=Jwt.verify(TOKEN.replace(/^Bearer /,""),
+        let{payload}=Jwt.verify(TOKEN.toString().replace(/^Bearer /,""),
           String(NTo10(S[0],Number("0x"+S[1])/Conf.cipher)),{complete:true}) as any;S=null;
         let ll:Array<any>=Object.entries(payload)[0],l:Array<string>=ll[1];
         const PATH=ctx.method+ctx.url.replace(/[0-9A-Z_]+|(\w+)\?.+$/,"$1")

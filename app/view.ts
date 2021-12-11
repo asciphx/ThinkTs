@@ -7,6 +7,8 @@ class View {
   html(ctx: Context) { return html(ctx, { test: "For ", author: "anyone" }).next().value; }
   @Get("_")
   _() { return Maps; }
+  @Get("json")
+  json() { return {massage:"Hello, world!"}; }
   @Get("static/tag")
   $(@Q q){ return Tag.h(q.v, q.a, q.n, Number(q.t) as 0, q.c) };
   @Get("static/tsx")//localhost:8080/static/tsx?./ts

@@ -35,7 +35,7 @@ export default abstract class Service{
         for (const key in this._.orderBy) {v.addOrderBy(key,this._.orderBy[key].toUpperCase()) }
       }
       if(this._.groupBy!==undefined){v.groupBy(this._.groupBy)}
-    }
+    }//console.log(v.getQuery());
     const [list,count]=await v.cache(true).getManyAndCount();v=null;return {list:list,page:new P(page,size,count).get()};
   }
 }
