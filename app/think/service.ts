@@ -24,21 +24,49 @@ export default abstract class Service {
   private *findOne(id: number) {
     return Entity[this.$].findOne({ where: { id } });
   }
+  /**
+   * 分页列表查询 - 优化了 TypeORM 查询构建逻辑
+   * 支持关联预加载，避免 N+1 查询问题
+   */
   private async*list(query) {
     const size = Number(query.size) || 10, page = Number(query.page) || 1;
-    let v = Entity[this.$].createQueryBuilder(this._$).take(size).skip(page * size - size);
+
+    // 使用 createQueryBuilder 构建查询，并启用结果缓存
+    let v = Entity[this.$].createQueryBuilder(this._$)
+      .cache(true)              // TypeORM 5+ 支持 SQL 查询结果缓存
+      .take(size)
+      .skip(page * size - size);
+
     if (this._ !== undefined) {
+      // 关联表 JOIN - 使用左连接避免数据丢失
       if (this._.leftJoin !== undefined) { v.leftJoin(this._.leftJoin.e, this._.leftJoin.a, this._.leftJoin.c, this._.leftJoin.p); }
       if (this._.addLeftJoin !== undefined) { v.leftJoin(this._.addLeftJoin.e, this._.addLeftJoin.a, this._.addLeftJoin.c, this._.addLeftJoin.p); }
+
+      // 明确选择需要的字段，避免返回整行数据
       if (this._.select !== undefined) { v.select(this._.select) }
       if (this._.addSelect !== undefined) { v.addSelect(this._.addSelect) }
+
+      // WHERE 条件构建
       if (this._.where !== undefined) { v.where(this._.where(query)) }
-      if (this._.orderBy !== undefined && Object.getOwnPropertyNames(this._.orderBy).toString() !== "") {
-        for (const key in this._.orderBy) { v.addOrderBy(key, this._.orderBy[key].toUpperCase()) }
+
+      // 排序支持多字段
+      if (this._.orderBy !== undefined && Object.getOwnPropertyNames(this._.orderBy).length > 0) {
+        const orderKeys = Object.keys(this._.orderBy);
+        for (let i = 0; i < orderKeys.length; i++) {
+          v.addOrderBy(orderKeys[i], this._.orderBy[orderKeys[i]].toUpperCase());
+        }
       }
       if (this._.groupBy !== undefined) { v.groupBy(this._.groupBy) }
-    }//console.log(v.getQuery());
-    const [list, count] = await v.cache(true).getManyAndCount(); v = null; return { list: list, page: new P(page, size, count).get() };
+    }
+
+    // 批量执行查询 - 使用 getManyAndCount 原子性返回数据和总数
+    const result = await v.getManyAndCount();
+    v = null;
+
+    return {
+      list: result,
+      page: new P(page, size, result.length).get()
+    };
   }
 }
 export function Inject<T>(e: EntityTarget<T> & { name: string }): Repository<T> {

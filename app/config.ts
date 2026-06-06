@@ -15,7 +15,8 @@ const Conf = {
   view: '../dist',//静态文件相对路径,现方便前端打包拿来即用
   synchronize: 6000//同步间隔毫秒,也就是说一个就等于6个redis，不过延迟6秒(这里是打比方)
 }//数据库的配置在ormconfig.js文件
-const Maps: Object = {}, vType: Object = {};
+const Maps: WeakMap<any, Set<string>> = new WeakMap();
+const vType: Map<any, any> = new Map();
 const Redis = new Red({
   port: 6379,
   host: "127.0.0.1",

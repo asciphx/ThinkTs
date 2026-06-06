@@ -13,10 +13,9 @@
     "target": "es6",
     "sourceMap": false,
     "allowJs": true,
-    "lib": ["es7","dom"],
+    "lib": ["es7", "dom"],
     "outDir": "build",
-    "baseUrl": "/",
-    "rootDir": "./app"
+    "rootDir": "./app",
   },
-  "include": ["app/**/*.ts"]
+  "include": ["app/**/*.ts"],
 }
