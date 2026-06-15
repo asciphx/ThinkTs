@@ -61,52 +61,39 @@ let Class = (v: string | Array<"add" | "del" | "fix" | "info" | "page"> = "", t?
   }
   if (Conf.printRoute) {
     let VA: string = "", ID: string, FIELD: string;
-    if ($once) { $b = fs.existsSync("./routes/"); $once = false } else $b = true
-    !$b && fs.mkdir("./routes/", function (err) {
-      if (err) { return console.error(err); }
-      fs.writeFile(path.resolve("./routes", `./${v === "" ? "$" : v}.ts`), `//@ts-ignore
-import axios from '../utils/axios';\nexport default {${$a.map((v, i) => {
-        if (VA === v.a) VA = VA + i; else VA = v.a;
-        switch (VA) {
-          case "add": ID = ""; FIELD = "params"; break;
-          case "del": ID = "id"; FIELD = ""; break;
-          case "fix": ID = "id"; FIELD = "params"; break;
-          case "info": ID = "id"; FIELD = ""; break;
-          case "page": ID = "params:object"; FIELD = ""; break;
-          default: switch (v.m) {
-            case "post": ID = ""; FIELD = "params"; break;
-            case "put": ID = "id"; FIELD = "params"; break;
-            case "delete": ID = "id"; FIELD = ""; break;
-            default: ID = v.f === 1 ? "params:object" : v.f === 2 ? "field:string" : ""; FIELD = ""; break;
-          }break;
-        }
-        return `\n  ${VA + V}(${ID === "id" ? _["_#"] === "string" ? "id:string" : "id:number" : ID}${ID === "" ? FIELD === "" ? "" : FIELD +
-          ":object" : FIELD === "" ? "" : ", " + FIELD + ":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/, "/'+")}${ID === "params:object" ?
-            "',{ params }" : ID === "field:string" ? "?'+field" : ID === "" ? "'" : ID}${FIELD === "" ? "" : ", " + FIELD});
-  }`})}\n}`, 'utf8', e => { if (e) console.error(e) }); $a = null
-    });
-    if ($b) {
-      fs.writeFile(path.resolve("./routes", `./${v === "" ? "$" : v}.ts`), `//@ts-ignore
-import axios from '../utils/axios';\nexport default {${$a.map((v, i) => {
-        if (VA === v.a) VA = VA + i; else VA = v.a;
-        switch (VA) {
-          case "add": ID = ""; FIELD = "params"; break;
-          case "del": ID = "id"; FIELD = ""; break;
-          case "fix": ID = "id"; FIELD = "params"; break;
-          case "info": ID = "id"; FIELD = ""; break;
-          case "page": ID = "params:object"; FIELD = ""; break;
-          default: switch (v.m) {
-            case "post": ID = ""; FIELD = "params"; break;
-            case "put": ID = "id"; FIELD = "params"; break;
-            case "delete": ID = "id"; FIELD = ""; break;
-            default: ID = v.f === 1 ? "params:object" : v.f === 2 ? "field:string" : ""; FIELD = ""; break;
-          }break;
-        }
-        return `\n  ${VA + V}(${ID === "id" ? _["_#"] === "string" ? "id:string" : "id:number" : ID}${ID === "" ? FIELD === "" ? "" : FIELD +
-          ":object" : FIELD === "" ? "" : ", " + FIELD + ":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/, "/'+")}${ID === "params:object" ?
-            "',{ params }" : ID === "field:string" ? "?'+field" : ID === "" ? "'" : ID}${FIELD === "" ? "" : ", " + FIELD});
-  }`})}\n}`, 'utf8', e => { if (e) console.error(e) }); $a = null
-    } _ = $ = null;
+    (async () => {
+      try {
+        if ($once) {
+          try { await fs.promises.access("./routes/"); $b = true; }
+          catch { $b = false; }
+          $once = false;
+        } else $b = true;
+        if (!$b) { try { await fs.promises.mkdir("./routes/"); } catch (e) { console.error(e); } }
+        await fs.promises.writeFile(path.resolve("./routes", `./${v === "" ? "$" : v}.ts`), `//@ts-ignore
+import axios from '../utils/axios';
+export default {${$a.map((v, i) => {
+          if (VA === v.a) VA = VA + i; else VA = v.a;
+          switch (VA) {
+            case "add": ID = ""; FIELD = "params"; break;
+            case "del": ID = "id"; FIELD = ""; break;
+            case "fix": ID = "id"; FIELD = "params"; break;
+            case "info": ID = "id"; FIELD = ""; break;
+            case "page": ID = "params:object"; FIELD = ""; break;
+            default: switch (v.m) {
+              case "post": ID = ""; FIELD = "params"; break;
+              case "put": ID = "id"; FIELD = "params"; break;
+              case "delete": ID = "id"; FIELD = ""; break;
+              default: ID = v.f === 1 ? "params:object" : v.f === 2 ? "field:string" : ""; FIELD = ""; break;
+            }break;
+          }
+          return `\n  ${VA + V}(${ID === "id" ? _["_#"] === "string" ? "id:string" : "id:number" : ID}${ID === "" ? FIELD === "" ? "" : FIELD +
+            ":object" : FIELD === "" ? "" : ", " + FIELD + ":object"}):Promise<any>{\n    return axios.${v.m}('${v.r.replace(/\/:.+/, "/'+")}${ID === "params:object" ?
+              "',{ params }" : ID === "field:string" ? "?'+field" : ID === "" ? "'" : ID}${FIELD === "" ? "" : ", " + FIELD});
+  }`})}\n}`, 'utf8').catch(e => { if (e) console.error(e) });
+        $a = null;
+      } catch (e) { console.error(e); }
+    })();
+    _ = $ = null;
   } else $a = _ = $ = null; $Override.length = Routes.length = 0;
 }/**@param v 正则匹配主键  @param t 匹配后的主键类型是：字符串、还是数字（默认字符串）*/
 let Id = (v, t: "string" | "number" = "string") => _ => { if ($ === null) throw new Error("@Class needs to be implemented later."); _["##"] = v; _["_#"] = t; }

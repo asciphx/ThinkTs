@@ -13,7 +13,7 @@ export default class Role$ extends $ {
       addLeftJoin: { e: "r.users", a: 'User' },
       addSelect: ['User.id', 'User.name', 'Menu.id', 'Menu.name'],
       where: (query: { name: string }) => new Brackets(qb => {
-        if (query.name) qb.where(`r.name like '%${query.name}%'`)
+        if (query.name) qb.where("r.name LIKE :name", { name: `%${query.name}%` })
       }),
       orderBy: { "r.id": "desc" }
     }, "r");
@@ -27,6 +27,6 @@ export default class Role$ extends $ {
   }
   *perm(roles: string) {
     return this.m.createQueryBuilder("m").select(["m.type", "m.path"])
-      .leftJoin("m.roles", "role").where(`role.name IN (${roles.replace(/([^,]+)/g, "'$1'")})`).getMany();
+      .leftJoin("m.roles", "role").where("role.name IN (:...roles)", { roles: roles.split(",") }).getMany();
   }
 }

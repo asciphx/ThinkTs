@@ -2,11 +2,27 @@ import "reflect-metadata"; import * as Koa from "koa"; import * as path from "pa
 import * as koaStatic from "koa-static"; import { ROUTER, _ } from "./think/decorator";
 import * as Jwt from "jsonwebtoken"; import * as bodyParser from "koa-bodyparser";
 import * as views from "koa-views"; import { NTo10 } from "./utils/crypto"; import "./think/base";
-import { Conf, Maps, Redis } from './config'; import Menu$ from './service/Menu$'; let fristTime = {};
+import { Conf, Maps, Redis } from './config'; import Menu$ from './service/Menu$';
+import { W } from "./weblogic";
+// VideoStream 中间件：处理 /upload/video/ 路径下的媒体文件，支持 206 Range、限速、Last-Modified 缓存
+// 需挂在 koaStatic 之前，避免被静态服务中间件拦截
+// fristTime 改造成 LRU 缓存，防止角色无限增长导致内存泄漏
+const fristTime = (() => {
+  const m = new Map<string, number>();
+  const MAX = 500;
+  return {
+    get(k: string) { return m.get(k) || 0; },
+    set(k: string, v: number) {
+      if (m.size >= MAX) m.delete(m.keys().next().value as string);
+      m.set(k, v);
+    }
+  };
+})();
 
 const { unless } = Conf, { noJwt } = Conf, CORS = 'null http://127.0.0.1:3000';
 new Koa().use(_([bodyParser({ jsonLimit: Conf.jsonLimit, formLimit: "3mb", textLimit: "2mb" }),
 views(path.join(__dirname, Conf.view), { autoRender: false, extension: 'html', map: { html: "ejs" } }) as Koa.Middleware
+  , W.VideoStream(path.join(Conf.upload, "video"), { speed: 1024 })
   , koaStatic(path.join(__dirname, Conf.view), { defer: true }), koaStatic(path.join(__dirname, "../" + Conf.upload)),
 async (ctx, next) => {
   const { originalUrl } = ctx, { origin } = ctx.request.header; ctx.vary('Origin');
@@ -33,43 +49,38 @@ async (ctx, next) => {
         String(NTo10(S[0], Number("0x" + S[1]) / Conf.cipher)), { complete: true }) as any; S = null;
       let ROLE_LIST: Array<any> = Object.entries(payload)[0];
       const PATH = ctx.method + urlPath;
-      // [优化 3] 预计算并缓存 URL 匹配结果，减少后续查询次数
-      const cachedUrl = await Redis.get(ROLE_LIST[0]);
-      if (cachedUrl && cachedUrl.includes(PATH)) {
-        Maps[ROLE_LIST[0]] = cachedUrl.split(",");
-        await next(); return
-      } else if (cachedUrl) {
-        // [优化 4] 使用 Set 替代数组，查找操作从 O(n) 降为 O(1)
-        const urlSet = new Set(cachedUrl.split(","));
-        if (urlSet.has(PATH)) { Maps[ROLE_LIST[0]] = [...urlSet]; await next(); return };
-      }
-      // [优化 5] 批量处理 Menu 查询，减少数据库往返次数
+      // LRU 防击穿优化：在 Conf.synchronize 窗口期内且 Maps 已有缓存时，跳过 Redis/DB 查询
       for (let i = 0; i < ROLE_LIST.length; ++i) {
         const ROLE: string = ROLE_LIST[i];
-        // 检查缓存是否已存在有效数据
-        if (Maps.hasOwnProperty(ROLE) && Maps[ROLE].includes(PATH)) {
-          await next(); return
+        // 命中：Maps 已有 + 未过窗口期 → 直接判断，不打 Redis
+        if (Maps.hasOwnProperty(ROLE) &&
+          Date.now() - (fristTime.get(ROLE) || 0) <= Conf.synchronize) {
+          if (Maps[ROLE].includes(PATH)) { await next(); return }
+          continue; // 该角色无权限，跳过
         }
-        if (!Maps.hasOwnProperty(ROLE)) {
-          let m: Array<any> = await Menu$
-            .prototype.m.createQueryBuilder("m")
-            .leftJoin("m.roles", "role")
-            .select("m.path")
-            .where(`role.name='${ROLE}'`)
-            .getMany();
+        // 未命中：过窗口期或首次访问 → 查 Redis 刷新 Maps
+        fristTime.set(ROLE, Date.now());
+        const cachedUrl = await Redis.get(ROLE);
+        if (cachedUrl) {
+          Maps[ROLE] = cachedUrl.split(",");
+          if (Maps[ROLE].includes(PATH)) { await next(); return }
+          continue;
+        }
+        // Redis 也没有 → 查数据库
+        let m: Array<any> = await Menu$
+          .prototype.m.createQueryBuilder("m")
+          .leftJoin("m.roles", "role")
+          .select("m.path")
+          .where("role.name = :role", { role: ROLE })
+          .getMany();
 
-          if (m.length > 0) {
-            m.forEach((e, idx) => { (m[idx] as any) = e.path });
-            Maps[ROLE] = m;
-            await Redis.set(ROLE, m.toString()); // 异步批量写入
-          } else {
-            Maps[ROLE] = []; m = null;
-          }
-        }
-        // [优化 6] 使用 Set.has() 替代数组包含检查，性能提升约 3-5x
-        const rolePaths: Array<string> = (Maps[ROLE] as any);
-        if (rolePaths && rolePaths.some(p => p.includes(PATH))) {
-          await next(); return
+        if (m.length > 0) {
+          m.forEach((e, idx) => { (m[idx] as any) = e.path });
+          Maps[ROLE] = m;
+          await Redis.set(ROLE, m.toString());
+          if (Maps[ROLE].includes(PATH)) { await next(); return }
+        } else {
+          Maps[ROLE] = []; m = null;
         }
       }
       if (ROLE_LIST[0] === "admin") { await next(); return }

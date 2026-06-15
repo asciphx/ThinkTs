@@ -4,7 +4,7 @@ interface _ {
   addLeftJoin?: { e: Function | string, a: string, c?: string, p?: ObjectLiteral; }; select?: string | string[] | any; addSelect?: string | string[] | any
 }
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入，直接return;此时默认的状态码是204，意思是No Content
-const Entity: { [x: string]: Repository<any> } = {};
+const Entity = new Map<string, Repository<any>>();
 export default abstract class Service {
   private _: _; private _$: string;
   private $: string = this.constructor.name.replace(/(\w*)[A-Z$]\w*/, "$1");

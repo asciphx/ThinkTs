@@ -17,8 +17,8 @@ export default class User$ extends $ implements F {
       select: ['u.id', 'u.name', 'u.account', 'u.photo'],
       addSelect: ['Role.id', 'Role.name'],
       where: query => new Brackets(qb => {
-        if (query.account) qb.where(`account like '%${query.account}%'`)
-        if (query.id) qb.andWhere(`u.id >'${query.id}'`)
+        if (query.account) qb.where("account LIKE :account", { account: `%${query.account}%` })
+        if (query.id) qb.andWhere("u.id > :id", { id: query.id })
       }),
       orderBy: { "u.id": "asc" }
     }, "u");
@@ -40,12 +40,12 @@ export default class User$ extends $ implements F {
   }
   async login(account: string, pwd: string) {
     const user = await this.u.createQueryBuilder()
-      .addSelect("User.pwd").where(`account ='${account}'`).getOne()
+      .addSelect("User.pwd").where("account = :account", { account }).getOne()
     if (!user) return { code: 406, message: "登录账号有误" };
     if (!checkPwd(pwd, user.pwd, type, digest, length)) return { code: 406, message: "登录密码有误" };
     user.logged = new Date(Date.now()); this.u.update(user.id, user);
     const roles = await this.r.createQueryBuilder("r").select("r.name")
-      .leftJoin("r.users", "user").where(`user.id ='${user.id}'`).getMany();
+      .leftJoin("r.users", "user").where("user.id = :uid", { uid: user.id }).getMany();
     roles.forEach((e, i, l) => { (l[i] as any) = e.name });
     return {
       role: roles, token: jwt.sign(Object.defineProperty({}, account, { enumerable: true, value: roles }),
