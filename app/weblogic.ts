@@ -4,34 +4,27 @@ import { Conf } from "./config"; import * as multer from '@koa/multer';
 import * as fs from "fs"; import { Transform, TransformCallback } from "stream";
 import { Stats, createReadStream } from "fs";
 import { extname, resolve, join, normalize, sep } from "path";
-// 优化文件上传限制 - 使用更合理的数值
 const U = multer({ dest: Conf.upload, limits: { fieldNameSize: 100, fieldSize: 524288, fileSize: 2097152 } }); // 2MB
-// 优化文件处理工具函数
 const fileProcessor = (field: string): Middleware => async (ctx: any, next) => {
   if (ctx.request.file) {
     const { request } = ctx;
     try {
-      // 异步读取文件，避免阻塞主线程
       const originalPath = `${Conf.upload}/${request.file.filename}`;
       try { await fs.promises.access(originalPath); } catch { return await next(); }
-      // 异步读取文件计算 MD5
       const fileBuffer = await fs.promises.readFile(originalPath);
       const newpath = createHash("md5").update(fileBuffer).digest("hex");
       const extMatch = request.file.mimetype.match(/\/(.*\..+)/);
       if (!extMatch) return await next();
-      // 构建新文件名
       const fileExt = request.file.mimetype.split('/')[1];
       const fileSize = Math.floor(request.file.size / 19);
       const finalName = `${newpath}${fileSize}.${fileExt}`;
       const newFilePath = `${Conf.upload}/${finalName}`;
-      // 原子性重命名操作
       try {
         await fs.promises.access(newFilePath);
         await fs.promises.unlink(originalPath);
       } catch {
         await fs.promises.rename(originalPath, newFilePath);
       }
-      // 设置文件路径到请求体
       if (request.body && request.body[field]) {
         request.body[field] = finalName.slice(String(Conf.upload).length + 1);
       }
@@ -46,17 +39,11 @@ const fileProcessor = (field: string): Middleware => async (ctx: any, next) => {
 };
 
 const W = {
-  // 优化日志中间件 - 使用 Buffer 替代字符串拼接
   async Log(ctx: Context, next) {
-    const startTime = process.hrtime.bigint(); // 高精度时间测量
-    try {
-      await next();
-    } finally {
+    const startTime = process.hrtime.bigint();
+    try { await next(); } finally {
       const duration = Number(process.hrtime.bigint() - startTime);
-      // 使用字符串模板避免多次拼接
-      console.log(
-        `\x1B[34;1;4m${ctx.method}\x1B[0;96m${ctx.url} \x1B[95m${duration}ms -> \x1B[92m${date.date2str()}`
-      );
+      console.log(`\x1B[34;1;4m${ctx.method}\x1B[0;96m${ctx.url} \x1B[95m${duration}ms -> \x1B[92m${date.date2str()}`);
     }
   },
   // 优化文件处理 - 异步版本
@@ -120,8 +107,8 @@ const W = {
   // 用法：W.VideoStream(Conf.upload, { speed: 1024 }) - 匹配 /video/ 前缀, 目录在./upload/video
   //     W.VideoStream('../upload/media', { prefix: '/media/', speed: 2048 }) - 自定义前缀
   VideoStream: (rootDir: string, options?: { speed?: number, prefix?: string }): Middleware => {
-    const root = resolve(rootDir) + sep; const prefix = options?.prefix || '/video/'; console.log("play\n")
-    const bps = (options?.speed || 1024) * 1024; const V_TYPES: Record<string, string> = {
+    const root = resolve(rootDir) + sep; const prefix = options?.prefix || '/video/';
+    const bps = (options?.speed || 1024) << 10; const V_TYPES: Record<string, string> = {
       '.mp4': 'video/mp4', '.webm': 'video/webm', '.ogg': 'video/ogg', '.ogv': 'video/ogg',
       '.mov': 'video/quicktime', '.avi': 'video/x-msvideo', '.mkv': 'video/x-matroska',
       '.flv': 'video/x-flv', '.m4v': 'video/x-m4v', '.ts': 'video/mp2t',
@@ -131,65 +118,63 @@ const W = {
     };
     // 限速 Transform 流：按 1s 窗口节流，确保不超出 bps
     const Throttle = (): Transform => {
-      const t: any = new Transform({
+      let tokens = bps, lastRefill = Date.now(), timer: NodeJS.Timeout | null = null;
+      const t = new Transform({
         transform(chunk: Buffer, _e: BufferEncoding, cb: TransformCallback) {
-          const now = Date.now(), b: number = t._b = (t._b || 0) + chunk.length, lt: number = t._t || now;
-          if (now - lt >= 1000) { t._t = now; t._b = chunk.length; t.push(chunk); cb(); return; }
-          if (b <= bps) { t.push(chunk); cb(); }
-          else setTimeout(() => { t._t = Date.now(); t._b = chunk.length; t.push(chunk); cb(); }, 1000 - (now - lt));
-        }
-      }); return t;
+          const now = Date.now();
+          tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
+          lastRefill = now;
+          if (tokens >= chunk.length) { tokens -= chunk.length; t.push(chunk); cb(); return; }
+          const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000));
+          timer = setTimeout(() => {
+            timer = null;
+            const n = Date.now();
+            tokens = Math.min(bps, tokens + (bps * (n - lastRefill)) / 1000) - chunk.length;
+            lastRefill = n;
+            t.push(chunk); cb();
+          }, waitMs);
+          timer.unref();
+        },
+        flush(cb: TransformCallback) { if (timer) clearTimeout(timer); cb(); }
+      });
+      t.on('close', () => { if (timer) clearTimeout(timer); });
+      return t;
     };
     return async (ctx: Context, next) => {
-      // 只处理 prefix 前缀的路径，其他交给下游（如 koaStatic）
       if (!ctx.path.startsWith(prefix)) { await next(); return; }
-      // 拼接物理路径并防路径穿越
       const rel = ctx.path.slice(prefix.length).replace(/^\/+/, '');
       const fullPath = normalize(join(root, rel));
       if (!fullPath.startsWith(root)) { ctx.status = 403; return; }
-      // 异步 stat，文件不存在透传
       let st: Stats; try { st = await fs.promises.stat(fullPath); } catch { await next(); return; }
       if (!st.isFile()) { await next(); return; }
-      const ext = extname(fullPath).toLowerCase();
       const size = st.size; const mtime = st.mtime;
-      // 公共响应头
-      ctx.set('Content-Type', V_TYPES[ext] || 'application/octet-stream');
+      // 优先从 URL 路径检测扩展名（解决 .mp4 这类点文件的问题）
+      const lowerPath = ctx.path.toLowerCase();
+      let ext = '', contentType = 'application/octet-stream';
+      for (const [testExt, mimeType] of Object.entries(V_TYPES)) {
+        if (lowerPath.endsWith(testExt)) { ext = testExt; contentType = mimeType; break; }
+      }
+      if (!ext) { contentType = 'application/octet-stream'; }
+      ctx.set('Content-Type', contentType);
       ctx.set('Accept-Ranges', 'bytes');
       ctx.set('Last-Modified', mtime.toUTCString());
       ctx.set('Cache-Control', 'public, max-age=86400');
-      // 处理 If-Modified-Since（304 缓存验证）。HTTP Date 精度只到秒，所以用秒比较
       if (ctx.headers['if-modified-since']) {
         const ims = new Date(ctx.headers['if-modified-since'] as string).getTime();
         if (!isNaN(ims) && Math.floor(ims / 1000) >= Math.floor(mtime.getTime() / 1000)) { ctx.status = 304; return; }
       }
-      // Range 请求 → 206 部分内容（先检查 Range，因为 HEAD+Range 也要返回 206）
       const range = ctx.headers.range as string | undefined;
       if (range) {
         const m = /bytes=(\d*)-(\d*)/.exec(range);
         if (!m) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
-        // 后缀形式 bytes=-N 表示最后 N 字节：start=size-N, end=size-1
-        // 完整形式 bytes=S-E：start=S, end=E
-        // 开放形式 bytes=S-：start=S, end=size-1
         let start: number, end: number;
-        if (m[1] === '' && m[2]) {
-          // suffix 形式
-          const n = parseInt(m[2], 10);
-          start = Math.max(0, size - n);
-          end = size - 1;
-        } else {
-          start = m[1] ? parseInt(m[1], 10) : 0;
-          end = m[2] ? parseInt(m[2], 10) : size - 1;
-        }
-        // 边界检查
-        if (start >= size || end >= size || start > end) {
-          ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return;
-        }
-        // HEAD 请求：写头不写体
+        if (m[1] === '' && m[2]) { const n = parseInt(m[2], 10); start = Math.max(0, size - n); end = size - 1; }
+        else { start = m[1] ? parseInt(m[1], 10) : 0; end = m[2] ? parseInt(m[2], 10) : size - 1; }
+        if (start >= size || end >= size || start > end) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
         if (ctx.method === 'HEAD') { ctx.status = 206; ctx.set('Content-Range', `bytes ${start}-${end}/${size}`); ctx.set('Content-Length', String(end - start + 1)); return; }
-        // 手动 writeHead 写头部（避免 ctx.body 机制下未发送）
-        ctx.respond = false;  // 告诉 Koa 本次响应已手动处理
+        ctx.respond = false;
         ctx.res.writeHead(206, {
-          'Content-Type': V_TYPES[ext] || 'application/octet-stream',
+          'Content-Type': contentType,
           'Content-Range': `bytes ${start}-${end}/${size}`,
           'Content-Length': end - start + 1,
           'Accept-Ranges': 'bytes',
@@ -198,16 +183,13 @@ const W = {
         });
         const rs = createReadStream(fullPath, { start, end });
         rs.pipe(Throttle()).pipe(ctx.res);
-        // 客户端断开时及时销毁流，避免文件句柄泄露
         ctx.req.on('close', () => { rs.destroy(); });
         return;
       }
-      // HEAD 请求：仅返回头不返回体（Koa 会自动处理）
       if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; }
-      // 普通 GET：返回完整文件（也限速）
       ctx.respond = false;
       ctx.res.writeHead(200, {
-        'Content-Type': V_TYPES[ext] || 'application/octet-stream',
+        'Content-Type': contentType,
         'Content-Length': size,
         'Accept-Ranges': 'bytes',
         'Last-Modified': mtime.toUTCString(),
