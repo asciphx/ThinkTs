@@ -1,12 +1,17 @@
-import { Class, app, Inject, Middle } from "../think/decorator";
+import { Class, app, Inject, Middle, Q, R } from "../think/decorator";
 import Admin$ from "../service/Admin$";
 import { Controller } from '../think/controller';
-import { Context } from "koa"; import { html } from "../utils/tool";
+import { Context, Response } from "koa"; import { html } from "../utils/tool";
 import T from "../utils/tag"; import { W } from "../weblogic";
 
 @Class(["add", "del", "info", "fix", "page"])
 class Admin extends Controller {
   @Inject(Admin$) readonly adm_: Admin$
+  @app.get("sql")
+  sql(@Q q, @R r: Response) {
+    r.status = 202;
+    return this.adm_.sql(q);
+  }
 
   @Middle(W.Log)
   @app.get("index.html")

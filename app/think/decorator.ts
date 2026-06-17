@@ -17,27 +17,7 @@ export { ROUTER, B, P, Q, R, S, T, app, _, Class, Id, Get, Post, Put, Del, Middl
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class = (v: string | Array<"add" | "del" | "fix" | "info" | "page"> = "", t?: Array<"add" | "del" | "fix" | "info" | "page">) => _ => {
   if (v === "") v = null; else if (typeof v !== "string") { t = v; v = null; } let $a: Array<{ r: string, m, a, f: number }> = [];
-  const extractFirstWord = (str: string): string => {
-    if (!str || !/[A-Za-z]/.test(str)) { return ""; }
-    let start = -1;
-    for (let i = 0; i < str.length; i++) {
-      if (/\p{Lu}/u.test(str[i])) {
-        start = i;
-        break;
-      }
-    }
-    if (start === -1) { return ""; }
-    let len = 0;
-    for (let j = start + 1; j < str.length; j++) {
-      if (/\p{L}/u.test(str[j])) {
-        len++;
-      } else {
-        break;
-      }
-    }
-    return str.slice(start, start + len);
-  };
-  const V = extractFirstWord(_.name); v = v ?? V.toLowerCase();
+  const V = _.name.replace(/([A-Z][a-z]+)[A-Z_]?\w*/, () => (_.name === "View" ? "" : RegExp.$1)); v = v ?? V.toLowerCase();
   if (typeof v === "string") { if (v.charAt(0) !== "/") v = "/" + v; if (v === "/") { v = ""; } }
   v !== "" && Object.getOwnPropertyNames(_.prototype).forEach(k => {
     if (typeof _.prototype[k] === "function") $Override.push(k);
@@ -107,36 +87,9 @@ let Middle = (...r: Array<_.Middleware<any>>) => (t, k) => {
   } else if (f.w) { throw new Error("@Middle can only be used once!") } else { f.w = r.length === 1 ? r[0] : _(r) } f = null
 }
 let Inject = v => (t, k) => {
-  const getClassName = (str: string): string => {
-    if (!str || typeof str !== "string") { return ""; }
-    if (!/[A-Za-z]/.test(str)) { return ""; }
-    let start = -1;
-    for (let i = 0; i < str.length; i++) {
-      if (/\p{Lu}/u.test(str[i])) {
-        start = i;
-        break;
-      }
-    }
-    if (start === -1) { return ""; }
-    let len = 0;
-    for (let j = start + 1; j < str.length; j++) {
-      if (/\p{L}/u.test(str[j])) { len++; }
-      else { break; }
-    }
-    return str.slice(start, start + len);
-  };
-  const tName = getClassName(t.constructor.name);
-  const vName = getClassName(v.name);
-  if (tName === vName) { t["#"] = k; }
-  if (Server[v.name] === undefined) { Server[v.name] = new (v); }
-  if ($ === null) {
-    $ = {};
-    Object.defineProperty($, k, {
-      enumerable: true,
-      value: Server[v.name]
-    });
-  }
-};
+  if (t.constructor.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/, "$1") === v.name.replace(/(\w*)[A-Z$]\w*/, "$1")) { t["#"] = k; }
+  if (Server[v.name] === undefined) { Server[v.name] = new (v) } if ($ === null) $ = {}; Object.defineProperty($, k, { enumerable: true, value: Server[v.name] })
+}
 let param = (m: Function, d) => {
   let o = Object.keys(m), num = -1; for (let p in m) {
     switch (m[p]) {

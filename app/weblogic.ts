@@ -117,10 +117,10 @@ const W = {
     }
   },
   // 视频/音频流中间件：支持 HTTP Range（206）、限速、Last-Modified 缓存
-  // 用法：W.VideoStream(Conf.upload, { speed: 1024 }) - 匹配 /upload/video/ 前缀
-  //     W.VideoStream('/path/to/media', { prefix: '/media/', speed: 2048 }) - 自定义前缀
+  // 用法：W.VideoStream(Conf.upload, { speed: 1024 }) - 匹配 /video/ 前缀, 目录在./upload/video
+  //     W.VideoStream('../upload/media', { prefix: '/media/', speed: 2048 }) - 自定义前缀
   VideoStream: (rootDir: string, options?: { speed?: number, prefix?: string }): Middleware => {
-    const root = resolve(rootDir) + sep; const prefix = options?.prefix || '/upload/video/';
+    const root = resolve(rootDir) + sep; const prefix = options?.prefix || '/video/'; console.log("play\n")
     const bps = (options?.speed || 1024) * 1024; const V_TYPES: Record<string, string> = {
       '.mp4': 'video/mp4', '.webm': 'video/webm', '.ogg': 'video/ogg', '.ogv': 'video/ogg',
       '.mov': 'video/quicktime', '.avi': 'video/x-msvideo', '.mkv': 'video/x-matroska',
