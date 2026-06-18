@@ -17,7 +17,9 @@ export { ROUTER, B, P, Q, R, S, T, app, _, Class, Id, Get, Post, Put, Del, Middl
 /**  @param v path路径,或者是t  @param t curd等方法的Array<string>*/
 let Class = (v: string | Array<"add" | "del" | "fix" | "info" | "page"> = "", t?: Array<"add" | "del" | "fix" | "info" | "page">) => _ => {
   if (v === "") v = null; else if (typeof v !== "string") { t = v; v = null; } let $a: Array<{ r: string, m, a, f: number }> = [];
-  const V = _.name.replace(/([A-Z][a-z]+)[A-Z_]?\w*/, () => (_.name === "View" ? "" : RegExp.$1)); v = v ?? V.toLowerCase();
+  let V = ""; if (_.name !== "View") {
+    let i = 1; while (i < _.name.length && _.name.charCodeAt(i) >= 97 && _.name.charCodeAt(i) <= 122) i++; V = _.name.slice(0, i);
+  } v = v ?? V.toLowerCase();
   if (typeof v === "string") { if (v.charAt(0) !== "/") v = "/" + v; if (v === "/") { v = ""; } }
   v !== "" && Object.getOwnPropertyNames(_.prototype).forEach(k => {
     if (typeof _.prototype[k] === "function") $Override.push(k);
@@ -87,7 +89,13 @@ let Middle = (...r: Array<_.Middleware<any>>) => (t, k) => {
   } else if (f.w) { throw new Error("@Middle can only be used once!") } else { f.w = r.length === 1 ? r[0] : _(r) } f = null
 }
 let Inject = v => (t, k) => {
-  if (t.constructor.name.replace(/([A-Z][a-z]+)[A-Z_]\w*/, "$1") === v.name.replace(/(\w*)[A-Z$]\w*/, "$1")) { t["#"] = k; }
+  let n1 = t.constructor.name, n2 = v.name, i = 1, p1 = n1, p2 = n2;
+  while (i < n1.length && n1.charCodeAt(i) >= 97 && n1.charCodeAt(i) <= 122) i++;
+  if (i < n1.length && (n1.charCodeAt(i) >= 65 && n1.charCodeAt(i) <= 90 || n1.charCodeAt(i) === 95)) p1 = n1.slice(0, i);
+  for (i = 0; i < n2.length; i++) {
+    const c = n2.charCodeAt(i); if ((c >= 65 && c <= 90) || c === 36) { p2 = n2.slice(0, i); break; }
+  }
+  if (p1 === p2) { t["#"] = k; }
   if (Server[v.name] === undefined) { Server[v.name] = new (v) } if ($ === null) $ = {}; Object.defineProperty($, k, { enumerable: true, value: Server[v.name] })
 }
 let param = (m: Function, d) => {
