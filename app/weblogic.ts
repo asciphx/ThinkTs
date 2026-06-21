@@ -54,13 +54,35 @@ const W = {
    *O是Valid字段，L代表length，R为是否必填(|0或不写是可选字段)[|1表示必填]未填是Invalid字段
    *name#5表示字段为name长度为0~5非必填，如果有则检验长度，现在可顺带着过滤无效字段*/
   V_B: (...a: Array<string>): Middleware => {
-    const O = [""], R = [0], L0 = [0], L1 = [0]; let L = []
+    const O = [""], R = [0], L0 = [0], L1 = [0];
     a.sort().forEach((v, i) => {
-      O[i] = v.replace(/[0-9~#|]+/g, ""),
-        L[i] = v.match(/((#)=?)(\d+\~\d+|\d+)/)?.[3].match(/\d+/g),
-        R[i] = Number(v.match(/((\|)=?)(\d+)/)?.[3]) || 0,
-        L[i] && (L[i].length === 1 ? (L0[i] = 0, L1[i] = Number(L[i][0])) : (L0[i] = Number(L[i][0]), L1[i] = Number(L[i][1])))
-    }); a = L = null;
+      let name = "", len0 = 0, len1 = 0, req = 0, hashIdx = -1, barIdx = -1;
+      for (let j = 0; j < v.length; ++j) {
+        const ch = v.charCodeAt(j); if (ch === 35) hashIdx = j; else if (ch === 124) barIdx = j;
+      }
+      const endIdx = hashIdx >= 0 ? hashIdx : (barIdx >= 0 ? barIdx : v.length);
+      for (let j = 0; j < endIdx; ++j) name += v[j]; O[i] = name;
+      if (hashIdx >= 0) {
+        let n0 = 0, n1 = 0, tilde = false, hasNum = false;
+        for (let j = hashIdx + 1; j < v.length; ++j) {
+          const ch = v.charCodeAt(j);
+          if (ch >= 48 && ch <= 57) {
+            hasNum = true; const d = ch - 48; if (!tilde) n0 = n0 * 10 + d; else n1 = n1 * 10 + d;
+          } else if (ch === 126) tilde = true; else if (ch === 124) break;
+        }
+        if (hasNum) {
+          if (!tilde) { len0 = 0; len1 = n0; } else { len0 = n0; len1 = n1; } L0[i] = len0; L1[i] = len1;
+        } else { L0[i] = 0; L1[i] = 0; }
+      } else { L0[i] = 0; L1[i] = 0; }
+      if (barIdx >= 0) {
+        let n = 0;
+        for (let j = barIdx + 1; j < v.length; ++j) {
+          const ch = v.charCodeAt(j); if (ch >= 48 && ch <= 57) n = n * 10 + (ch - 48); else break;
+        }
+        req = n;
+      }
+      R[i] = req;
+    });
     return async (ctx: Context, next) => {
       let c = ctx.request.body, l = 0, b = Object.keys(c).filter(v => O.includes(v) ? true : l = 1), i = 0;
       if (l === 0) b = b.sort(); else { ctx.status = 422; ctx.body = `Invalid field!`; b = c = null; return };
@@ -79,13 +101,35 @@ const W = {
     }
   },
   V_Q: (...a: Array<string>): Middleware => {
-    const O = [""], R = [0], L0 = [0], L1 = [0]; let L = []
+    const O = [""], R = [0], L0 = [0], L1 = [0];
     a.sort().forEach((v, i) => {
-      O[i] = v.replace(/[0-9~#|]+/g, ""),
-        L[i] = v.match(/((#)=?)(\d+\~\d+|\d+)/)?.[3].match(/\d+/g),
-        R[i] = Number(v.match(/((\|)=?)(\d+)/)?.[3]) || 0,
-        L[i] && (L[i].length === 1 ? (L0[i] = 0, L1[i] = Number(L[i][0])) : (L0[i] = Number(L[i][0]), L1[i] = Number(L[i][1])))
-    }); a = L = null;
+      let name = "", len0 = 0, len1 = 0, req = 0, hashIdx = -1, barIdx = -1;
+      for (let j = 0; j < v.length; ++j) {
+        const ch = v.charCodeAt(j); if (ch === 35) hashIdx = j; else if (ch === 124) barIdx = j;
+      }
+      const endIdx = hashIdx >= 0 ? hashIdx : (barIdx >= 0 ? barIdx : v.length);
+      for (let j = 0; j < endIdx; ++j) name += v[j]; O[i] = name;
+      if (hashIdx >= 0) {
+        let n0 = 0, n1 = 0, tilde = false, hasNum = false;
+        for (let j = hashIdx + 1; j < v.length; ++j) {
+          const ch = v.charCodeAt(j);
+          if (ch >= 48 && ch <= 57) {
+            hasNum = true; const d = ch - 48; if (!tilde) n0 = n0 * 10 + d; else n1 = n1 * 10 + d;
+          } else if (ch === 126) tilde = true; else if (ch === 124) break;
+        }
+        if (hasNum) {
+          if (!tilde) { len0 = 0; len1 = n0; } else { len0 = n0; len1 = n1; } L0[i] = len0; L1[i] = len1;
+        } else { L0[i] = 0; L1[i] = 0; }
+      } else { L0[i] = 0; L1[i] = 0; }
+      if (barIdx >= 0) {
+        let n = 0;
+        for (let j = barIdx + 1; j < v.length; ++j) {
+          const ch = v.charCodeAt(j); if (ch >= 48 && ch <= 57) n = n * 10 + (ch - 48); else break;
+        }
+        req = n;
+      }
+      R[i] = req;
+    });
     return async (ctx: Context, next) => {
       let c = ctx.query, l = 0, b = Object.keys(c).filter(v => O.includes(v) ? true : l = 1), i = 0;
       if (l === 0) b = b.sort(); else { ctx.status = 422; ctx.body = `Invalid field!`; b = c = null; return };
@@ -117,33 +161,24 @@ const W = {
       '.aac': 'audio/aac', '.m4a': 'audio/mp4', '.opus': 'audio/opus'
     };
     // 手动限速传输：不使用 Transform 类，面向过程方式
-    const pipeWithThrottle = (rs: fs.ReadStream, res: NodeJS.WritableStream, req: NodeJS.ReadableStream) => {
-      let tokens = bps, lastRefill = Date.now(), timer: NodeJS.Timeout | null = null;
-      let destroyed = false;
+    const pipeWithThrottle = (rs: fs.ReadStream, res: NodeJS.WritableStream) => {
+      let tokens = bps, lastRefill = Date.now(), timer: NodeJS.Timeout | null = null; let destroyed = false;
       res.on('close', () => {
         if (!destroyed) {
-          destroyed = true;
-          if (timer) { clearTimeout(timer); timer = null; }
-          rs.destroy();
+          destroyed = true; if (timer) { clearTimeout(timer); timer = null; } rs.destroy();
         }
       });
       const send = (chunk: Buffer) => {
-        if (destroyed) return;
-        const canWrite = res.write(chunk);
-        if (!canWrite) rs.pause();
+        if (destroyed) return; const canWrite = res.write(chunk); if (!canWrite) rs.pause();
       };
       const processChunk = (chunk: Buffer) => {
         if (destroyed) return;
-        const now = Date.now();
-        tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
+        const now = Date.now(); tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
         lastRefill = now;
         if (tokens >= chunk.length) {
-          tokens -= chunk.length;
-          send(chunk);
-          return;
+          tokens -= chunk.length; send(chunk); return;
         }
-        const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000));
-        rs.pause();
+        const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000)); rs.pause();
         timer = setTimeout(() => {
           timer = null;
           if (destroyed) return;
@@ -190,7 +225,10 @@ const W = {
         if (m[1] === '' && m[2]) { const n = parseInt(m[2], 10); start = Math.max(0, size - n); end = size - 1; }
         else { start = m[1] ? parseInt(m[1], 10) : 0; end = m[2] ? parseInt(m[2], 10) : size - 1; }
         if (start >= size || end >= size || start > end) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
-        if (ctx.method === 'HEAD') { ctx.status = 206; ctx.set('Content-Range', `bytes ${start}-${end}/${size}`); ctx.set('Content-Length', String(end - start + 1)); return; }
+        if (ctx.method === 'HEAD') {
+          ctx.status = 206; ctx.set('Content-Range', `bytes ${start}-${end}/${size}`);
+          ctx.set('Content-Length', String(end - start + 1)); return;
+        }
         ctx.respond = false;
         ctx.res.writeHead(206, {
           'Content-Type': contentType,
@@ -200,13 +238,10 @@ const W = {
           'Last-Modified': mtime.toUTCString(),
           'Cache-Control': 'public, max-age=86400'
         });
-        const rs = createReadStream(fullPath, { start, end });
-        pipeWithThrottle(rs, ctx.res, ctx.req);
-        ctx.req.on('close', () => { rs.destroy(); });
-        return;
+        const rs = createReadStream(fullPath, { start, end }); pipeWithThrottle(rs, ctx.res);
+        ctx.req.on('close', () => { rs.destroy(); }); return;
       }
-      if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; }
-      ctx.respond = false;
+      if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; } ctx.respond = false;
       ctx.res.writeHead(200, {
         'Content-Type': contentType,
         'Content-Length': size,
@@ -214,9 +249,7 @@ const W = {
         'Last-Modified': mtime.toUTCString(),
         'Cache-Control': 'public, max-age=86400'
       });
-      const rs = createReadStream(fullPath);
-      pipeWithThrottle(rs, ctx.res, ctx.req);
-      ctx.req.on('close', () => { rs.destroy(); });
+      const rs = createReadStream(fullPath); pipeWithThrottle(rs, ctx.res); ctx.req.on('close', () => { rs.destroy(); });
     }
   }
 }
