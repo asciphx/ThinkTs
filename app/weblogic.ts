@@ -160,39 +160,29 @@ const W = {
       '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.flac': 'audio/flac',
       '.aac': 'audio/aac', '.m4a': 'audio/mp4', '.opus': 'audio/opus'
     };
-    // 手动限速传输：不使用 Transform 类，面向过程方式
-    const pipeWithThrottle = (rs: fs.ReadStream, res: NodeJS.WritableStream) => {
-      let tokens = bps, lastRefill = Date.now(), timer: NodeJS.Timeout | null = null; let destroyed = false;
-      res.on('close', () => {
-        if (!destroyed) {
-          destroyed = true; if (timer) { clearTimeout(timer); timer = null; } rs.destroy();
-        }
+    // 限速 Transform 流：按 1s 窗口节流，确保不超出 bps
+    const Throttle = (): Transform => {
+      let tokens = bps, lastRefill = Date.now(), timer: NodeJS.Timeout | null = null;
+      const t = new Transform({
+        transform(chunk: Buffer, _e: BufferEncoding, cb: TransformCallback) {
+          const now = Date.now();
+          tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
+          lastRefill = now;
+          if (tokens >= chunk.length) { tokens -= chunk.length; t.push(chunk); cb(); return; }
+          const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000));
+          timer = setTimeout(() => {
+            timer = null;
+            const n = Date.now();
+            tokens = Math.min(bps, tokens + (bps * (n - lastRefill)) / 1000) - chunk.length;
+            lastRefill = n;
+            t.push(chunk); cb();
+          }, waitMs);
+          timer.unref();
+        },
+        flush(cb: TransformCallback) { if (timer) clearTimeout(timer); cb(); }
       });
-      const send = (chunk: Buffer) => {
-        if (destroyed) return; const canWrite = res.write(chunk); if (!canWrite) rs.pause();
-      };
-      const processChunk = (chunk: Buffer) => {
-        if (destroyed) return;
-        const now = Date.now(); tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
-        lastRefill = now;
-        if (tokens >= chunk.length) {
-          tokens -= chunk.length; send(chunk); return;
-        }
-        const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000)); rs.pause();
-        timer = setTimeout(() => {
-          timer = null;
-          if (destroyed) return;
-          const n = Date.now();
-          tokens = Math.min(bps, tokens + (bps * (n - lastRefill)) / 1000) - chunk.length;
-          lastRefill = n;
-          send(chunk);
-          rs.resume();
-        }, waitMs);
-        timer.unref();
-      };
-      rs.on('data', processChunk);
-      rs.on('end', () => { if (timer) { clearTimeout(timer); timer = null; } if (!destroyed) res.end(); });
-      res.on('drain', () => { if (!destroyed) rs.resume(); });
+      t.on('close', () => { if (timer) clearTimeout(timer); });
+      return t;
     };
     return async (ctx: Context, next) => {
       if (!ctx.path.startsWith(prefix)) { await next(); return; }
@@ -217,6 +207,7 @@ const W = {
         const ims = new Date(ctx.headers['if-modified-since'] as string).getTime();
         if (!isNaN(ims) && Math.floor(ims / 1000) >= Math.floor(mtime.getTime() / 1000)) { ctx.status = 304; return; }
       }
+      if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; }
       const range = ctx.headers.range as string | undefined;
       if (range) {
         const m = /bytes=(\d*)-(\d*)/.exec(range);
@@ -238,18 +229,20 @@ const W = {
           'Last-Modified': mtime.toUTCString(),
           'Cache-Control': 'public, max-age=86400'
         });
-        const rs = createReadStream(fullPath, { start, end }); pipeWithThrottle(rs, ctx.res);
-        ctx.req.on('close', () => { rs.destroy(); }); return;
+        const rs = createReadStream(fullPath, { start, end }); rs.pipe(Throttle()).pipe(ctx.res);
+        ctx.req.on('close', () => { rs.destroy(); });
+      } else {
+        ctx.respond = false;
+        ctx.res.writeHead(200, {
+          'Content-Type': contentType,
+          'Content-Length': size,
+          'Accept-Ranges': 'bytes',
+          'Last-Modified': mtime.toUTCString(),
+          'Cache-Control': 'public, max-age=86400'
+        });
+        const rs = createReadStream(fullPath); rs.pipe(Throttle()).pipe(ctx.res);
+        ctx.req.on('close', () => { rs.destroy(); });
       }
-      if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; } ctx.respond = false;
-      ctx.res.writeHead(200, {
-        'Content-Type': contentType,
-        'Content-Length': size,
-        'Accept-Ranges': 'bytes',
-        'Last-Modified': mtime.toUTCString(),
-        'Cache-Control': 'public, max-age=86400'
-      });
-      const rs = createReadStream(fullPath); pipeWithThrottle(rs, ctx.res); ctx.req.on('close', () => { rs.destroy(); });
     }
   }
 }
