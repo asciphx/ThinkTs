@@ -12,7 +12,7 @@ export default class Menu$ extends $ {
       select: ['m.id', 'm.name', 'm.pic'],
       addSelect: ['Role.id', 'Role.name'],
       where: (query: { name: string }) => new Brackets(qb => {
-        if (query.name) qb.where("m.name IN (:...arr)", { arr: query.name.match(/[^,]+/g) })
+        if (query.name) qb.where("m.name IN (:...arr)", { arr: query.name.split(",") })
       }),
       orderBy: { "m.id": "desc" }
     }, "m");

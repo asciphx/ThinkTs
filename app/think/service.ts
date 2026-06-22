@@ -5,9 +5,16 @@ interface _ {
 }
 //基础服务类，$默认是实体类小写，如有变请在super第二个参数传入，直接return;此时默认的状态码是204，意思是No Content
 const Entity = new Map<string, Repository<any>>();
+function ConstructorNameFix(n: string) {
+  let i = 0;
+  for (; i < n.length; ++i) {
+    const ch = n.charCodeAt(i); if ((ch >= 65 && ch <= 90) || ch === 36) break;
+  }
+  return n.slice(0, i);
+}
 export default abstract class Service {
   private _: _; private _$: string;
-  private $: string = this.constructor.name.replace(/(\w*)[A-Z$]\w*/, "$1");
+  private $: string = ConstructorNameFix(this.constructor.name);
   constructor(_?: _, $?: string) {
     this._ = _; if ($) { this._$ = $; }
   }
@@ -30,25 +37,20 @@ export default abstract class Service {
    */
   private async*list(query) {
     const size = Number(query.size) || 10, page = Number(query.page) || 1;
-
     // 使用 createQueryBuilder 构建查询，并启用结果缓存
     let v = Entity[this.$].createQueryBuilder(this._$)
       .cache(true)              // TypeORM 5+ 支持 SQL 查询结果缓存
       .take(size)
       .skip(page * size - size);
-
     if (this._ !== undefined) {
       // 关联表 JOIN - 使用左连接避免数据丢失
       if (this._.leftJoin !== undefined) { v.leftJoin(this._.leftJoin.e, this._.leftJoin.a, this._.leftJoin.c, this._.leftJoin.p); }
       if (this._.addLeftJoin !== undefined) { v.leftJoin(this._.addLeftJoin.e, this._.addLeftJoin.a, this._.addLeftJoin.c, this._.addLeftJoin.p); }
-
       // 明确选择需要的字段，避免返回整行数据
       if (this._.select !== undefined) { v.select(this._.select) }
       if (this._.addSelect !== undefined) { v.addSelect(this._.addSelect) }
-
       // WHERE 条件构建
       if (this._.where !== undefined) { v.where(this._.where(query)) }
-
       // 排序支持多字段
       if (this._.orderBy !== undefined && Object.getOwnPropertyNames(this._.orderBy).length > 0) {
         const orderKeys = Object.keys(this._.orderBy);
@@ -58,11 +60,9 @@ export default abstract class Service {
       }
       if (this._.groupBy !== undefined) { v.groupBy(this._.groupBy) }
     }
-
     // 批量执行查询 - 使用 getManyAndCount 原子性返回数据和总数
     const result = await v.getManyAndCount();
     v = null;
-
     return {
       list: result,
       page: new P(page, size, result.length).get()
