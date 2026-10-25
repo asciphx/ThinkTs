@@ -1,0 +1,23 @@
+// ============================================
+// ThinkTs Project - Prettier Configuration
+// Zed Editor 会自动读取此文件并进行格式化
+// ============================================
+
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+
+  // --- 缩进设置（保留原有风格）---
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 120,
+
+  // --- 引用样式（保留原有风格）---
+  "singleQuote": false, // 双引号字符串
+  "trailingComma": "all", // 末尾逗号
+  "semi": false, // 不加分号
+
+  // --- 其他设置 ---
+  "bracketSpacing": true, // [] {} 中间加空格
+  "singleAttributePerLine": true, // 单属性一行
+  "jsxSingleQuote": false, // JSX 使用双引号
+}

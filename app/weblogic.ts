@@ -160,29 +160,79 @@ const W = {
       '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.flac': 'audio/flac',
       '.aac': 'audio/aac', '.m4a': 'audio/mp4', '.opus': 'audio/opus'
     };
-    // 限速 Transform 流：按 1s 窗口节流，确保不超出 bps
-    const Throttle = (): Transform => {
-      let tokens = bps, lastRefill = Date.now(), timer: NodeJS.Timeout | null = null;
-      const t = new Transform({
-        transform(chunk: Buffer, _e: BufferEncoding, cb: TransformCallback) {
-          const now = Date.now();
-          tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
-          lastRefill = now;
-          if (tokens >= chunk.length) { tokens -= chunk.length; t.push(chunk); cb(); return; }
-          const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000));
-          timer = setTimeout(() => {
-            timer = null;
-            const n = Date.now();
-            tokens = Math.min(bps, tokens + (bps * (n - lastRefill)) / 1000) - chunk.length;
-            lastRefill = n;
-            t.push(chunk); cb();
-          }, waitMs);
-          timer.unref();
-        },
-        flush(cb: TransformCallback) { if (timer) clearTimeout(timer); cb(); }
+    // 手动限速传输：不使用 Transform 类，面向过程方式
+    const pipeWithThrottle = (rs: fs.ReadStream, res: NodeJS.WritableStream) => {
+      let tokens = bps;
+      let lastRefill = Date.now();
+      let timer: NodeJS.Timeout | null = null;
+      let closed = false;          // 传输是否已结束（正常结束或连接关闭）
+      let needDrain = false;       // 响应流是否需要等待 drain
+      let rsEnded = false;         // 读取流是否已读完所有数据
+      const tryEnd = () => {
+        // 读取流已结束 & 无待发送定时器 & 未关闭 → 正常结束响应
+        if (!closed && rsEnded && !timer) {
+          closed = true;
+          res.end();
+        }
+      };
+      const cleanup = () => {
+        if (timer) { clearTimeout(timer); timer = null; }
+        if (!closed) {
+          closed = true;
+          rs.destroy();
+        }
+      };
+      res.on('close', cleanup);
+      res.on('error', cleanup);       // 捕获 ECONNRESET 等错误，避免未捕获异常
+      const send = (chunk: Buffer) => {
+        if (closed) return;
+        needDrain = !res.write(chunk);
+        if (needDrain) rs.pause();
+      };
+      const processChunk = (chunk: Buffer) => {
+        if (closed) return;
+        const now = Date.now();
+        tokens = Math.min(bps, tokens + (bps * (now - lastRefill)) / 1000);
+        lastRefill = now;
+        if (tokens >= chunk.length) {
+          tokens -= chunk.length;
+          send(chunk);
+          return;
+        }
+        const waitMs = Math.max(1, Math.ceil((chunk.length - tokens) / bps * 1000));
+        rs.pause();
+        timer = setTimeout(() => {
+          timer = null;
+          if (closed) return;
+          const n = Date.now();
+          tokens = Math.max(0, Math.min(bps, tokens + (bps * (n - lastRefill)) / 1000) - chunk.length);
+          lastRefill = n;
+          send(chunk);
+          if (rsEnded) {
+            // 读取流已结束，发完这个 chunk 就结束响应
+            tryEnd();
+          } else if (!needDrain) {
+            rs.resume();
+          }
+        }, waitMs);
+        timer.unref();
+      };
+      rs.on('data', processChunk);
+      rs.on('end', () => {
+        rsEnded = true;
+        tryEnd();
       });
-      t.on('close', () => { if (timer) clearTimeout(timer); });
-      return t;
+      rs.on('error', cleanup);
+      res.on('drain', () => {
+        needDrain = false;
+        if (!closed && !timer) {
+          if (rsEnded) {
+            tryEnd();  // 背压解除后，如果数据已读完则结束响应
+          } else {
+            rs.resume();
+          }
+        }
+      });
     };
     return async (ctx: Context, next) => {
       if (!ctx.path.startsWith(prefix)) { await next(); return; }
@@ -207,15 +257,14 @@ const W = {
         const ims = new Date(ctx.headers['if-modified-since'] as string).getTime();
         if (!isNaN(ims) && Math.floor(ims / 1000) >= Math.floor(mtime.getTime() / 1000)) { ctx.status = 304; return; }
       }
-      if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; }
       const range = ctx.headers.range as string | undefined;
       if (range) {
-        const m = /bytes=(\d*)-(\d*)/.exec(range);
-        if (!m) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
+        const m = /^\s*bytes\s*=\s*(\d*)-(\d*)\s*$/.exec(range);
+        if (!m || (m[1] === '' && m[2] === '')) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
         let start: number, end: number;
         if (m[1] === '' && m[2]) { const n = parseInt(m[2], 10); start = Math.max(0, size - n); end = size - 1; }
-        else { start = m[1] ? parseInt(m[1], 10) : 0; end = m[2] ? parseInt(m[2], 10) : size - 1; }
-        if (start >= size || end >= size || start > end) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
+        else { start = m[1] ? parseInt(m[1], 10) : 0; end = m[2] ? Math.min(parseInt(m[2], 10), size - 1) : size - 1; }
+        if (start >= size || start > end) { ctx.status = 416; ctx.set('Content-Range', `bytes */${size}`); return; }
         if (ctx.method === 'HEAD') {
           ctx.status = 206; ctx.set('Content-Range', `bytes ${start}-${end}/${size}`);
           ctx.set('Content-Length', String(end - start + 1)); return;
@@ -229,9 +278,9 @@ const W = {
           'Last-Modified': mtime.toUTCString(),
           'Cache-Control': 'public, max-age=86400'
         });
-        const rs = createReadStream(fullPath, { start, end }); rs.pipe(Throttle()).pipe(ctx.res);
-        ctx.req.on('close', () => { rs.destroy(); });
+        const rs = createReadStream(fullPath, { start, end }); pipeWithThrottle(rs, ctx.res); return;
       } else {
+        if (ctx.method === 'HEAD') { ctx.status = 200; ctx.set('Content-Length', String(size)); return; }
         ctx.respond = false;
         ctx.res.writeHead(200, {
           'Content-Type': contentType,
@@ -240,8 +289,7 @@ const W = {
           'Last-Modified': mtime.toUTCString(),
           'Cache-Control': 'public, max-age=86400'
         });
-        const rs = createReadStream(fullPath); rs.pipe(Throttle()).pipe(ctx.res);
-        ctx.req.on('close', () => { rs.destroy(); });
+        const rs = createReadStream(fullPath); pipeWithThrottle(rs, ctx.res);
       }
     }
   }
